@@ -1,0 +1,3 @@
+# Security review
+
+Pinned hook and installer code was inventoried. Caveman moving-branch curl/wget installers and recursive removals must not run. Ponytail and Superpowers lifecycle hooks execute automatically and must use immutable paths exactly once. Compound Engineering converters write host configuration and require backup/diff/ownership gates. Caveman statistics read session logs and require privacy/retention policy; MCP shrink spawns a configured process and remains opt-in. No secrets were observed in inspected manifests, but this is not a complete secret-scan claim. Package sources must remain non-world-writable; automatic unpinned remote scripts are prohibited.

@@ -1,0 +1,1296 @@
+{
+  "schema_version": 1,
+  "dependencies": [
+    {
+      "capability_id": "superpowers/brainstorming",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/brainstorming/scripts/frame-template.html",
+          "skills/brainstorming/scripts/helper.js",
+          "skills/brainstorming/scripts/server.cjs",
+          "skills/brainstorming/scripts/start-server.sh",
+          "skills/brainstorming/scripts/stop-server.sh",
+          "skills/brainstorming/spec-document-reviewer-prompt.md",
+          "skills/brainstorming/visual-companion.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/brainstorming/scripts/frame-template.html",
+          "skills/brainstorming/scripts/helper.js",
+          "skills/brainstorming/scripts/server.cjs",
+          "skills/brainstorming/scripts/start-server.sh",
+          "skills/brainstorming/scripts/stop-server.sh"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/dispatching-parallel-agents",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/executing-plans",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/finishing-a-development-branch",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/receiving-code-review",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/requesting-code-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/requesting-code-review/code-reviewer.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/subagent-driven-development",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/subagent-driven-development/implementer-prompt.md",
+          "skills/subagent-driven-development/scripts/review-package",
+          "skills/subagent-driven-development/scripts/sdd-workspace",
+          "skills/subagent-driven-development/scripts/task-brief",
+          "skills/subagent-driven-development/task-reviewer-prompt.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/subagent-driven-development/scripts/review-package",
+          "skills/subagent-driven-development/scripts/sdd-workspace",
+          "skills/subagent-driven-development/scripts/task-brief"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/systematic-debugging",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/systematic-debugging/CREATION-LOG.md",
+          "skills/systematic-debugging/condition-based-waiting-example.ts",
+          "skills/systematic-debugging/condition-based-waiting.md",
+          "skills/systematic-debugging/defense-in-depth.md",
+          "skills/systematic-debugging/find-polluter.sh",
+          "skills/systematic-debugging/root-cause-tracing.md",
+          "skills/systematic-debugging/test-academic.md",
+          "skills/systematic-debugging/test-pressure-1.md",
+          "skills/systematic-debugging/test-pressure-2.md",
+          "skills/systematic-debugging/test-pressure-3.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/test-driven-development",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/test-driven-development/testing-anti-patterns.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/using-git-worktrees",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/using-superpowers",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/using-superpowers/references/antigravity-tools.md",
+          "skills/using-superpowers/references/codex-tools.md",
+          "skills/using-superpowers/references/pi-tools.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/verification-before-completion",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/writing-plans",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/writing-plans/plan-document-reviewer-prompt.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/writing-skills",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/writing-skills/anthropic-best-practices.md",
+          "skills/writing-skills/examples/CLAUDE_MD_TESTING.md",
+          "skills/writing-skills/graphviz-conventions.dot",
+          "skills/writing-skills/persuasion-principles.md",
+          "skills/writing-skills/render-graphs.js",
+          "skills/writing-skills/testing-skills-with-subagents.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-brainstorm",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-brainstorm/references/agents/repo-profiler.md",
+          "skills/ce-brainstorm/references/agents/slack-researcher.md",
+          "skills/ce-brainstorm/references/brainstorm-sections.md",
+          "skills/ce-brainstorm/references/handoff.md",
+          "skills/ce-brainstorm/references/html-rendering.md",
+          "skills/ce-brainstorm/references/markdown-rendering.md",
+          "skills/ce-brainstorm/references/model-tiers.md",
+          "skills/ce-brainstorm/references/product-pressure-test.md",
+          "skills/ce-brainstorm/references/repo-profile-cache.md",
+          "skills/ce-brainstorm/references/synthesis-summary.md",
+          "skills/ce-brainstorm/references/universal-brainstorming.md",
+          "skills/ce-brainstorm/references/verdict-routing.md",
+          "skills/ce-brainstorm/references/visual-probes.md",
+          "skills/ce-brainstorm/scripts/repo-profile-cache.py",
+          "skills/ce-brainstorm/scripts/visual-probe-server.js"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-brainstorm/scripts/repo-profile-cache.py",
+          "skills/ce-brainstorm/scripts/visual-probe-server.js"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-code-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-code-review/references/action-class-rubric.md",
+          "skills/ce-code-review/references/agents/repo-profiler.md",
+          "skills/ce-code-review/references/cross-model-review.md",
+          "skills/ce-code-review/references/diff-scope.md",
+          "skills/ce-code-review/references/findings-schema.json",
+          "skills/ce-code-review/references/persona-catalog.md",
+          "skills/ce-code-review/references/personas/adversarial-reviewer.md",
+          "skills/ce-code-review/references/personas/agent-native-reviewer.md",
+          "skills/ce-code-review/references/personas/api-contract-reviewer.md",
+          "skills/ce-code-review/references/personas/correctness-reviewer.md",
+          "skills/ce-code-review/references/personas/data-migration-reviewer.md",
+          "skills/ce-code-review/references/personas/deployment-verification-agent.md",
+          "skills/ce-code-review/references/personas/julik-frontend-races-reviewer.md",
+          "skills/ce-code-review/references/personas/learnings-researcher.md",
+          "skills/ce-code-review/references/personas/maintainability-reviewer.md",
+          "skills/ce-code-review/references/personas/performance-reviewer.md",
+          "skills/ce-code-review/references/personas/previous-comments-reviewer.md",
+          "skills/ce-code-review/references/personas/project-standards-reviewer.md",
+          "skills/ce-code-review/references/personas/reliability-reviewer.md",
+          "skills/ce-code-review/references/personas/security-reviewer.md",
+          "skills/ce-code-review/references/personas/swift-ios-reviewer.md",
+          "skills/ce-code-review/references/personas/testing-reviewer.md",
+          "skills/ce-code-review/references/repo-profile-cache.md",
+          "skills/ce-code-review/references/review-output-template.md",
+          "skills/ce-code-review/references/subagent-template.md",
+          "skills/ce-code-review/references/validator-template.md",
+          "skills/ce-code-review/scripts/cross-model-adversarial-review.sh",
+          "skills/ce-code-review/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-code-review/scripts/cross-model-adversarial-review.sh",
+          "skills/ce-code-review/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-commit",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-commit-push-pr",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-commit-push-pr/references/branch-creation.md",
+          "skills/ce-commit-push-pr/references/pr-description-writing.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-compound",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-compound/assets/resolution-template.md",
+          "skills/ce-compound/references/agents/best-practices-researcher.md",
+          "skills/ce-compound/references/agents/data-integrity-guardian.md",
+          "skills/ce-compound/references/agents/framework-docs-researcher.md",
+          "skills/ce-compound/references/agents/pattern-recognition-specialist.md",
+          "skills/ce-compound/references/agents/performance-oracle.md",
+          "skills/ce-compound/references/agents/repo-profiler.md",
+          "skills/ce-compound/references/agents/security-sentinel.md",
+          "skills/ce-compound/references/agents/session-historian.md",
+          "skills/ce-compound/references/concepts-vocabulary.md",
+          "skills/ce-compound/references/repo-profile-cache.md",
+          "skills/ce-compound/references/schema.yaml",
+          "skills/ce-compound/references/yaml-schema.md",
+          "skills/ce-compound/scripts/repo-profile-cache.py",
+          "skills/ce-compound/scripts/session-history/discover-sessions.sh",
+          "skills/ce-compound/scripts/session-history/extract-errors.py",
+          "skills/ce-compound/scripts/session-history/extract-metadata.py",
+          "skills/ce-compound/scripts/session-history/extract-skeleton.py",
+          "skills/ce-compound/scripts/validate-frontmatter.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-compound/scripts/repo-profile-cache.py",
+          "skills/ce-compound/scripts/session-history/discover-sessions.sh",
+          "skills/ce-compound/scripts/session-history/extract-errors.py",
+          "skills/ce-compound/scripts/session-history/extract-metadata.py",
+          "skills/ce-compound/scripts/session-history/extract-skeleton.py",
+          "skills/ce-compound/scripts/validate-frontmatter.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-compound-refresh",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-compound-refresh/assets/resolution-template.md",
+          "skills/ce-compound-refresh/references/concepts-vocabulary.md",
+          "skills/ce-compound-refresh/references/per-action-flows.md",
+          "skills/ce-compound-refresh/references/schema.yaml",
+          "skills/ce-compound-refresh/references/yaml-schema.md",
+          "skills/ce-compound-refresh/scripts/validate-frontmatter.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-compound-refresh/scripts/validate-frontmatter.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-debug",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-debug/references/agents/repo-profiler.md",
+          "skills/ce-debug/references/anti-patterns.md",
+          "skills/ce-debug/references/defense-in-depth.md",
+          "skills/ce-debug/references/investigation-techniques.md",
+          "skills/ce-debug/references/repo-profile-cache.md",
+          "skills/ce-debug/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-debug/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-doc-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-doc-review/references/bulk-preview.md",
+          "skills/ce-doc-review/references/findings-schema.json",
+          "skills/ce-doc-review/references/open-questions-defer.md",
+          "skills/ce-doc-review/references/personas/adversarial-document-reviewer.md",
+          "skills/ce-doc-review/references/personas/coherence-reviewer.md",
+          "skills/ce-doc-review/references/personas/design-lens-reviewer.md",
+          "skills/ce-doc-review/references/personas/feasibility-reviewer.md",
+          "skills/ce-doc-review/references/personas/product-lens-reviewer.md",
+          "skills/ce-doc-review/references/personas/scope-guardian-reviewer.md",
+          "skills/ce-doc-review/references/personas/security-lens-reviewer.md",
+          "skills/ce-doc-review/references/review-output-template.md",
+          "skills/ce-doc-review/references/subagent-template.md",
+          "skills/ce-doc-review/references/synthesis-and-presentation.md",
+          "skills/ce-doc-review/references/walkthrough.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-dogfood",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-dogfood/references/dogfood-report-template.md",
+          "skills/ce-dogfood/references/test-matrix-taxonomy.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-ideate",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-ideate/references/agents/issue-intelligence-analyst.md",
+          "skills/ce-ideate/references/agents/learnings-researcher.md",
+          "skills/ce-ideate/references/agents/repo-profiler.md",
+          "skills/ce-ideate/references/agents/slack-researcher.md",
+          "skills/ce-ideate/references/agents/web-researcher.md",
+          "skills/ce-ideate/references/divergent-ideation.md",
+          "skills/ce-ideate/references/html-rendering.md",
+          "skills/ce-ideate/references/ideation-sections.md",
+          "skills/ce-ideate/references/markdown-rendering.md",
+          "skills/ce-ideate/references/post-ideation-workflow.md",
+          "skills/ce-ideate/references/repo-profile-cache.md",
+          "skills/ce-ideate/references/universal-ideation.md",
+          "skills/ce-ideate/references/web-research-cache.md",
+          "skills/ce-ideate/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-ideate/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-optimize",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-optimize/references/agents/learnings-researcher.md",
+          "skills/ce-optimize/references/agents/repo-profiler.md",
+          "skills/ce-optimize/references/agents/repo-research-analyst.md",
+          "skills/ce-optimize/references/example-hard-spec.yaml",
+          "skills/ce-optimize/references/example-judge-spec.yaml",
+          "skills/ce-optimize/references/experiment-log-schema.yaml",
+          "skills/ce-optimize/references/experiment-prompt-template.md",
+          "skills/ce-optimize/references/judge-prompt-template.md",
+          "skills/ce-optimize/references/optimize-spec-schema.yaml",
+          "skills/ce-optimize/references/repo-profile-cache.md",
+          "skills/ce-optimize/references/usage-guide.md",
+          "skills/ce-optimize/scripts/experiment-worktree.sh",
+          "skills/ce-optimize/scripts/measure.sh",
+          "skills/ce-optimize/scripts/parallel-probe.sh",
+          "skills/ce-optimize/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-optimize/scripts/experiment-worktree.sh",
+          "skills/ce-optimize/scripts/measure.sh",
+          "skills/ce-optimize/scripts/parallel-probe.sh",
+          "skills/ce-optimize/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-plan",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-plan/references/agents/agent-native-planning-strategist.md",
+          "skills/ce-plan/references/agents/architecture-strategist.md",
+          "skills/ce-plan/references/agents/best-practices-researcher.md",
+          "skills/ce-plan/references/agents/data-integrity-guardian.md",
+          "skills/ce-plan/references/agents/data-migration-reviewer.md",
+          "skills/ce-plan/references/agents/deployment-verification-agent.md",
+          "skills/ce-plan/references/agents/framework-docs-researcher.md",
+          "skills/ce-plan/references/agents/git-history-analyzer.md",
+          "skills/ce-plan/references/agents/learnings-researcher.md",
+          "skills/ce-plan/references/agents/pattern-recognition-specialist.md",
+          "skills/ce-plan/references/agents/performance-oracle.md",
+          "skills/ce-plan/references/agents/repo-profiler.md",
+          "skills/ce-plan/references/agents/repo-research-analyst.md",
+          "skills/ce-plan/references/agents/security-sentinel.md",
+          "skills/ce-plan/references/agents/slack-researcher.md",
+          "skills/ce-plan/references/agents/spec-flow-analyzer.md",
+          "skills/ce-plan/references/agents/web-researcher.md",
+          "skills/ce-plan/references/approach-altitude.md",
+          "skills/ce-plan/references/deepening-workflow.md",
+          "skills/ce-plan/references/html-rendering.md",
+          "skills/ce-plan/references/markdown-rendering.md",
+          "skills/ce-plan/references/plan-handoff.md",
+          "skills/ce-plan/references/plan-sections.md",
+          "skills/ce-plan/references/repo-profile-cache.md",
+          "skills/ce-plan/references/synthesis-summary.md",
+          "skills/ce-plan/references/universal-planning.md",
+          "skills/ce-plan/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-plan/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-polish",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-polish/references/dev-server-astro.md",
+          "skills/ce-polish/references/dev-server-detection.md",
+          "skills/ce-polish/references/dev-server-next.md",
+          "skills/ce-polish/references/dev-server-nuxt.md",
+          "skills/ce-polish/references/dev-server-procfile.md",
+          "skills/ce-polish/references/dev-server-rails.md",
+          "skills/ce-polish/references/dev-server-remix.md",
+          "skills/ce-polish/references/dev-server-sveltekit.md",
+          "skills/ce-polish/references/dev-server-vite.md",
+          "skills/ce-polish/references/ide-detection.md",
+          "skills/ce-polish/references/launch-json-schema.md",
+          "skills/ce-polish/scripts/detect-project-type.sh",
+          "skills/ce-polish/scripts/read-launch-json.sh",
+          "skills/ce-polish/scripts/resolve-package-manager.sh",
+          "skills/ce-polish/scripts/resolve-port.sh"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-polish/scripts/detect-project-type.sh",
+          "skills/ce-polish/scripts/read-launch-json.sh",
+          "skills/ce-polish/scripts/resolve-package-manager.sh",
+          "skills/ce-polish/scripts/resolve-port.sh"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-pov",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-pov/references/agents/external-evidence-researcher.md",
+          "skills/ce-pov/references/agents/precedent-activity-scout.md",
+          "skills/ce-pov/references/agents/project-grounding-scout.md",
+          "skills/ce-pov/references/agents/repo-profiler.md",
+          "skills/ce-pov/references/boundaries.md",
+          "skills/ce-pov/references/intake.md",
+          "skills/ce-pov/references/invocation.md",
+          "skills/ce-pov/references/method.md",
+          "skills/ce-pov/references/repo-profile-cache.md",
+          "skills/ce-pov/references/report.md",
+          "skills/ce-pov/scripts/repo-profile-cache.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-pov/scripts/repo-profile-cache.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-product-pulse",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-product-pulse/references/interview.md",
+          "skills/ce-product-pulse/references/report-template.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-promote",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-promote/references/spiral-cli.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-proof",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-resolve-pr-feedback",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-resolve-pr-feedback/references/agents/pr-comment-resolver.md",
+          "skills/ce-resolve-pr-feedback/references/evaluation-rubric.md",
+          "skills/ce-resolve-pr-feedback/references/full-mode.md",
+          "skills/ce-resolve-pr-feedback/references/targeted-mode.md",
+          "skills/ce-resolve-pr-feedback/scripts/get-pr-comments",
+          "skills/ce-resolve-pr-feedback/scripts/get-thread-for-comment",
+          "skills/ce-resolve-pr-feedback/scripts/reply-to-pr-thread",
+          "skills/ce-resolve-pr-feedback/scripts/resolve-pr-thread"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-resolve-pr-feedback/scripts/get-pr-comments",
+          "skills/ce-resolve-pr-feedback/scripts/get-thread-for-comment",
+          "skills/ce-resolve-pr-feedback/scripts/reply-to-pr-thread",
+          "skills/ce-resolve-pr-feedback/scripts/resolve-pr-thread"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-riffrec-feedback-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-riffrec-feedback-analysis/references/compound-engineering-feedback-format.md",
+          "skills/ce-riffrec-feedback-analysis/references/extensive-analysis.md",
+          "skills/ce-riffrec-feedback-analysis/references/install-riffrec.md",
+          "skills/ce-riffrec-feedback-analysis/references/quick-bug-report.md",
+          "skills/ce-riffrec-feedback-analysis/scripts/analyze_riffrec_zip.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-riffrec-feedback-analysis/scripts/analyze_riffrec_zip.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-setup",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-setup/references/config-template.yaml",
+          "skills/ce-setup/scripts/check-health"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/ce-setup/scripts/check-health"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-simplify-code",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-simplify-code/references/personas/code-quality-reviewer.md",
+          "skills/ce-simplify-code/references/personas/code-reuse-reviewer.md",
+          "skills/ce-simplify-code/references/personas/efficiency-reviewer.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-strategy",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-strategy/references/interview.md",
+          "skills/ce-strategy/references/strategy-template.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-test-browser",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-test-browser/references/pipeline-orchestration.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-test-xcode",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-work",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/ce-work/references/agents/figma-design-sync.md",
+          "skills/ce-work/references/execution-engines.md",
+          "skills/ce-work/references/non-code-execution.md",
+          "skills/ce-work/references/review-findings-followup.md",
+          "skills/ce-work/references/shipping-workflow.md",
+          "skills/ce-work/references/tracker-defer.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/ce-worktree",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "compound-engineering/lfg",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/lfg/references/review-followup.md",
+          "skills/lfg/references/tracker-defer.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-audit",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-debt",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-gain",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-help",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-review",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/cavecrew",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/cavecrew/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-commit",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman-commit/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-compress",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman-compress/README.md",
+          "skills/caveman-compress/SECURITY.md",
+          "skills/caveman-compress/scripts/__init__.py",
+          "skills/caveman-compress/scripts/__main__.py",
+          "skills/caveman-compress/scripts/benchmark.py",
+          "skills/caveman-compress/scripts/cli.py",
+          "skills/caveman-compress/scripts/compress.py",
+          "skills/caveman-compress/scripts/detect.py",
+          "skills/caveman-compress/scripts/validate.py"
+        ],
+        "sibling_skills": [],
+        "scripts": [
+          "skills/caveman-compress/scripts/__init__.py",
+          "skills/caveman-compress/scripts/__main__.py",
+          "skills/caveman-compress/scripts/benchmark.py",
+          "skills/caveman-compress/scripts/cli.py",
+          "skills/caveman-compress/scripts/compress.py",
+          "skills/caveman-compress/scripts/detect.py",
+          "skills/caveman-compress/scripts/validate.py"
+        ],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-help",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman-help/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-stats",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "skills/caveman-stats/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "superpowers/hook-hooks",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "hooks/hooks-cursor.json",
+          "hooks/hooks.json",
+          "hooks/run-hook.cmd",
+          "hooks/session-start",
+          "hooks/session-start-codex"
+        ]
+      }
+    },
+    {
+      "capability_id": "ponytail/hook-hooks",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "hooks/claude-codex-hooks.json",
+          "hooks/copilot-hooks.json",
+          "hooks/ponytail-activate.js",
+          "hooks/ponytail-config.js",
+          "hooks/ponytail-instructions.js",
+          "hooks/ponytail-mode-tracker.js",
+          "hooks/ponytail-runtime.js",
+          "hooks/ponytail-statusline.ps1",
+          "hooks/ponytail-statusline.sh",
+          "hooks/ponytail-subagent.js"
+        ]
+      }
+    },
+    {
+      "capability_id": "ponytail/command-commands",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "commands/ponytail-audit.toml",
+          "commands/ponytail-debt.toml",
+          "commands/ponytail-gain.toml",
+          "commands/ponytail-help.toml",
+          "commands/ponytail-review.toml",
+          "commands/ponytail.toml"
+        ]
+      }
+    },
+    {
+      "capability_id": "caveman/command-commands",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "commands/caveman-commit.toml",
+          "commands/caveman-init.toml",
+          "commands/caveman-review.toml",
+          "commands/caveman.toml"
+        ]
+      }
+    },
+    {
+      "capability_id": "caveman/agent-agents",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "agents/cavecrew-builder.md",
+          "agents/cavecrew-investigator.md",
+          "agents/cavecrew-reviewer.md"
+        ]
+      }
+    },
+    {
+      "capability_id": "superpowers/plugin-.claude-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".claude-plugin/marketplace.json",
+          ".claude-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "superpowers/plugin-.codex-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".codex-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "superpowers/plugin-.cursor-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".cursor-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "compound-engineering/plugin-.claude-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".claude-plugin/CHANGELOG.md",
+          ".claude-plugin/marketplace.json",
+          ".claude-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "compound-engineering/plugin-.codex-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".codex-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "compound-engineering/plugin-.cursor-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".cursor-plugin/CHANGELOG.md",
+          ".cursor-plugin/marketplace.json",
+          ".cursor-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "ponytail/plugin-.claude-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".claude-plugin/marketplace.json",
+          ".claude-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "ponytail/plugin-.codex-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".codex-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "caveman/plugin-.claude-plugin",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          ".claude-plugin/marketplace.json",
+          ".claude-plugin/plugin.json"
+        ]
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/ast-grep",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "ast-grep/references/rule_reference.md"
+        ],
+        "executables": [
+          "ast-grep"
+        ]
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/registry-health",
+      "self_contained": true,
+      "requires": {
+        "files": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/stack-router",
+      "self_contained": true,
+      "requires": {
+        "files": []
+      }
+    }
+  ]
+}

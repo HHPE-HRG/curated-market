@@ -1,0 +1,10 @@
+{
+  "name": "hhpe-hrg",
+  "interface": {"displayName": "HHPE HRG pinned registry"},
+  "plugins": [
+    {"name":"superpowers","source":{"source":"local","path":"./plugins/superpowers"},"policy":{"installation":"AVAILABLE"},"category":"Developer Tools"},
+    {"name":"compound-engineering","source":{"source":"local","path":"./plugins/compound-engineering"},"policy":{"installation":"AVAILABLE"},"category":"Developer Tools"},
+    {"name":"ponytail","source":{"source":"local","path":"./plugins/ponytail"},"policy":{"installation":"AVAILABLE"},"category":"Developer Tools"},
+    {"name":"00-hhpe-registry","source":{"source":"local","path":"./plugins/hhpe-registry"},"policy":{"installation":"AVAILABLE"},"category":"Developer Tools"}
+  ]
+}

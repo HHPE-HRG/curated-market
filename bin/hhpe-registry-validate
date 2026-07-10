@@ -1,0 +1,2 @@
+#!/bin/sh
+exec node "${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}/lib/registry.mjs" validate "$@"

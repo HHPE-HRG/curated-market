@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "tools": [
+    {
+      "tool_id": "ast-grep-runtime",
+      "capability_id": "hhpe-hrg/ast-grep",
+      "version": "0.43.0",
+      "source": "npm:@ast-grep/cli@0.43.0",
+      "binary_paths": [
+        "/home/hold3n/.local/bin/ast-grep",
+        "/home/hold3n/.local/bin/sg"
+      ],
+      "source_binary_paths": [
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/ast-grep",
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/sg"
+      ],
+      "upgrade": "npm install -g @ast-grep/cli@<pinned-version>",
+      "removal": "npm uninstall -g @ast-grep/cli",
+      "platform": "linux-x64",
+      "noninteractive_path": "~/.local/bin",
+      "status": "present"
+    }
+  ]
+}

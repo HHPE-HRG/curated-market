@@ -1,0 +1,3 @@
+# Package dependency analysis
+
+The generated capabilities and dependencies manifests are authoritative. Superpowers process skills depend on sibling process skills, package references, prompts, scripts, and SessionStart routing. Compound Engineering skills depend extensively on agents, schemas, scripts, templates, APIs, and package policy. Ponytail modes depend on hooks, configuration, MCP, commands, and persistent flags. Caveman modes depend on hooks, commands, cavecrew agents, status/stat state, and optional MCP. All are conservatively non-self-contained. ast-grep guidance depends on the executable and its rule reference.

@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["package_id","repository","revision","package_root","integrity","license","modified"],"properties":{"package_id":{"type":"string","pattern":"^[a-z0-9-]+$"},"revision":{"type":"object","required":["type","value"]},"modified":{"type":"boolean"}}}

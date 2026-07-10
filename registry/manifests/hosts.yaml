@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "hosts": [
+    {
+      "id": "claude",
+      "version": "2.1.205",
+      "skills": "plugin-native",
+      "plugins": true,
+      "hooks": true,
+      "agents": true,
+      "mcp": true,
+      "reload": "new session"
+    },
+    {
+      "id": "codex",
+      "version": "0.144.1",
+      "skills": "~/.codex/skills and shared ~/.agents/skills",
+      "plugins": true,
+      "hooks": "plugin-dependent",
+      "agents": true,
+      "mcp": true,
+      "reload": "new session"
+    },
+    {
+      "id": "cursor",
+      "version": "3.9.16",
+      "skills": "plugin/cache; global symlink unproven",
+      "plugins": true,
+      "hooks": true,
+      "agents": true,
+      "mcp": true,
+      "reload": "window reload"
+    },
+    {
+      "id": "antigravity-ide",
+      "version": "unknown-crashed-probe",
+      "skills": "~/.gemini/config/plugins",
+      "plugins": true,
+      "hooks": true,
+      "agents": true,
+      "mcp": true,
+      "reload": "restart"
+    },
+    {
+      "id": "antigravity-cli",
+      "version": null,
+      "skills": "~/.gemini/antigravity-cli/skills",
+      "status": "runtime-not-found"
+    },
+    {
+      "id": "opencode",
+      "version": "1.17.1",
+      "skills": "~/.config/opencode",
+      "plugins": true,
+      "agents": true,
+      "mcp": true
+    },
+    {
+      "id": "hhpe-hrg",
+      "version": "wrapper-c566c638ac",
+      "skills": "XLOTYL generated catalog",
+      "status": "adapter-planned"
+    }
+  ]
+}

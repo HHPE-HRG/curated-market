@@ -1,0 +1,1 @@
+{"mode":"individual-namespaced-links","skill_root":"~/.agents/skills","preserve":["~/.codex/config.toml","~/.codex/auth.json","~/.codex/skills"],"reload":"new-session"}

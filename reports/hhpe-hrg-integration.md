@@ -1,0 +1,3 @@
+# HHPE HRG integration
+
+Core Dev Services already provides namespaced, commit-shaped policy metadata but currently reconstructs thin wrappers. The global registry is the physical source authority; XLOTYL consumes a projection. OpenHands remains the sole agent-management control plane. Containers must mount packages read-only and generated state separately. Remote workers require reproducible bundles because cross-machine links and host absolute MCP paths are invalid. Runtime ownership is unresolved because current canon conflicts between Workroom and Stoneforge; the adapter records this explicitly.

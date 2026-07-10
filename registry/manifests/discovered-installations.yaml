@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "installations": [
+    {
+      "package": "superpowers",
+      "authoritative": "/home/hold3n/.claude/plugins/marketplaces/superpowers-dev",
+      "active": "claude plugin 5.1.0",
+      "duplicates": [
+        "~/.agents/skills",
+        "~/.codex/skills",
+        "~/.gemini/config/plugins/superpowers",
+        "~/.cursor/plugins/cache/cursor-public/superpowers"
+      ]
+    },
+    {
+      "package": "compound-engineering",
+      "authoritative": "/home/hold3n/.claude/plugins/marketplaces/compound-engineering-plugin",
+      "active": "claude plugin 3.12.0",
+      "duplicates": [
+        "~/.agents/skills",
+        "~/.codex/skills",
+        "~/.gemini/config/plugins/compound-engineering",
+        "~/.cursor/plugins/cache/cursor-public/compound-engineering"
+      ]
+    },
+    {
+      "package": "ponytail",
+      "authoritative": "/home/hold3n/.claude/plugins/marketplaces/ponytail",
+      "active": "claude plugin 4.8.4"
+    },
+    {
+      "package": "caveman",
+      "authoritative": "/home/hold3n/.claude/plugins/marketplaces/caveman",
+      "active": "claude plugin"
+    },
+    {
+      "package": "ast-grep",
+      "authoritative": "npm @ast-grep/cli@0.43.0 via NVM",
+      "active": "ast-grep and sg"
+    }
+  ]
+}

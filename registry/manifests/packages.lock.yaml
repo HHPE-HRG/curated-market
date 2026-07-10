@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-10T19:05:24.061Z",
+  "packages": [
+    {
+      "package_id": "superpowers",
+      "repository": "https://github.com/obra/superpowers",
+      "revision": {
+        "type": "commit",
+        "value": "f268f7c953744036f0fa7e9d4b73535c04e57cb8"
+      },
+      "package_root": "registry/packages/superpowers/f268f7c953744036f0fa7e9d4b73535c04e57cb8",
+      "integrity": {
+        "git_tree": "77c3a5e93b6161e6250a59cfef341f210fd6e9b1"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400"
+      },
+      "modified": false,
+      "architectural_owner": "development-process"
+    },
+    {
+      "package_id": "compound-engineering",
+      "repository": "https://github.com/EveryInc/compound-engineering-plugin",
+      "revision": {
+        "type": "commit",
+        "value": "db21ba21eff9cc216537cd75c6e44dd49e1a4200"
+      },
+      "package_root": "registry/packages/compound-engineering/db21ba21eff9cc216537cd75c6e44dd49e1a4200",
+      "integrity": {
+        "git_tree": "6b0791bc685a17d9176e4c3c83441dd1c72bab29"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "61d89de7646effdaba2d0a4ab7bd0eba60b4094b83efe5bc73c7940e43e93fc6"
+      },
+      "modified": false,
+      "architectural_owner": "engineering-lifecycle"
+    },
+    {
+      "package_id": "ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail",
+      "revision": {
+        "type": "commit",
+        "value": "40e50d9e03242aa5dd53ac771950f9127362b25f"
+      },
+      "package_root": "registry/packages/ponytail/40e50d9e03242aa5dd53ac771950f9127362b25f",
+      "integrity": {
+        "git_tree": "37fdd4278229a80353aef4a45f9403a4c42e49f8"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab"
+      },
+      "modified": false,
+      "architectural_owner": "ponytail"
+    },
+    {
+      "package_id": "caveman",
+      "repository": "https://github.com/JuliusBrussee/caveman",
+      "revision": {
+        "type": "commit",
+        "value": "25d22f864ad68cc447a4cb93aefde918aa4aec9f"
+      },
+      "package_root": "registry/packages/caveman/25d22f864ad68cc447a4cb93aefde918aa4aec9f",
+      "integrity": {
+        "git_tree": "7beba50021259b759498b01ac3215ba3de740654"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "5eb826cd03151bcc7cce3f80d40e87733237fedfc6c36d6908aca5fd650a0bdb"
+      },
+      "modified": false,
+      "architectural_owner": "caveman"
+    },
+    {
+      "package_id": "hhpe-overlays",
+      "repository": "local:hhpe-hrg",
+      "revision": {
+        "type": "overlay",
+        "value": "1"
+      },
+      "package_root": "registry/overlays/wrappers",
+      "integrity": {
+        "policy": "tracked-by-registry-git"
+      },
+      "license": {
+        "spdx": "Proprietary",
+        "path": "."
+      },
+      "modified": true,
+      "architectural_owner": "hhpe-hrg"
+    }
+  ]
+}

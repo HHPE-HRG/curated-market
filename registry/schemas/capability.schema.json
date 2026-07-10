@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["capability_id","package_id","type","source_path","self_contained","requires","architecture"],"properties":{"capability_id":{"type":"string","pattern":"^[a-z0-9-]+/.+$"},"self_contained":{"type":"boolean"}}}

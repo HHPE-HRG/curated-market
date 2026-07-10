@@ -1,0 +1,4 @@
+registry/packages/
+reports/*.json
+node_modules/
+backups/

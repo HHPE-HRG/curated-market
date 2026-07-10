@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "exposures": [
+    {
+      "capability_id": "caveman/cavecrew",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-cavecrew",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman-commit",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-commit",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman-compress",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-compress",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman-help",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-help",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman-review",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-review",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "caveman/caveman-stats",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-stats",
+      "adapter": "registry/adapters/codex",
+      "status": "planned"
+    },
+    {
+      "capability_id": "hhpe-hrg/ast-grep",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "00-hhpe-registry@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    },
+    {
+      "capability_id": "hhpe-hrg/registry-health",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "00-hhpe-registry@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    },
+    {
+      "capability_id": "hhpe-hrg/stack-router",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "00-hhpe-registry@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    },
+    {
+      "capability_id": "superpowers/plugin-.codex-plugin",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "superpowers@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    },
+    {
+      "capability_id": "compound-engineering/plugin-.codex-plugin",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "compound-engineering@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    },
+    {
+      "capability_id": "ponytail/plugin-.codex-plugin",
+      "host": "codex",
+      "mode": "native-plugin",
+      "target": "ponytail@hhpe-hrg",
+      "adapter": "registry/adapters/codex/marketplace",
+      "status": "planned"
+    }
+  ]
+}
