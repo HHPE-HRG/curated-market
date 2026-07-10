@@ -11,6 +11,8 @@
 | XLOTYL catalog baseline | PASS | 20/20 tests |
 | OpenHands baseline | FAIL | 47 pass, 2 skip, 2 fail |
 | Other-host implicit routing | NOT_RUN | Claude/Cursor/Antigravity/OpenCode cutover pending |
+| Claude isolated pinned-plugin probe | NOT_RUN | Claude session limit reached; no host change made |
+| Wrapper strict verification | FAIL | preexisting topology coverage gaps and unrelated policy required-check evidence missing |
 | Hook/command/subagent parity | NOT_RUN | native installs retained |
 | ast-grep fixture | PASS | structural search, non-mutating preview, exact rewrite, `node --check` |
 | ast-grep clean login shell | PASS | ~/.local/bin links resolve pinned 0.43.0 runtime |
