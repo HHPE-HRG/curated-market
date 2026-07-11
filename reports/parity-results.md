@@ -4,6 +4,7 @@
 |---|---|---|
 | Package integrity | PASS | validation report |
 | Capability/supporting paths | PASS | validation report |
+| Registry safety regression suite | PASS | 8/8 tests, including retargeted-link rollback refusal |
 | Host discovery | PASS with limitations | host inventory |
 | Codex explicit invocation | PASS | ephemeral session 019f4d68-1a95-7320-a698-870ef7005a11 discovered native health skill |
 | Codex implicit routing/support file | PASS | ephemeral session 019f4d68-abd9-7590-ae73-807a36bf869a read exact SKILL.md and commands |
