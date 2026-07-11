@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "canonical_identity": "package_id/capability_name",
+  "native_discovery": true,
+  "transports": {
+    "claude": { "syntax": "/package:capability", "example": "/superpowers:systematic-debugging" },
+    "codex": { "syntax": "$capability or native selection", "example": "$systematic-debugging" },
+    "cursor": { "syntax": "native discovery or skill picker", "example": "systematic-debugging" },
+    "antigravity-ide": { "syntax": "native discovery or skill picker", "example": "systematic-debugging" },
+    "antigravity-cli": { "syntax": "native discovery or skill picker", "example": "systematic-debugging" },
+    "opencode": { "syntax": "native Agent Skills discovery", "example": "systematic-debugging" },
+    "hhpe-hrg": { "syntax": "registry reference", "example": "superpowers/systematic-debugging" }
+  },
+  "rule": "Transport aliases must not alter upstream skill names, frontmatter, or package provenance."
+}

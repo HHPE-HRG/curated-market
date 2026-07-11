@@ -1,5 +1,16 @@
 {
   "schema_version": 1,
+  "policy": {
+    "lifecycle_owner": "compound-engineering",
+    "superpowers_bootstrap": false,
+    "inactive_superpowers_are_not_exposed": true,
+    "upstream_identity_preserved": true
+  },
+  "runtime_binding": {
+    "adapter": "registry/adapters/hhpe-hrg",
+    "manifest": "registry/manifests/final-stack.yaml",
+    "source_mode": "package-preserving-reference"
+  },
   "exposures": [
     {
       "capability_id": "caveman/cavecrew",

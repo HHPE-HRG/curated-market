@@ -3,7 +3,7 @@
   "hosts": [
     {
       "id": "claude",
-      "version": "2.1.205",
+      "version": "2.1.207",
       "skills": "plugin-native",
       "plugins": true,
       "hooks": true,
@@ -33,7 +33,7 @@
     },
     {
       "id": "antigravity-ide",
-      "version": "unknown-crashed-probe",
+      "version": "2.0.10",
       "skills": "~/.gemini/config/plugins",
       "plugins": true,
       "hooks": true,
@@ -45,7 +45,7 @@
       "id": "antigravity-cli",
       "version": null,
       "skills": "~/.gemini/antigravity-cli/skills",
-      "status": "runtime-not-found"
+      "status": "distinct-cli-runtime-not-found"
     },
     {
       "id": "opencode",
@@ -58,8 +58,8 @@
     {
       "id": "hhpe-hrg",
       "version": "wrapper-c566c638ac",
-      "skills": "XLOTYL generated catalog",
-      "status": "adapter-planned"
+      "skills": "canonical registry projection",
+      "status": "runtime-bound"
     }
   ]
 }

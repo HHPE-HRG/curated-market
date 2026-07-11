@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "lifecycle_owner": "compound-engineering",
+  "native_skill_discovery_required": true,
+  "superpowers": {
+    "bootstrap": false,
+    "global_routing": false,
+    "inactive": [
+      "superpowers/brainstorming",
+      "superpowers/dispatching-parallel-agents",
+      "superpowers/executing-plans",
+      "superpowers/finishing-a-development-branch",
+      "superpowers/requesting-code-review",
+      "superpowers/subagent-driven-development",
+      "superpowers/using-git-worktrees",
+      "superpowers/using-superpowers",
+      "superpowers/writing-plans"
+    ],
+    "retained_support": [
+      "superpowers/receiving-code-review",
+      "superpowers/systematic-debugging",
+      "superpowers/test-driven-development",
+      "superpowers/verification-before-completion",
+      "superpowers/writing-skills"
+    ]
+  },
+  "active_default": true,
+  "worker_catalog": {
+    "lead": "compound-engineering lifecycle plus eligible supporting skills",
+    "worker": "assignment-relevant capabilities only",
+    "sub-agent": "assignment-relevant capabilities inherited from the locked catalog",
+    "container": "same lock and policy projection",
+    "remote": "same lock and policy projection"
+  },
+  "policy": {
+    "ce_owns": [
+      "ideation",
+      "planning",
+      "orchestration",
+      "integration",
+      "review",
+      "delivery",
+      "documentation",
+      "compounding"
+    ],
+    "superpowers_supports": "a selected CE unit without replacing its lifecycle artifact",
+    "using_superpowers_invocation_required": false
+  }
+}

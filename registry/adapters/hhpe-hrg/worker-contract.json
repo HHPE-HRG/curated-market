@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "lock_manifest": "registry/manifests/packages.lock.yaml",
+  "capability_manifest": "registry/manifests/capabilities.yaml",
+  "exposure_manifest": "registry/manifests/exposures.yaml",
+  "policy_manifest": "registry/manifests/final-stack.yaml",
+  "tool_manifest": "registry/manifests/tools.yaml",
+  "source_mode": "read-only-package-mount-or-verified-bundle",
+  "generated_state": "separate-read-write-mount",
+  "required_worker_checks": [
+    "package revisions and tree hashes match packages.lock.yaml",
+    "active capability set matches final-stack.yaml",
+    "tool versions match tools.yaml",
+    "relative source and supporting paths resolve",
+    "policy manifest hash matches the lead runtime"
+  ],
+  "host_absolute_paths_allowed": false
+}
