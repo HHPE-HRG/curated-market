@@ -42,4 +42,4 @@ application/topology checks. Container and remote targets remain unavailable.
 
 ## Git state
 
-Registry repository: `/home/hold3n/.local/share/hhpe-hrg`, branch `main`, commit `95109f4 feat: bind HHPE runtime policy and finalization reports`, clean after validation. The wrapper implementation is present in the shared root worktree but its commit was rejected by the active XLOTYL Workroom policy packet because that packet currently allows only its listed paths. The gate was not bypassed and global policy was not changed.
+Registry repository: `/home/hold3n/.local/share/hhpe-hrg`, branch `main`, commits `f217203 docs(hosts): record interactive acceptance boundaries` and `189e55e docs(verify): record concurrent topology boundary`, clean after validation. The wrapper implementation is present in the shared root worktree at `8624cf5f21 feat(runtime): bind XLOTYL to canonical HHPE registry`; the root worktree is currently dirty with concurrent `fix/workflow-durable-lifecycle-safety` changes. Those changes were not staged, edited, or incorporated by this run. The gate was not bypassed and global policy was not changed.
