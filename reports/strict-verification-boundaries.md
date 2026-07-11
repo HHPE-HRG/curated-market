@@ -11,3 +11,14 @@ The HHPE acceptance result is intentionally split from whole-platform topology h
 | Full application topology | `npm run agent:verify:strict` | FAIL; unrelated topology/application failures |
 
 The strict wrapper remains useful for platform health, but its failure is not an HHPE registry failure when registry, runtime, and required integration layers pass independently.
+
+## 2026-07-11 continuation check
+
+The focused registry and runtime gates still pass. The combined wrapper command
+was re-run on the concurrent `fix/workflow-durable-lifecycle-safety` worktree
+and stopped in the workflow-protocol test compile stage: the worktree's
+durable-lifecycle source changes require new claim-token and lease APIs while
+the existing tests still call the previous signatures. The current strict gate
+also reports the pre-existing unowned topology paths and missing recorded
+evidence for one workflow-driver check. These changes are outside HHPE registry
+scope and were not modified by this acceptance run.
