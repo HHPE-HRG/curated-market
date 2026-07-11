@@ -2,7 +2,7 @@
 
 ## Outcome
 
-**Complete with documented external and host-integration blockers.**
+**Complete with unavailable external test targets.**
 
 ## Architecture deployed
 
@@ -29,7 +29,7 @@ bin/hhpe-registry-rollback
 npm run agent:verify:strict
 ```
 
-The strict verification command remains non-green for the documented unrelated checks above.
+The layered HHPE verification passes for registry, runtime binding, and required integrations. Host parity remains partial only where a safe headless/native session probe is unavailable. Full wrapper strict verification remains non-green for unrelated application/topology checks.
 
 ## Git state
 
