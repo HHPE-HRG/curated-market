@@ -12,9 +12,18 @@
 
 ## Not yet passable
 
-- Cursor, Antigravity IDE/CLI, and OpenCode native discovery evidence.
+- Claude authenticated session, Cursor GUI session, and Antigravity IDE GUI session.
+- OpenCode model-backed execution parity after its bounded Test A timeout.
 - Container and remote worker execution parity.
 - Strict wrapper verification because of unrelated topology gaps and two agent-platform application tests.
 - Full cross-host implicit prompt-routing tests require live host sessions and are not inferred from symlink validity.
+
+## Interactive-host continuation
+
+OpenCode native loader and restart persistence now pass in an isolated HOME;
+its model-backed Test A run selected/loaded `ce-plan` but timed out at 75
+seconds. Claude is blocked by `/login`; Cursor and Antigravity require a real
+interactive UI. See `reports/interactive-host-acceptance.md` and
+`reports/interactive-hosts/`.
 
 The full Core Dev Services suite currently reports six unrelated failures: one missing built `infrastructure/core/dist/comms/index.js` import, one server publication assertion, and five Stoneforge prompt publication assertions. These are application/build-topology failures outside the registry resolver.

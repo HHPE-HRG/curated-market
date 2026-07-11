@@ -1,0 +1,42 @@
+host: claude
+product: Claude Code
+version: 2.1.207
+executable: /home/hold3n/.local/bin/claude
+session_date: 2026-07-11
+fixture_path: /tmp/hhpe-host-acceptance-ddqM0H
+discovery_mode: blocked_by_external_auth
+
+tests:
+  ce_lifecycle:
+    result: BLOCKED_BY_EXTERNAL_AUTH
+    selected_capabilities: []
+    evidence: "timeout 30s claude -p --bare --plugin-dir <canonical compound-engineering> --plugin-dir <canonical superpowers> ... returned: Not logged in; Please run /login"
+  tdd:
+    result: NOT_RUN_AFTER_AUTH_BLOCK
+    selected_capabilities: []
+    evidence: "No authenticated session was available."
+  debugging:
+    result: NOT_RUN_AFTER_AUTH_BLOCK
+    selected_capabilities: []
+    evidence: "No authenticated session was available."
+  ast_grep:
+    result: NOT_RUN_AFTER_AUTH_BLOCK
+    selected_capabilities: []
+    evidence: "No authenticated session was available."
+  identity:
+    result: NOT_RUN_AFTER_AUTH_BLOCK
+    evidence: "Canonical package revisions are present, but the host could not load a session."
+  restart:
+    result: NOT_RUN_AFTER_AUTH_BLOCK
+    evidence: "Requires an authenticated Claude Code session."
+
+catalog:
+  ce_primary: UNVERIFIED
+  superpowers_bootstrap_disabled: CONFIGURED_TRUE_UNVERIFIED_IN_SESSION
+  retained_superpowers: [receiving-code-review, systematic-debugging, test-driven-development, verification-before-completion, writing-skills]
+  inactive_superpowers_visible: UNVERIFIED
+  duplicate_exposures: "Legacy user plugins exist outside the canonical registry; no retirement performed."
+
+final_result: BLOCKED_BY_EXTERNAL_AUTH
+limitations:
+  - "Run the same Tests A-F after /login in a disposable fixture."

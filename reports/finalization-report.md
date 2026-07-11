@@ -2,11 +2,16 @@
 
 ## Outcome
 
-**Complete with unavailable external test targets.**
+**Partially complete.**
 
 ## Architecture deployed
 
-The registry remains the immutable source of five pinned packages. XLOTYL now binds to the canonical manifests at runtime and projects provenance/eligibility metadata without copying skill content. CE owns lifecycle orchestration; Superpowers is selective support. Codex remains the only host with verified additive registry deployment in this run. Container and remote propagation are represented by a deterministic worker contract but require an actual worker target.
+The registry remains the immutable source of five pinned packages. XLOTYL binds
+to the canonical manifests at runtime and projects provenance/eligibility
+metadata without copying skill content. CE owns lifecycle orchestration;
+Superpowers is selective support. Codex and HHPE remain passing. OpenCode's
+native loader and restart persistence pass in an isolated HOME; Claude requires
+authentication and Cursor/Antigravity require interactive UI sessions.
 
 ## Retired installations
 
@@ -29,7 +34,11 @@ bin/hhpe-registry-rollback
 npm run agent:verify:strict
 ```
 
-The layered HHPE verification passes for registry, runtime binding, and required integrations. Host parity remains partial only where a safe headless/native session probe is unavailable. Full wrapper strict verification remains non-green for unrelated application/topology checks.
+The layered HHPE verification passes for registry, runtime binding, and
+required integrations. Installed-host acceptance is partial only for the
+documented Claude/Cursor/Antigravity session blockers and OpenCode execution
+timeout. Full wrapper strict verification remains non-green for unrelated
+application/topology checks. Container and remote targets remain unavailable.
 
 ## Git state
 

@@ -1,0 +1,42 @@
+host: antigravity-ide
+product: Google Antigravity IDE
+version: 2.0.10
+executable: /usr/local/bin/antigravity
+session_date: 2026-07-11
+fixture_path: /tmp/hhpe-host-acceptance-ddqM0H
+discovery_mode: unavailable_without_interactive_ui
+
+tests:
+  ce_lifecycle:
+    result: BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI
+    selected_capabilities: []
+    evidence: "The installed antigravity executable launches the IDE; --version also opens the GUI. No headless discovery API was found."
+  tdd:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  debugging:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  ast_grep:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  identity:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    evidence: "Native workspace/session inspection was unavailable."
+  restart:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    evidence: "Requires opening and restarting the IDE."
+
+catalog:
+  ce_primary: UNVERIFIED
+  superpowers_bootstrap_disabled: CONFIGURED_TRUE_UNVERIFIED_IN_SESSION
+  retained_superpowers: [receiving-code-review, systematic-debugging, test-driven-development, verification-before-completion, writing-skills]
+  inactive_superpowers_visible: UNVERIFIED
+  duplicate_exposures: "No registry exposure was installed during this blocked probe."
+
+final_result: BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI
+limitations:
+  - "Open the fixture as a clean Antigravity workspace and run Tests A-F."

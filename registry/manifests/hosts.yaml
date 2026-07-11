@@ -8,14 +8,14 @@
       "installed": true,
       "version": "2.1.207",
       "executable": "/home/hold3n/.local/bin/claude",
-      "support_state": "INSTALLED_PENDING_VALIDATION",
+      "support_state": "BLOCKED_BY_EXTERNAL_AUTH",
       "global_skill_path": "~/.claude/skills",
       "project_skill_path": ".claude/skills",
       "plugin_mechanism": "~/.claude/plugins/installed_plugins.json",
       "native_discovery_supported": true,
       "symlink_supported": "not_proven",
       "validation_required": true,
-      "result": "BLOCKED_BY_INTERACTIVE_SESSION_VALIDATION",
+      "result": "BLOCKED_BY_EXTERNAL_AUTH",
       "limitations": ["active user plugins are legacy revisions outside the canonical registry"]
     },
     {
@@ -49,7 +49,7 @@
       "native_discovery_supported": true,
       "symlink_supported": "not_proven",
       "validation_required": true,
-      "result": "BLOCKED_BY_NONINTERACTIVE_IDE_PROBE",
+      "result": "BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI",
       "limitations": ["~/.cursor/skills-cursor is an internal built-in catalog and must not be modified"]
     },
     {
@@ -66,7 +66,7 @@
       "native_discovery_supported": true,
       "symlink_supported": "not_proven",
       "validation_required": true,
-      "result": "BLOCKED_BY_INTERACTIVE_IDE_PROBE",
+      "result": "BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI",
       "limitations": ["launching --version opens the IDE; no headless discovery API was found"]
     },
     {
@@ -98,10 +98,10 @@
       "project_skill_path": ".opencode/skills",
       "plugin_mechanism": "opencode.json plugin array",
       "native_discovery_supported": true,
-      "symlink_supported": "not_proven",
+      "symlink_supported": true,
       "validation_required": true,
-      "result": "SUPPORTED_NATIVE_LOADER_UNPROVEN",
-      "limitations": ["debug paths and native skill loader are available; no canonical HHPE exposure is active"]
+      "result": "PASS_WITH_DOCUMENTED_HOST_LIMITATION",
+      "limitations": ["native project loader and restart persistence pass in an isolated HOME; model-backed execution timed out at the bounded 75-second acceptance limit; shared HOME reports pre-existing flat-name duplicates"]
     },
     {
       "host_id": "hhpe-hrg",

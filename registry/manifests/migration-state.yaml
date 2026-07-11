@@ -112,10 +112,10 @@
   ],
   "retired_installations": [],
   "limitations": [
-    "Claude interactive session validation unavailable in this run",
-    "Cursor noninteractive IDE discovery probe unavailable",
-    "Antigravity IDE noninteractive discovery probe unavailable",
-    "OpenCode native loader probe inconclusive; no canonical exposure active",
+    "Claude session blocked by authentication before skill loading",
+    "Cursor acceptance requires an interactive IDE session; no safe headless Agent surface was installed",
+    "Antigravity IDE acceptance requires an interactive IDE session; no headless discovery API was found",
+    "OpenCode native project loader and restart persistence pass in isolated HOME; model-backed Test A timed out at the bounded limit",
     "Antigravity CLI distinct runtime is supported but not installed",
     "Container and remote worker targets were unavailable for execution parity",
     "Strict wrapper remains blocked by unrelated topology and agent-platform application checks"

@@ -1,0 +1,43 @@
+host: opencode
+product: OpenCode
+version: 1.17.1
+executable: /home/hold3n/.opencode/bin/opencode
+session_date: 2026-07-11
+fixture_path: /tmp/hhpe-host-acceptance-ddqM0H
+discovery_mode: native_project_skill_loader
+
+tests:
+  ce_lifecycle:
+    result: PARTIAL_PASS_BOUNDED_EXECUTION_TIMEOUT
+    selected_capabilities: [ce-plan]
+    evidence: "Isolated opencode run began repository investigation and loaded .opencode/skills/ce-plan/references/plan-sections.md. It did not terminate within the 75-second bound while continuing its CE planning loop; no source files were changed."
+  tdd:
+    result: NOT_RUN_AFTER_BOUNDED_EXECUTION_TIMEOUT
+    selected_capabilities: []
+    evidence: "The isolated model-backed session was terminated after the bounded timeout."
+  debugging:
+    result: NOT_RUN_AFTER_BOUNDED_EXECUTION_TIMEOUT
+    selected_capabilities: []
+    evidence: "The isolated model-backed session was terminated after the bounded timeout."
+  ast_grep:
+    result: PARTIAL_RUNTIME_PASS
+    selected_capabilities: [ast-grep]
+    evidence: "The native loader discovered ast-grep from the project symlink, and ast-grep 0.43.0 matched the TypeScript return-null fixture. Agent-mediated rewrite preview was not run after the bounded model session."
+  identity:
+    result: PASS
+    evidence: "debug skill --pure discovered ce-plan, ce-debug, test-driven-development, systematic-debugging, and ast-grep with original flat runtime names. Symlink targets resolve into the pinned registry package trees."
+  restart:
+    result: PASS
+    evidence: "Two fresh debug skill --pure processes in an isolated HOME returned the same six-entry catalog and identical catalog hash 12a277fd4c695341c457b703ae1a2fd8086c1e753851b3bc3d5bba02428da169."
+
+catalog:
+  ce_primary: PASS_FOR_LOADER; BEHAVIORAL_EXECUTION_TIMEOUT
+  superpowers_bootstrap_disabled: PASS_IN_ISOLATED_CATALOG
+  retained_superpowers: [receiving-code-review, systematic-debugging, test-driven-development, verification-before-completion, writing-skills]
+  inactive_superpowers_visible: false
+  duplicate_exposures: "Shared HOME warns about pre-existing ~/.agents/skills flat-name duplicates; isolated HOME has no duplicate warning. User-owned entries were not changed."
+
+final_result: PASS_WITH_DOCUMENTED_HOST_LIMITATION
+limitations:
+  - "Complete Tests B, C, and agent-mediated D-F in a bounded interactive OpenCode session after resolving the model-backed execution timeout."
+  - "The loader itself is proven; the timeout is a host runtime/session behavior, not a package or symlink-resolution failure."

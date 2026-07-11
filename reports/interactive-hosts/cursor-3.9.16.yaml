@@ -1,0 +1,43 @@
+host: cursor
+product: Cursor
+version: 3.9.16
+executable: /usr/bin/cursor
+session_date: 2026-07-11
+fixture_path: /tmp/hhpe-host-acceptance-ddqM0H
+discovery_mode: unavailable_without_interactive_ui
+
+tests:
+  ce_lifecycle:
+    result: BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI
+    selected_capabilities: []
+    evidence: "Installed executable is the GUI launcher; no cursor-agent or supported headless Agent command was found."
+  tdd:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  debugging:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  ast_grep:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    selected_capabilities: []
+    evidence: ""
+  identity:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    evidence: "Native session inspection was unavailable. ~/.cursor/skills-cursor was identified as an internal catalog and was not modified."
+  restart:
+    result: NOT_RUN_AFTER_UI_BLOCK
+    evidence: "Requires opening a new Cursor window."
+
+catalog:
+  ce_primary: UNVERIFIED
+  superpowers_bootstrap_disabled: CONFIGURED_TRUE_UNVERIFIED_IN_SESSION
+  retained_superpowers: [receiving-code-review, systematic-debugging, test-driven-development, verification-before-completion, writing-skills]
+  inactive_superpowers_visible: UNVERIFIED
+  duplicate_exposures: "No registry exposure was installed during this blocked probe."
+
+final_result: BLOCKED_BY_UNAVAILABLE_INTERACTIVE_UI
+limitations:
+  - "Open the fixture in Cursor 3.9.16 and run Tests A-F through Cursor Agent."
+  - "Do not modify ~/.cursor/skills-cursor; use verified ~/.cursor/skills or project .cursor/skills only."
