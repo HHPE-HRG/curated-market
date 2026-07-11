@@ -59,6 +59,7 @@
       "installed": true,
       "version": "2.0.10",
       "executable": "/usr/local/bin/antigravity",
+      "support_state": "INSTALLED_PENDING_VALIDATION",
       "global_skill_path": "~/.gemini/config/plugins",
       "project_skill_path": ".agents/skills",
       "plugin_mechanism": "~/.gemini/config/plugins",

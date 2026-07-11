@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "phase": "runtime-bound-host-parity-pending",
+  "phase": "runtime-bound-host-parity-classified",
   "created_at": "2026-07-10T18:41:36.053Z",
   "updated_at": "2026-07-11T21:10:00.000Z",
   "managed_objects": [
@@ -112,10 +112,12 @@
   ],
   "retired_installations": [],
   "limitations": [
-    "HHPE execution substrate canon unresolved: Workroom vs Stoneforge",
-    "Antigravity CLI distinct runtime not found",
-    "Cursor/Antigravity/OpenCode native discovery behavior not yet proven",
-    "Container and remote worker targets were not available for execution parity",
+    "Claude interactive session validation unavailable in this run",
+    "Cursor noninteractive IDE discovery probe unavailable",
+    "Antigravity IDE noninteractive discovery probe unavailable",
+    "OpenCode native loader probe inconclusive; no canonical exposure active",
+    "Antigravity CLI distinct runtime is supported but not installed",
+    "Container and remote worker targets were unavailable for execution parity",
     "Strict wrapper remains blocked by unrelated topology and agent-platform application checks"
   ]
 }
