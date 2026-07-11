@@ -16,3 +16,5 @@
 - Container and remote worker execution parity.
 - Strict wrapper verification because of unrelated topology gaps and two agent-platform application tests.
 - Full cross-host implicit prompt-routing tests require live host sessions and are not inferred from symlink validity.
+
+The full Core Dev Services suite currently reports six unrelated failures: one missing built `infrastructure/core/dist/comms/index.js` import, one server publication assertion, and five Stoneforge prompt publication assertions. These are application/build-topology failures outside the registry resolver.
