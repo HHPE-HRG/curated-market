@@ -1,7 +1,7 @@
 {
   "check": "playwright",
   "result": "PASS_WITH_DOCUMENTED_HOST_LIMITATION",
-  "generated_at": "2026-07-12T04:42:04.451Z",
+  "generated_at": "2026-07-12T04:51:21.774Z",
   "evidence": "playwright-cli install \n\nInitialize workspace\n\nOptions:\n  --skills                    install skills, possible values: claude (default), agents.",
   "version": "0.1.17",
   "limitation": "browser daemon/browser binaries require a separate host runtime check"

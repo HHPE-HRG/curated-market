@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-12T04:41:59.869Z",
+  "generated_at": "2026-07-12T04:51:15.229Z",
   "status": "PASS",
   "errors": [],
   "counts": {
     "packages": 7,
     "capabilities": 96,
-    "exposures": 48
+    "exposures": 90
   },
   "source": "packages.lock.yaml + capabilities.yaml + exposures.yaml"
 }
