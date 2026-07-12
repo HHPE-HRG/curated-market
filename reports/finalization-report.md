@@ -40,6 +40,12 @@ documented Claude/Cursor/Antigravity session blockers and OpenCode execution
 timeout. Full wrapper strict verification remains non-green for unrelated
 application/topology checks. Container and remote targets remain unavailable.
 
+The headless host-skills CI harness is implemented in commit
+`f4548b1 feat(ci): add headless host skills acceptance harness`. Static
+capability coverage and HHPE canary/routing pass; host-specific model quota,
+legacy Claude plugin precedence, and unavailable Cursor CLI are classified in
+`reports/headless-skills-ci-implementation.md`.
+
 ## Git state
 
 Registry repository: `/home/hold3n/.local/share/hhpe-hrg`, branch `main`, commits `f217203 docs(hosts): record interactive acceptance boundaries` and `189e55e docs(verify): record concurrent topology boundary`, clean after validation. The wrapper implementation is present in the shared root worktree at `8624cf5f21 feat(runtime): bind XLOTYL to canonical HHPE registry`; the root worktree is currently dirty with concurrent `fix/workflow-durable-lifecycle-safety` changes. Those changes were not staged, edited, or incorporated by this run. The gate was not bypassed and global policy was not changed.
