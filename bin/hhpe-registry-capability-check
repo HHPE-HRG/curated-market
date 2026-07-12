@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
+exec node "$ROOT/lib/capability-checks.mjs" "${1:-all}"

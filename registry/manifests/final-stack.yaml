@@ -44,6 +44,45 @@
       "compounding"
     ],
     "superpowers_supports": "a selected CE unit without replacing its lifecycle artifact",
-    "using_superpowers_invocation_required": false
+    "using_superpowers_invocation_required": false,
+    "specialist_routing": "Select the narrowest applicable specialist after CE owns the lifecycle. Supporting skills change method, tools, constraints, or verification only; they never replace the authoritative CE artifact or own planning, integration, delivery, documentation, or compounding."
+  },
+  "behavioral_layers": {
+    "ponytail": {
+      "owner": "ponytail",
+      "default_mode": "full",
+      "automatic": true
+    },
+    "caveman": {
+      "owner": "caveman",
+      "automatic": true
+    }
+  },
+  "startup_layers": [
+    "caveman",
+    "hhpe-hrg/session-start"
+  ],
+  "session_start": "hhpe-hrg/session-start",
+  "specialists_are_task_triggered": true,
+  "no_routine_slash_invocation": true,
+  "beads": {
+    "active": false,
+    "executable": null,
+    "authority": "hhpe task graph",
+    "reason": "HHPE already owns readiness, claims, dependencies, blockers, and completion state; Beads is not installed"
+  },
+  "specialist_routing": {
+    "semantic symbols, references, implementations, semantic rename": "hhpe-hrg/serena-guidance",
+    "current external library or SDK documentation": "hhpe-hrg/context7-guidance",
+    "syntax-tree search and codemod": "hhpe-hrg/ast-grep",
+    "browser and UI acceptance": "hhpe-hrg/playwright-guidance",
+    "physical equations and units": "trailofbits/dimensional-analysis",
+    "invariants, parsers, serialization, state machines": "trailofbits/property-based-testing",
+    "security-sensitive diff": "trailofbits/differential-review",
+    "dependency or lockfile change": "trailofbits/supply-chain-risk-auditor",
+    "static analysis": "trailofbits/static-analysis/semgrep",
+    "Rust safety, FFI, or concurrency": "trailofbits/rust-review",
+    "C or C++ memory and undefined behavior": "trailofbits/c-review",
+    "dangerous API or configuration": "trailofbits/sharp-edges"
   }
 }

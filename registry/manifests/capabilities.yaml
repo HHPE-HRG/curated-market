@@ -1859,6 +1859,626 @@
         "owner": "hhpe-hrg",
         "decision_record": "docs/decisions/ADR-003-capability-exposure-model.md"
       }
+    },
+    {
+      "capability_id": "serena/serena-runtime",
+      "display_name": "serena-agent",
+      "package_id": "serena",
+      "type": "executable",
+      "source_path": ".",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "semantic-code-intelligence",
+        "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "display_name": "serena-guidance",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "serena-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "context7/context7-cli",
+      "display_name": "ctx7",
+      "package_id": "hhpe-overlays",
+      "type": "executable",
+      "source_path": ".",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "executables": [
+          "ctx7"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "documentation-grounding",
+        "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "display_name": "context7-guidance",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "context7-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "ctx7"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "playwright/playwright-cli",
+      "display_name": "playwright-cli",
+      "package_id": "hhpe-overlays",
+      "type": "executable",
+      "source_path": ".",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "executables": [
+          "playwright-cli"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "browser-acceptance",
+        "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "display_name": "playwright-guidance",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "playwright-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "playwright-cli"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "display_name": "session-start",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "session-start",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-022-hhpe-session-start.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-dimensional-analysis",
+      "display_name": "dimensional-analysis plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/dimensional-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/dimensional-analysis/.claude-plugin/plugin.json",
+          "plugins/dimensional-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "display_name": "dimensional-analysis",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/dimensional-analysis/skills/dimensional-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/dimensional-analysis/.claude-plugin/plugin.json",
+          "plugins/dimensional-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-property-based-testing",
+      "display_name": "property-based-testing plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/property-based-testing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/property-based-testing/.claude-plugin/plugin.json",
+          "plugins/property-based-testing/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "display_name": "property-based-testing",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/property-based-testing/skills/property-based-testing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/property-based-testing/.claude-plugin/plugin.json",
+          "plugins/property-based-testing/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-differential-review",
+      "display_name": "differential-review plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/differential-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/differential-review/.claude-plugin/plugin.json",
+          "plugins/differential-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "display_name": "differential-review",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/differential-review/skills/differential-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/differential-review/.claude-plugin/plugin.json",
+          "plugins/differential-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-supply-chain-risk-auditor",
+      "display_name": "supply-chain-risk-auditor plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/supply-chain-risk-auditor",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/supply-chain-risk-auditor/.claude-plugin/plugin.json",
+          "plugins/supply-chain-risk-auditor/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "display_name": "supply-chain-risk-auditor",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/supply-chain-risk-auditor/.claude-plugin/plugin.json",
+          "plugins/supply-chain-risk-auditor/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-rust-review",
+      "display_name": "rust-review plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/rust-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/rust-review/.claude-plugin/plugin.json",
+          "plugins/rust-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "display_name": "rust-review",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/rust-review/skills/rust-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/rust-review/.claude-plugin/plugin.json",
+          "plugins/rust-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-c-review",
+      "display_name": "c-review plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/c-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/c-review/.claude-plugin/plugin.json",
+          "plugins/c-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "display_name": "c-review",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/c-review/skills/c-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/c-review/.claude-plugin/plugin.json",
+          "plugins/c-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-sharp-edges",
+      "display_name": "sharp-edges plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/sharp-edges",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/sharp-edges/.claude-plugin/plugin.json",
+          "plugins/sharp-edges/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "display_name": "sharp-edges",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/sharp-edges/skills/sharp-edges",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/sharp-edges/.claude-plugin/plugin.json",
+          "plugins/sharp-edges/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-static-analysis",
+      "display_name": "static-analysis plugin",
+      "package_id": "trailofbits",
+      "type": "plugin",
+      "source_path": "plugins/static-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trail-of-bits-specialist-skills.md",
+        "activation": "host-native-plugin-when-supported"
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "display_name": "codeql",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/static-analysis/skills/codeql",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "display_name": "semgrep",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/static-analysis/skills/semgrep",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "display_name": "sarif-parsing",
+      "package_id": "trailofbits",
+      "type": "skill",
+      "source_path": "plugins/static-analysis/skills/sarif-parsing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "security-specialist-capabilities",
+        "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
+        "activation": "task-triggered"
+      }
     }
   ]
 }

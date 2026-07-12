@@ -1,0 +1,1 @@
+/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/context7-guidance/SKILL.md

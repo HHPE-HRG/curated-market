@@ -115,6 +115,296 @@
       "target": "ponytail@hhpe-hrg",
       "adapter": "registry/adapters/codex/marketplace",
       "status": "planned"
+    },
+    {
+      "capability_id": "serena/serena-runtime",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:serena/serena-runtime",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/serena-guidance",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "context7/context7-cli",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:context7/context7-cli",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/context7-guidance",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "playwright/playwright-cli",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:playwright/playwright-cli",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/playwright-guidance",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/session-start",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/plugin-dimensional-analysis",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-dimensional-analysis",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/dimensional-analysis",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-dimensional-analysis",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-property-based-testing",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-property-based-testing",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/property-based-testing",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-property-based-testing",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-differential-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-differential-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/differential-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-differential-review",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-supply-chain-risk-auditor",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-supply-chain-risk-auditor",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/supply-chain-risk-auditor",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-supply-chain-risk-auditor",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-rust-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-rust-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/rust-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-rust-review",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-c-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-c-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/c-review",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-c-review",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-sharp-edges",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-sharp-edges",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/sharp-edges",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-sharp-edges",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/plugin-static-analysis",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/plugin-static-analysis",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/static-analysis/codeql",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-codeql",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/static-analysis/semgrep",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-semgrep",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:trailofbits/static-analysis/sarif-parsing",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-sarif-parsing",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "namespaced host path preserves upstream frontmatter identity"
     }
   ]
 }

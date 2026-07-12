@@ -1291,6 +1291,401 @@
       "requires": {
         "files": []
       }
+    },
+    {
+      "capability_id": "serena/serena-runtime",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "context7/context7-cli",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "executables": [
+          "ctx7"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "ctx7"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "playwright/playwright-cli",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "executables": [
+          "playwright-cli"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [
+          "playwright-cli"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-dimensional-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/dimensional-analysis/.claude-plugin/plugin.json",
+          "plugins/dimensional-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/dimensional-analysis/.claude-plugin/plugin.json",
+          "plugins/dimensional-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-property-based-testing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/property-based-testing/.claude-plugin/plugin.json",
+          "plugins/property-based-testing/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/property-based-testing/.claude-plugin/plugin.json",
+          "plugins/property-based-testing/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-differential-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/differential-review/.claude-plugin/plugin.json",
+          "plugins/differential-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/differential-review/.claude-plugin/plugin.json",
+          "plugins/differential-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-supply-chain-risk-auditor",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/supply-chain-risk-auditor/.claude-plugin/plugin.json",
+          "plugins/supply-chain-risk-auditor/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/supply-chain-risk-auditor/.claude-plugin/plugin.json",
+          "plugins/supply-chain-risk-auditor/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-rust-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/rust-review/.claude-plugin/plugin.json",
+          "plugins/rust-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/rust-review/.claude-plugin/plugin.json",
+          "plugins/rust-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-c-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/c-review/.claude-plugin/plugin.json",
+          "plugins/c-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/c-review/.claude-plugin/plugin.json",
+          "plugins/c-review/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-sharp-edges",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/sharp-edges/.claude-plugin/plugin.json",
+          "plugins/sharp-edges/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/sharp-edges/.claude-plugin/plugin.json",
+          "plugins/sharp-edges/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/plugin-static-analysis",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "plugins/static-analysis/.claude-plugin/plugin.json",
+          "plugins/static-analysis/README.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
     }
   ]
 }

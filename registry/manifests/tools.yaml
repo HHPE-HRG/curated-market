@@ -19,6 +19,61 @@
       "platform": "linux-x64",
       "noninteractive_path": "~/.local/bin",
       "status": "present"
+    },
+    {
+      "tool_id": "serena-runtime",
+      "capability_id": "serena/serena-runtime",
+      "version": "1.5.3",
+      "source": "uv:serena-agent==1.5.3",
+      "binary_paths": [
+        "/home/hold3n/.local/bin/serena"
+      ],
+      "source_binary_paths": [
+        "/home/hold3n/.local/bin/serena"
+      ],
+      "health_check": "serena --version",
+      "upgrade": "uv tool upgrade serena-agent",
+      "removal": "uv tool uninstall serena-agent",
+      "platform": "linux-x64",
+      "noninteractive_path": "~/.local/bin",
+      "status": "present"
+    },
+    {
+      "tool_id": "context7-runtime",
+      "capability_id": "context7/context7-cli",
+      "version": "0.5.4",
+      "source": "npm:ctx7@0.5.4",
+      "binary_paths": [
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/ctx7"
+      ],
+      "source_binary_paths": [
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/ctx7"
+      ],
+      "health_check": "ctx7 --version",
+      "upgrade": "npm install --global ctx7@0.5.4",
+      "removal": "npm uninstall --global ctx7",
+      "platform": "linux-x64",
+      "noninteractive_path": "~/.nvm/versions/node/v20.20.2/bin",
+      "status": "present"
+    },
+    {
+      "tool_id": "playwright-cli-runtime",
+      "capability_id": "playwright/playwright-cli",
+      "version": "0.1.17",
+      "source": "npm:@playwright/cli@0.1.17",
+      "binary_paths": [
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/playwright-cli"
+      ],
+      "source_binary_paths": [
+        "/home/hold3n/.nvm/versions/node/v20.20.2/bin/playwright-cli"
+      ],
+      "health_check": "playwright-cli --version",
+      "upgrade": "npm install --global @playwright/cli@0.1.17",
+      "removal": "npm uninstall --global @playwright/cli",
+      "platform": "linux-x64",
+      "noninteractive_path": "~/.nvm/versions/node/v20.20.2/bin",
+      "status": "present"
     }
-  ]
+  ],
+  "generated_at": "2026-07-12T04:26:28.952Z"
 }

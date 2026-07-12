@@ -1,0 +1,1 @@
+/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/playwright-guidance/SKILL.md

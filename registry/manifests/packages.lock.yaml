@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-10T19:05:24.061Z",
+  "generated_at": "2026-07-12T04:26:28.952Z",
   "packages": [
     {
       "package_id": "superpowers",
@@ -95,6 +95,44 @@
       },
       "modified": true,
       "architectural_owner": "hhpe-hrg"
+    },
+    {
+      "package_id": "serena",
+      "repository": "https://github.com/oraios/serena",
+      "revision": {
+        "type": "commit",
+        "value": "6018bf461644dbf405d9ed1d3c3cde2ca07bb8b0"
+      },
+      "package_root": "registry/packages/serena/6018bf461644dbf405d9ed1d3c3cde2ca07bb8b0",
+      "integrity": {
+        "git_tree": "baa862570b5fba087f789cbbf657f73dd1680e1c"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "16017e50562bb112006f6f32d17ca989e0e573b011bd6790b642018b1c195b0c"
+      },
+      "modified": false,
+      "architectural_owner": "semantic-code-intelligence"
+    },
+    {
+      "package_id": "trailofbits",
+      "repository": "https://github.com/trailofbits/skills",
+      "revision": {
+        "type": "commit",
+        "value": "cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af"
+      },
+      "package_root": "registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af",
+      "integrity": {
+        "git_tree": "5cc023e22a3daabb40a91d7f933062a73442c19d"
+      },
+      "license": {
+        "spdx": "CC-BY-SA-4.0",
+        "path": "LICENSE",
+        "sha256": "7abe19ec9bb73b36141b999b861d24ad855e808bafe0f81e84cce28556f6c297"
+      },
+      "modified": false,
+      "architectural_owner": "security-specialist-capabilities"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "phase": "runtime-bound-host-parity-classified",
+  "phase": "capability-expansion-registered-and-validated",
   "created_at": "2026-07-10T18:41:36.053Z",
-  "updated_at": "2026-07-11T21:10:00.000Z",
+  "updated_at": "2026-07-12T04:37:48.960Z",
   "managed_objects": [
     {
       "path": "/home/hold3n/.agents/skills/caveman-cavecrew",
@@ -108,16 +108,86 @@
       "source": "/home/hold3n/.nvm/versions/node/v20.20.2/bin/sg",
       "classification": "created_by_hhpe",
       "created_at": "2026-07-10T19:05:08.608Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-dimensional-analysis",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/dimensional-analysis/skills/dimensional-analysis",
+      "created_at": "2026-07-12T04:34:59.196Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-property-based-testing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/property-based-testing/skills/property-based-testing",
+      "created_at": "2026-07-12T04:34:59.197Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-differential-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/differential-review/skills/differential-review",
+      "created_at": "2026-07-12T04:34:59.197Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-supply-chain-risk-auditor",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor",
+      "created_at": "2026-07-12T04:34:59.197Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-rust-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/rust-review/skills/rust-review",
+      "created_at": "2026-07-12T04:34:59.198Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-c-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/c-review/skills/c-review",
+      "created_at": "2026-07-12T04:34:59.198Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-sharp-edges",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/sharp-edges/skills/sharp-edges",
+      "created_at": "2026-07-12T04:34:59.198Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-codeql",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/codeql",
+      "created_at": "2026-07-12T04:34:59.198Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-semgrep",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/semgrep",
+      "created_at": "2026-07-12T04:34:59.199Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/trailofbits-sarif-parsing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/sarif-parsing",
+      "created_at": "2026-07-12T04:34:59.199Z"
     }
   ],
   "retired_installations": [],
   "limitations": [
-    "Claude session blocked by authentication before skill loading",
-    "Cursor acceptance requires an interactive IDE session; no safe headless Agent surface was installed",
-    "Antigravity IDE acceptance requires an interactive IDE session; no headless discovery API was found",
-    "OpenCode native project loader and restart persistence pass in isolated HOME; model-backed Test A timed out at the bounded limit",
-    "Antigravity CLI distinct runtime is supported but not installed",
-    "Container and remote worker targets were unavailable for execution parity",
-    "Strict wrapper remains blocked by unrelated topology and agent-platform application checks"
+    "Claude, Cursor, and Antigravity IDE model/UI parity remains host-session dependent; no legacy installations were retired.",
+    "OpenCode native loader and restart persistence pass with a documented model-backed timeout limitation.",
+    "Playwright CLI is installed and validated; browser daemon and browser binaries require a host runtime check.",
+    "Context7 documentation lookup passed in the current environment; network/authentication may limit future runs.",
+    "Beads is not installed and remains inactive because HHPE owns live task state.",
+    "Container and remote worker targets remain unavailable for execution parity.",
+    "Strict wrapper remains separately bounded from unrelated topology and agent-platform application checks."
   ]
 }

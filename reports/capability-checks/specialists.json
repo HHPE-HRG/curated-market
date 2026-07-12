@@ -1,0 +1,19 @@
+{
+  "check": "specialists",
+  "result": "PASS",
+  "generated_at": "2026-07-12T04:42:03.277Z",
+  "evidence": "validated 10 Trail of Bits specialist skills",
+  "expected": [
+    "trailofbits/dimensional-analysis",
+    "trailofbits/property-based-testing",
+    "trailofbits/differential-review",
+    "trailofbits/supply-chain-risk-auditor",
+    "trailofbits/rust-review",
+    "trailofbits/c-review",
+    "trailofbits/sharp-edges",
+    "trailofbits/static-analysis/codeql",
+    "trailofbits/static-analysis/semgrep",
+    "trailofbits/static-analysis/sarif-parsing"
+  ],
+  "missing": []
+}
