@@ -2,18 +2,42 @@
 
 Status: Accepted
 
-## Context
+## Source
 
-The registry must expose capabilities without requiring routine slash commands or competing lifecycle bundles.
+HHPE-authored policy in `registry/manifests/final-stack.yaml` (`specialist_routing`, `automatic_selection_policy`).
 
-## Decision
+## Revision
 
-Native host discovery selects the narrowest relevant specialist after Compound Engineering is selected as lifecycle owner. Serena handles semantic symbols, ast-grep handles syntax-tree search/codemods, Context7 handles current external documentation, Playwright handles browser acceptance, and Trail of Bits specialists handle their defined engineering/security concerns. Supporting skills may change method or evidence but cannot replace CE artifacts or integration ownership.
+Policy revision tracked by registry Git.
 
-## Validation and rollback
+## Purpose
 
-Validate static identity and dependency manifests, host-native catalog exposure, HHPE route projection, and representative specialist fixtures. Rollback removes specialist entries/exposures while retaining the original five-package stack.
+Expose specialists for native discovery without routine slash commands or competing lifecycle bundles.
 
-## Consequences
+## Responsibility boundary
 
-The same upstream name and source path remain visible across hosts while invocation transport varies by host. Specialists are eligible, not always-on.
+CE owns lifecycle. Specialists attach only after lifecycle ownership is resolved. Supporting Superpowers skills may change method or evidence but cannot replace CE artifacts. No HHPE dialect renames upstream skills.
+
+## Activation policy
+
+Task-triggered; narrowest applicable specialist; no routine slash invocation; Superpowers bootstrap remains disabled.
+
+## Host exposure
+
+Same upstream names across Claude, Codex, Cursor, Antigravity, OpenCode, and HHPE; invocation transport varies by host.
+
+## Dependencies
+
+Registered specialist capabilities; CE package; retained Superpowers supporting skills.
+
+## Validation
+
+Static identity, exposure manifests, capability-check `routing`, and natural-language fixtures.
+
+## Rollback
+
+Remove specialist routing entries/exposures while retaining the core package stack.
+
+## Known limitations
+
+Host discovery ranking is not fully simulated offline; fixtures validate policy projection.

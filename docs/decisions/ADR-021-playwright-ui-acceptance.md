@@ -4,20 +4,40 @@ Status: Accepted
 
 ## Source
 
-Runtime source: npm package `@playwright/cli` version 0.1.17. The HHPE wrapper is `hhpe-hrg/playwright-guidance`; the official CLI skill bundle remains host-generated and is not copied into the immutable registry.
+npm package `@playwright/cli`
 
-## Decision
+## Revision
 
-Provision Playwright CLI centrally and activate it only for browser-facing repositories and tasks. The verification sequence is implementation, unit tests, integration tests, Playwright acceptance evidence, then CE review and completion.
+Pinned runtime `@playwright/cli@0.1.17`. HHPE wrapper `hhpe-hrg/playwright-guidance`. Official CLI skill bundle (`name: playwright-cli`) remains host-generated via `playwright-cli install --skills` and is not duplicated into the immutable registry Git tree.
 
-## Ownership and activation
+## Purpose
 
-CE owns the lifecycle. Playwright owns browser interaction and UI evidence only. Use disposable fixtures, bounded processes, screenshots/traces as useful, and no production credentials.
+Provide browser acceptance capability for web UIs, dashboards, control planes, docs apps, auth flows, and webviews after unit/integration evidence.
 
-## Validation and rollback
+## Responsibility boundary
 
-Validate the CLI version, workspace skill installation in a temporary project, browser launch/interaction/close when browser dependencies are present, and trace or screenshot output. Rollback removes the runtime and wrapper exposure without changing packages.
+CE owns the lifecycle. Playwright owns browser interaction and UI evidence only. Verification sequence: implementation → unit → integration → browser acceptance with trace/screenshot evidence → CE review → CE completion.
 
-## Limitation
+## Activation policy
 
-Browser binaries may be unavailable in restricted environments. That is a tool-runtime limitation, not a registry-source defect.
+Task-triggered for browser-facing work. Inactive for non-UI work. No automatic browser launch at session-start.
+
+## Host exposure
+
+Central CLI on PATH; HHPE guidance skill exposed to hosts; official skill installed into host/project skill directories on demand.
+
+## Dependencies
+
+`@playwright/cli@0.1.17`; browser runtimes/daemon when executing acceptance fixtures.
+
+## Validation
+
+CLI version and `--skills` interface; temporary workspace skill install; browser launch/interaction/close when browsers present. Missing browsers → `PASS_WITH_DOCUMENTED_HOST_LIMITATION`.
+
+## Rollback
+
+Remove runtime and wrapper exposure without changing upstream package sources.
+
+## Known limitations
+
+Browser binaries and daemon availability are host-dependent.

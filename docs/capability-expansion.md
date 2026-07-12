@@ -26,3 +26,8 @@ hhpe-registry-capability-check all
 The Context7 check may report `PASS_WITH_DOCUMENTED_HOST_LIMITATION` when the documentation service requires network authentication. Playwright may report the same classification when browser binaries or its daemon are unavailable. Neither condition changes package or manifest integrity.
 
 Reports are written below `reports/capability-checks/`. They contain command output needed for diagnosis, but no credentials or session cookies.
+
+
+## Session kickoff and lifecycle routing
+
+Ordinary sessions start with Caveman, then `hhpe-hrg/session-start`, then a natural-language task. See `docs/operations.md`, ADR-024, and ADR-025. `final-stack.yaml` records task-language lifecycle routing and natural-language fixtures validated by `hhpe-registry-capability-check routing`.

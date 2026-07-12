@@ -4,20 +4,40 @@ Status: Accepted
 
 ## Source
 
-HHPE-authored overlay capability `hhpe-hrg/session-start` in the canonical registry.
+HHPE-authored overlay capability `hhpe-hrg/session-start`.
 
-## Decision
+## Revision
 
-Start serious sessions with Caveman followed by read-only HHPE state hydration. Report repository, branch, working tree, CE artifact/unit, authoritative task state, Serena and required-tool health, protected/concurrent paths, blockers, and the immediate next action. Do not create plans, modify files, or invoke a competing lifecycle.
+Overlay tracked by registry Git. Canonical identity: `hhpe-hrg/session-start`.
 
-## Ownership and activation
+## Purpose
 
-HHPE owns session hydration. CE, Ponytail, specialists, and retained Superpowers skills remain task-triggered or policy-configured after the user task is understood. Ponytail remains automatically active in its configured behavioral mode; it does not turn session-start into implementation.
+Hydrate engineering sessions with repository, worktree, CE, task, tool, protection, and blocker state without planning or modifying files.
 
-## Validation and rollback
+## Responsibility boundary
 
-Run the disposable dirty-repository fixture and assert that the required fields are reported without file changes. Rollback removes the single HHPE overlay and its exposures.
+State hydration only. Must not brainstorm, plan, implement, debug, preselect many specialists, modify files, or replace CE or native discovery.
 
-## Limitation
+## Activation policy
 
-The task-state section is only as complete as the authoritative HHPE task adapter and project artifacts available in the current repository.
+Ordinary serious sessions: Caveman, then session-start, then the user task. Listed in `final-stack.yaml` `startup_layers`.
+
+## Host exposure
+
+Skill symlinks and registry references for Cursor, Codex, Claude, Antigravity, OpenCode, and HHPE.
+
+## Dependencies
+
+Repository Git metadata; CE artifacts when present; HHPE task adapters; optional Serena/Context7/Playwright/ast-grep health probes.
+
+## Validation
+
+Required output fields present; read-only contract; capability-check `session-start`; disposable dirty-repo fixture does not modify files.
+
+## Rollback
+
+Remove overlay capability and exposures.
+
+## Known limitations
+
+Task-state completeness depends on HHPE adapters and project artifacts available in the current repository.
