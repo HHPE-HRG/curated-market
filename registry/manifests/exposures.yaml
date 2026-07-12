@@ -405,6 +405,384 @@
       "adapter": "registry/adapters/codex",
       "status": "active",
       "note": "namespaced host path preserves upstream frontmatter identity"
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/serena-guidance",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/context7-guidance",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/playwright-guidance",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/session-start",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-dimensional-analysis",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-property-based-testing",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-differential-review",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-supply-chain-risk-auditor",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-rust-review",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-c-review",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-sharp-edges",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-codeql",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-semgrep",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/trailofbits-sarif-parsing",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/serena-guidance",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/context7-guidance",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/playwright-guidance",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/session-start",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-dimensional-analysis",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-property-based-testing",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-differential-review",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-supply-chain-risk-auditor",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-rust-review",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-c-review",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-sharp-edges",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-codeql",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-semgrep",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/trailofbits-sarif-parsing",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/serena-guidance",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/serena-guidance",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/context7-guidance",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/context7-guidance",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/playwright-guidance",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/playwright-guidance",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/session-start",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/session-start",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/dimensional-analysis",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-dimensional-analysis",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/property-based-testing",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-property-based-testing",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/differential-review",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-differential-review",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/supply-chain-risk-auditor",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-supply-chain-risk-auditor",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/rust-review",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-rust-review",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/c-review",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-c-review",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/sharp-edges",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-sharp-edges",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/codeql",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-codeql",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/semgrep",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-semgrep",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "trailofbits/static-analysis/sarif-parsing",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/trailofbits-sarif-parsing",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
     }
   ]
 }

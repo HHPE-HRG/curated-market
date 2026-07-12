@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "phase": "capability-expansion-registered-and-validated",
+  "phase": "capability-expansion-host-exposures-active",
   "created_at": "2026-07-10T18:41:36.053Z",
-  "updated_at": "2026-07-12T04:37:48.960Z",
+  "updated_at": "2026-07-12T04:48:44.300Z",
   "managed_objects": [
     {
       "path": "/home/hold3n/.agents/skills/caveman-cavecrew",
@@ -178,11 +178,235 @@
       "classification": "created_by_hhpe",
       "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/sarif-parsing",
       "created_at": "2026-07-12T04:34:59.199Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/serena-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/serena-guidance",
+      "created_at": "2026-07-12T04:47:46.672Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/context7-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/context7-guidance",
+      "created_at": "2026-07-12T04:47:46.673Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/playwright-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/playwright-guidance",
+      "created_at": "2026-07-12T04:47:46.673Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/session-start",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/session-start",
+      "created_at": "2026-07-12T04:47:46.673Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-dimensional-analysis",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/dimensional-analysis/skills/dimensional-analysis",
+      "created_at": "2026-07-12T04:47:46.673Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-property-based-testing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/property-based-testing/skills/property-based-testing",
+      "created_at": "2026-07-12T04:47:46.673Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-differential-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/differential-review/skills/differential-review",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-supply-chain-risk-auditor",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-rust-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/rust-review/skills/rust-review",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-c-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/c-review/skills/c-review",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-sharp-edges",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/sharp-edges/skills/sharp-edges",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-codeql",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/codeql",
+      "created_at": "2026-07-12T04:47:46.674Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-semgrep",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/semgrep",
+      "created_at": "2026-07-12T04:47:46.675Z"
+    },
+    {
+      "path": "/home/hold3n/.cursor/skills/trailofbits-sarif-parsing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/sarif-parsing",
+      "created_at": "2026-07-12T04:47:46.675Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/serena-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/serena-guidance",
+      "created_at": "2026-07-12T04:47:46.749Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/context7-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/context7-guidance",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/playwright-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/playwright-guidance",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/session-start",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/session-start",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-dimensional-analysis",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/dimensional-analysis/skills/dimensional-analysis",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-property-based-testing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/property-based-testing/skills/property-based-testing",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-differential-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/differential-review/skills/differential-review",
+      "created_at": "2026-07-12T04:47:46.750Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-supply-chain-risk-auditor",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor",
+      "created_at": "2026-07-12T04:47:46.751Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-rust-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/rust-review/skills/rust-review",
+      "created_at": "2026-07-12T04:47:46.751Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-c-review",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/c-review/skills/c-review",
+      "created_at": "2026-07-12T04:47:46.752Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-sharp-edges",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/sharp-edges/skills/sharp-edges",
+      "created_at": "2026-07-12T04:47:46.752Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-codeql",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/codeql",
+      "created_at": "2026-07-12T04:47:46.752Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-semgrep",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/semgrep",
+      "created_at": "2026-07-12T04:47:46.752Z"
+    },
+    {
+      "path": "/home/hold3n/.config/opencode/skills/trailofbits-sarif-parsing",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/packages/trailofbits/cfe5d7b1619e47fb5b38b7e2561dad7e5f1e89af/plugins/static-analysis/skills/sarif-parsing",
+      "created_at": "2026-07-12T04:47:46.752Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/serena-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/serena-guidance",
+      "created_at": "2026-07-12T04:47:46.857Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/context7-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/context7-guidance",
+      "created_at": "2026-07-12T04:47:46.858Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/playwright-guidance",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/playwright-guidance",
+      "created_at": "2026-07-12T04:47:46.858Z"
+    },
+    {
+      "path": "/home/hold3n/.agents/skills/session-start",
+      "kind": "symlink",
+      "classification": "created_by_hhpe",
+      "source": "/home/hold3n/.local/share/hhpe-hrg/registry/overlays/wrappers/session-start",
+      "created_at": "2026-07-12T04:47:46.859Z"
     }
   ],
   "retired_installations": [],
   "limitations": [
-    "Claude, Cursor, and Antigravity IDE model/UI parity remains host-session dependent; no legacy installations were retired.",
+    "Claude native plugin parity remains authentication/session dependent; its legacy plugin tree was not replaced. Cursor, OpenCode, Antigravity shared skill links are installed; loader behavior remains host-version dependent.",
     "OpenCode native loader and restart persistence pass with a documented model-backed timeout limitation.",
     "Playwright CLI is installed and validated; browser daemon and browser binaries require a host runtime check.",
     "Context7 documentation lookup passed in the current environment; network/authentication may limit future runs.",
