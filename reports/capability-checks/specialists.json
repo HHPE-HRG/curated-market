@@ -1,7 +1,7 @@
 {
   "check": "specialists",
   "result": "PASS",
-  "generated_at": "2026-07-12T04:51:20.785Z",
+  "generated_at": "2026-07-12T05:11:12.700Z",
   "evidence": "validated 10 Trail of Bits specialist skills",
   "expected": [
     "trailofbits/dimensional-analysis",

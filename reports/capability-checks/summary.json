@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-12T04:51:21.778Z",
+  "generated_at": "2026-07-12T05:11:13.750Z",
   "status": "PASS_WITH_DOCUMENTED_LIMITATIONS",
   "checks": [
     {
       "check": "static",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:15.230Z",
+      "generated_at": "2026-07-12T05:11:08.402Z",
       "evidence": "validated 96 capabilities",
       "counts": {
         "packages": 7,
@@ -17,8 +17,8 @@
     {
       "check": "serena",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:16.770Z",
-      "evidence": "Generated project with languages {typescript} at /tmp/hhpe-serena-check-fa7Sd0/.serena/project.yml.",
+      "generated_at": "2026-07-12T05:11:10.066Z",
+      "evidence": "Generated project with languages {typescript} at /tmp/hhpe-serena-check-7gIgoE/.serena/project.yml.",
       "version": "Serena 1.5.3",
       "project_configuration": true,
       "exit_code": 0
@@ -26,8 +26,8 @@
     {
       "check": "context7",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:20.771Z",
-      "evidence": "[\n  {\n    \"id\": \"/reactjs/react.dev\",\n    \"title\": \"React\",\n    \"description\": \"React.dev is the official documentation website for React, a JavaScript library for building user interfaces, providing guides, API references, and tutorials.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-11T21:53:46.367Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 772488,\n    \"totalSnippets\": 6958,\n    \"stars\": 11311,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 86.49,\n    \"versions\": [\n      \"__branch__v18\"\n    ]\n  },\n  {\n    \"id\": \"/react/react\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-10T19:46:49.574Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 877336,\n    \"totalSnippets\": 6176,\n    \"stars\": 245757,\n    \"trustScore\": 8.3,\n    \"benchmarkScore\": 72.61,\n    \"versions\": [\n      \"v19.2.7\",\n      \"v18.2.0\"\n    ]\n  },\n  {\n    \"id\": \"/websites/react_dev\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces. It allows developers to create interactive web and native applications using reusable components, enabling efficient and scalable UI development.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-10T21:15:17.428Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 720052,\n    \"totalSnippets\": 6107,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 86.16,\n    \"versions\": []\n  },\n  {\n    \"id\": \"/websites/react_dev_reference\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces with reusable components, hooks, and APIs for managing state and side effects.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-06-27T15:46:12.415Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 333724,\n    \"totalSnippets\": 3031,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 82.6,\n    \"versions\": []\n  },\n  {\n    \"id\": \"/websites/react_dev_reference_react\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces using reusable components with reactive data binding and server-side rendering capabilities.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-03-29T16:13:34.657Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 347061,\n    \"totalSnippets\": 1039,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 87.27,\n    \"versions\": []\n  }\n]",
+      "generated_at": "2026-07-12T05:11:12.690Z",
+      "evidence": "[\n  {\n    \"id\": \"/reactjs/react.dev\",\n    \"title\": \"React\",\n    \"description\": \"React.dev is the official documentation website for React, a JavaScript library for building user interfaces, providing guides, API references, and tutorials.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-11T21:53:46.367Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 772488,\n    \"totalSnippets\": 6958,\n    \"stars\": 11311,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 86.69,\n    \"versions\": [\n      \"__branch__v18\"\n    ]\n  },\n  {\n    \"id\": \"/react/react\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-10T19:46:49.574Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 877336,\n    \"totalSnippets\": 6176,\n    \"stars\": 245757,\n    \"trustScore\": 8.3,\n    \"benchmarkScore\": 73.09,\n    \"versions\": [\n      \"v19.2.7\",\n      \"v18.2.0\"\n    ]\n  },\n  {\n    \"id\": \"/websites/react_dev\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces. It allows developers to create interactive web and native applications using reusable components, enabling efficient and scalable UI development.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-07-10T21:15:17.428Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 720052,\n    \"totalSnippets\": 6107,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 86.16,\n    \"versions\": []\n  },\n  {\n    \"id\": \"/websites/react_dev_reference\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces with reusable components, hooks, and APIs for managing state and side effects.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-06-27T15:46:12.415Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 333724,\n    \"totalSnippets\": 3031,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 82.6,\n    \"versions\": []\n  },\n  {\n    \"id\": \"/websites/react_dev_reference_react\",\n    \"title\": \"React\",\n    \"description\": \"React is a JavaScript library for building user interfaces using reusable components with reactive data binding and server-side rendering capabilities.\",\n    \"branch\": \"main\",\n    \"lastUpdateDate\": \"2026-03-29T16:13:34.657Z\",\n    \"state\": \"finalized\",\n    \"totalTokens\": 347061,\n    \"totalSnippets\": 1039,\n    \"stars\": -1,\n    \"trustScore\": 10,\n    \"benchmarkScore\": 87.27,\n    \"versions\": []\n  }\n]",
       "version": "0.5.4",
       "lookup_exit_code": 0,
       "limitation": null
@@ -35,7 +35,7 @@
     {
       "check": "specialists",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:20.785Z",
+      "generated_at": "2026-07-12T05:11:12.700Z",
       "evidence": "validated 10 Trail of Bits specialist skills",
       "expected": [
         "trailofbits/dimensional-analysis",
@@ -54,25 +54,37 @@
     {
       "check": "playwright",
       "result": "PASS_WITH_DOCUMENTED_HOST_LIMITATION",
-      "generated_at": "2026-07-12T04:51:21.774Z",
+      "generated_at": "2026-07-12T05:11:13.649Z",
       "evidence": "playwright-cli install \n\nInitialize workspace\n\nOptions:\n  --skills                    install skills, possible values: claude (default), agents.",
       "version": "0.1.17",
-      "limitation": "browser daemon/browser binaries require a separate host runtime check"
+      "packaged_skill": "/home/hold3n/.nvm/versions/node/v20.20.2/lib/node_modules/@playwright/cli/skills/playwright-cli/SKILL.md",
+      "skill_present": true,
+      "limitation": "browser daemon/browser binaries require a separate host runtime check; official skill remains host-installable via playwright-cli install --skills"
     },
     {
       "check": "session-start",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:21.777Z",
+      "generated_at": "2026-07-12T05:11:13.667Z",
       "evidence": "read-only hydration contract present",
       "missing": []
     },
     {
       "check": "routing",
       "result": "PASS",
-      "generated_at": "2026-07-12T04:51:21.778Z",
-      "evidence": "CE lifecycle and specialist routing policy agree",
+      "generated_at": "2026-07-12T05:11:13.750Z",
+      "evidence": "CE lifecycle and 7 natural-language routing fixtures agree",
       "missing": [],
-      "lifecycle_owner": "compound-engineering"
+      "fixtureErrors": [],
+      "lifecycle_owner": "compound-engineering",
+      "fixtures": [
+        "investigation",
+        "architecture",
+        "implementation",
+        "debugging",
+        "review",
+        "physical-model",
+        "ui-behavior"
+      ]
     }
   ]
 }

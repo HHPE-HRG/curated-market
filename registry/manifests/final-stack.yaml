@@ -84,5 +84,108 @@
     "Rust safety, FFI, or concurrency": "trailofbits/rust-review",
     "C or C++ memory and undefined behavior": "trailofbits/c-review",
     "dangerous API or configuration": "trailofbits/sharp-edges"
-  }
+  },
+  "task_language_lifecycle_routing": {
+    "investigate": "compound-engineering/research-or-investigate",
+    "design-or-architect": "compound-engineering/investigate-then-plan",
+    "plan": "compound-engineering/plan",
+    "implement": "compound-engineering/work",
+    "fix-or-debug": "compound-engineering/debug",
+    "review": "compound-engineering/review",
+    "simplify": "compound-engineering/simplify",
+    "document-what-was-learned": "compound-engineering/compound",
+    "continue-current-work": "hhpe-hrg/session-start -> active-ce-artifact"
+  },
+  "automatic_selection_policy": "Use native host discovery to select relevant lifecycle and specialist capabilities from the complete task. Compound Engineering is the primary engineering lifecycle. Select supporting capabilities only when they materially change the method, tools, constraints, or verification needed for the task. Prefer the narrowest applicable specialist. Do not invoke multiple capabilities that own the same lifecycle responsibility. Supporting skills may affect how a CE unit is completed, but may not replace the authoritative CE artifact or take ownership of integration, delivery, documentation, or compounding. Routine explicit slash invocation is not required.",
+  "natural_language_routing_fixtures": [
+    {
+      "id": "investigation",
+      "prompt_contains": [
+        "investigate",
+        "serialization",
+        "transitive risk"
+      ],
+      "primary_lifecycle": "compound-engineering/investigate",
+      "specialists": [
+        "hhpe-hrg/context7-guidance",
+        "trailofbits/supply-chain-risk-auditor"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "architecture",
+      "prompt_contains": [
+        "architecture",
+        "distributing",
+        "canonical registry"
+      ],
+      "primary_lifecycle": "compound-engineering/investigate-then-plan",
+      "specialists": [
+        "trailofbits/supply-chain-risk-auditor"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "implementation",
+      "prompt_contains": [
+        "continue from the active engineering state",
+        "durable recovery"
+      ],
+      "primary_lifecycle": "compound-engineering/work",
+      "specialists": [
+        "superpowers/test-driven-development",
+        "superpowers/verification-before-completion"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "debugging",
+      "prompt_contains": [
+        "fix the failure",
+        "incomplete specialist catalog"
+      ],
+      "primary_lifecycle": "compound-engineering/debug",
+      "specialists": [
+        "superpowers/systematic-debugging"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "review",
+      "prompt_contains": [
+        "review the current branch",
+        "safe to merge"
+      ],
+      "primary_lifecycle": "compound-engineering/review",
+      "specialists": [
+        "trailofbits/differential-review"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "physical-model",
+      "prompt_contains": [
+        "thermodynamic",
+        "dimensional"
+      ],
+      "primary_lifecycle": "compound-engineering/work",
+      "specialists": [
+        "trailofbits/dimensional-analysis",
+        "trailofbits/property-based-testing"
+      ],
+      "must_not_require_skill_names": true
+    },
+    {
+      "id": "ui-behavior",
+      "prompt_contains": [
+        "dashboard workflow",
+        "browser interaction"
+      ],
+      "primary_lifecycle": "compound-engineering/work",
+      "specialists": [
+        "hhpe-hrg/playwright-guidance"
+      ],
+      "must_not_require_skill_names": true
+    }
+  ]
 }

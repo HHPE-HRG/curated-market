@@ -1,8 +1,10 @@
 {
   "check": "playwright",
   "result": "PASS_WITH_DOCUMENTED_HOST_LIMITATION",
-  "generated_at": "2026-07-12T04:51:21.774Z",
+  "generated_at": "2026-07-12T05:11:13.649Z",
   "evidence": "playwright-cli install \n\nInitialize workspace\n\nOptions:\n  --skills                    install skills, possible values: claude (default), agents.",
   "version": "0.1.17",
-  "limitation": "browser daemon/browser binaries require a separate host runtime check"
+  "packaged_skill": "/home/hold3n/.nvm/versions/node/v20.20.2/lib/node_modules/@playwright/cli/skills/playwright-cli/SKILL.md",
+  "skill_present": true,
+  "limitation": "browser daemon/browser binaries require a separate host runtime check; official skill remains host-installable via playwright-cli install --skills"
 }

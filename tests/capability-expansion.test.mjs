@@ -80,3 +80,19 @@ test('session-start fixture is read-only and reports the required state fields',
   for (const field of ['Repository:', 'Branch:', 'Working tree:', 'CE state:', 'Current unit:', 'Task state:', 'Serena:', 'Required tools:', 'Protected paths:', 'Concurrent changes:', 'Blockers:', 'Recommended next action:']) assert.match(text, new RegExp(field.replace(':', '\\:')));
   assert.match(text, /do not .*modify files/i); assert.match(text, /do not create a plan/i);
 });
+
+test('natural-language routing fixtures select CE lifecycle without skill naming', () => {
+  const stack = manifest('final-stack.yaml');
+  assert.equal(stack.lifecycle_owner, 'compound-engineering');
+  assert.match(stack.automatic_selection_policy, /Routine explicit slash invocation is not required/);
+  const fixtures = stack.natural_language_routing_fixtures;
+  assert.equal(fixtures.length >= 7, true);
+  for (const fixture of fixtures) {
+    assert.equal(fixture.must_not_require_skill_names, true);
+    assert.match(fixture.primary_lifecycle, /compound-engineering|hhpe-hrg\/session-start/);
+    assert.equal(Array.isArray(fixture.specialists) && fixture.specialists.length > 0, true);
+    for (const token of fixture.prompt_contains) assert.equal(typeof token, 'string');
+  }
+  const ids = fixtures.map(item => item.id);
+  for (const id of ['investigation', 'architecture', 'implementation', 'debugging', 'review', 'physical-model', 'ui-behavior']) assert.equal(ids.includes(id), true, `missing fixture ${id}`);
+});
