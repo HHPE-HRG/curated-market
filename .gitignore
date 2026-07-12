@@ -1,4 +1,5 @@
 registry/packages/
 reports/*.json
+reports/skills-ci/
 node_modules/
 backups/

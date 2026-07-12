@@ -1,1 +1,1 @@
-{"name":"hhpe-hrg-global-registry","private":true,"version":"0.1.0","type":"module","scripts":{"test":"node --test tests/*.test.mjs","validate":"node lib/registry.mjs validate"}}
+{"name":"hhpe-hrg-global-registry","private":true,"version":"0.1.0","type":"module","scripts":{"test":"node --test tests/*.test.mjs","validate":"node lib/registry.mjs validate","skills:ci":"node lib/skills-ci.mjs","skills:ci:static":"node lib/skills-ci.mjs --static-only --json","skills:ci:all":"node lib/skills-ci.mjs --json"}}
