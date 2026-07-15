@@ -1,0 +1,11 @@
+{
+  "name": "ponytail",
+  "description": "Lazy senior dev mode for AI agents. The best code is the code you never wrote.",
+  "version": "4.8.4",
+  "author": {
+    "name": "Dietrich Gebert",
+    "url": "https://github.com/DietrichGebert"
+  },
+  "skills": "./skills/",
+  "commands": "./commands/"
+}

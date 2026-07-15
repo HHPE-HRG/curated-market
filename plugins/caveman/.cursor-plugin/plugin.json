@@ -1,0 +1,11 @@
+{
+  "name": "caveman",
+  "description": "Caveman installer — detects your AI coding agents and installs caveman for each one.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Julius Brussee"
+  },
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "agents": "./agents/"
+}

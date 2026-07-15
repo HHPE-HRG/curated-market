@@ -1,0 +1,16 @@
+{
+  "name": "trailofbits",
+  "description": "Trail of Bits security and review skills (aggregated Cursor projection)",
+  "version": "1.0.0",
+  "author": {
+    "name": "Trail of Bits"
+  },
+  "skills": "./skills/",
+  "repository": "https://github.com/trailofbits/skills",
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "trailofbits",
+    "review"
+  ]
+}

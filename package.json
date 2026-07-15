@@ -1,1 +1,23 @@
-{"name":"hhpe-curated-market","private":true,"version":"0.1.0","type":"module","scripts":{"test":"node --test tests/*.test.mjs","validate":"node lib/registry.mjs validate","skills:ci":"node lib/skills-ci.mjs","skills:ci:static":"node lib/skills-ci.mjs --static-only --json","skills:ci:all":"node lib/skills-ci.mjs --json","agent:verify:capabilities":"node lib/capability-checks.mjs capabilities","agent:verify:serena":"node lib/capability-checks.mjs serena","agent:verify:context7":"node lib/capability-checks.mjs context7","agent:verify:specialists":"node lib/capability-checks.mjs specialists","agent:verify:playwright":"node lib/capability-checks.mjs playwright","agent:verify:session-start":"node lib/capability-checks.mjs session-start","agent:verify:skill-routing":"node lib/capability-checks.mjs routing"}}
+{
+  "name": "hhpe-curated-market",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node lib/registry.mjs validate",
+    "marketplace:cursor": "node scripts/project-cursor-marketplace.mjs",
+    "marketplace:cursor:validate": "node scripts/project-cursor-marketplace.mjs validate",
+    "adapters:sync": "node scripts/sync-adapters.mjs",
+    "skills:ci": "node lib/skills-ci.mjs",
+    "skills:ci:static": "node lib/skills-ci.mjs --static-only --json",
+    "skills:ci:all": "node lib/skills-ci.mjs --json",
+    "agent:verify:capabilities": "node lib/capability-checks.mjs capabilities",
+    "agent:verify:serena": "node lib/capability-checks.mjs serena",
+    "agent:verify:context7": "node lib/capability-checks.mjs context7",
+    "agent:verify:specialists": "node lib/capability-checks.mjs specialists",
+    "agent:verify:playwright": "node lib/capability-checks.mjs playwright",
+    "agent:verify:session-start": "node lib/capability-checks.mjs session-start",
+    "agent:verify:skill-routing": "node lib/capability-checks.mjs routing"
+  }
+}
