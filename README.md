@@ -1,6 +1,6 @@
-# HHPE HRG Global Registry
+# HHPE Curated Market
 
-Canonical GitHub source: [`HHPE-HRG/hhpe-hrg`](https://github.com/HHPE-HRG/hhpe-hrg).
+Canonical GitHub source: [`HHPE-HRG/curated-market`](https://github.com/HHPE-HRG/curated-market).
 
 This registry preserves complete upstream packages as immutable, commit-addressed sources and exposes namespaced capabilities through host adapters. It never replaces a host configuration root. Generated state, backups, overlays, and host links remain separate from upstream sources.
 
@@ -10,7 +10,7 @@ Default install root: `${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}`.
 
 ```sh
 mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"
-git clone git@github.com:HHPE-HRG/hhpe-hrg.git "${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
+git clone git@github.com:HHPE-HRG/curated-market.git "${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
 export HHPE_HRG_HOME="${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
 export PATH="$HHPE_HRG_HOME/bin:$PATH"
 
