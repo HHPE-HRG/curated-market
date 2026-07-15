@@ -1,8 +1,27 @@
 # HHPE HRG Global Registry
 
+Canonical GitHub source: [`HHPE-HRG/hhpe-hrg`](https://github.com/HHPE-HRG/hhpe-hrg).
+
 This registry preserves complete upstream packages as immutable, commit-addressed sources and exposes namespaced capabilities through host adapters. It never replaces a host configuration root. Generated state, backups, overlays, and host links remain separate from upstream sources.
 
-Default root: `${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}`.
+Default install root: `${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}`.
+
+## Install from the canonical remote
+
+```sh
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"
+git clone git@github.com:HHPE-HRG/hhpe-hrg.git "${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
+export HHPE_HRG_HOME="${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}"
+export PATH="$HHPE_HRG_HOME/bin:$PATH"
+
+# Materialize commit-pinned upstream packages (gitignored; see packages.lock.yaml)
+# Clone each lock entry into registry/packages/<id>/<commit>, then:
+hhpe-registry-validate
+hhpe-registry-discover
+hhpe-registry-sync                 # dry run
+```
+
+Pinned package trees under `registry/packages/` are intentionally not published in git; `registry/manifests/packages.lock.yaml` is the source of truth for repository + commit. Host-local link state lives in `migration-state.yaml` / `discovered-installations.yaml` and is regenerated on each machine via discover/sync.
 
 ## Operations
 
