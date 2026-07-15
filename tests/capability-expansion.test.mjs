@@ -12,6 +12,42 @@ const packageFor = id => manifest('packages.lock.yaml').packages.find(item => it
 const sourceFor = capability => path.join(ROOT, packageFor(capability.package_id).package_root, capability.source_path);
 const run = (command, args, options = {}) => spawnSync(command, args, {encoding: 'utf8', timeout: options.timeout ?? 10000, env: {...process.env, ...options.env}});
 
+test('Context7, Playwright MCP, and ast-grep use application-compatible initiation', () => {
+  const vendors = manifest('vendors.yaml');
+  const byId = Object.fromEntries(vendors.vendors.map(item => [item.vendor_id, item]));
+  assert.equal(byId.upstash.packages[0].initiation_kind, 'mcp_repository');
+  assert.equal(byId.upstash.packages[0].marketplace_identity, 'io.github.upstash/context7');
+  assert.equal(byId.microsoft.packages[0].initiation_kind, 'mcp_repository');
+  assert.equal(byId.microsoft.packages[0].marketplace_identity, 'io.github.microsoft/playwright-mcp');
+  assert.equal(byId.microsoft.packages[0].related_framework, 'https://github.com/microsoft/playwright');
+  assert.equal(byId['ast-grep'].packages[0].initiation_kind, 'cli_repository');
+
+  for (const [id, kind, components] of [
+    ['context7', 'mcp_repository', ['mcpServer']],
+    ['playwright-mcp', 'mcp_repository', ['mcpServer']],
+    ['ast-grep', 'cli_repository', []],
+    ['serena', 'mcp_repository', ['mcpServer']],
+    ['compound-engineering', 'skill_repository', ['skill', 'agent', 'workflow', 'command']],
+  ]) {
+    const pkg = packageFor(id);
+    assert.equal(pkg.initiation.kind, kind, id);
+    assert.deepEqual(pkg.initiation.enabled_components, components, id);
+  }
+
+  const contextMcp = capabilities().find(item => item.capability_id === 'context7/context7-mcp');
+  const playwrightMcp = capabilities().find(item => item.capability_id === 'playwright-mcp/playwright-mcp');
+  assert.equal(contextMcp?.type, 'mcp-server');
+  assert.equal(playwrightMcp?.type, 'mcp-server');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, packageFor('context7').package_root, 'server.json'), 'utf8')).name, 'io.github.upstash/context7');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, packageFor('playwright-mcp').package_root, 'server.json'), 'utf8')).name, 'io.github.microsoft/playwright-mcp');
+
+  const stack = manifest('final-stack.yaml');
+  assert.equal(stack.documentation_grounding.application_transport, 'cli_plus_skill_preferred');
+  assert.equal(stack.browser_acceptance.application_transport, 'cli_plus_skill_preferred');
+  assert.equal(stack.syntax_tree_search.initiation_kind, 'cli_repository');
+  assert.equal(stack.syntax_tree_search.mcp_capability, null);
+});
+
 test('Oraios Serena is externally vended as an MCP package', () => {
   const vendors = manifest('vendors.yaml');
   const oraios = vendors.vendors.find(item => item.vendor_id === 'oraios');

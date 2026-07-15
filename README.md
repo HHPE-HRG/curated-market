@@ -52,15 +52,18 @@ The update command checks candidates only. Activation requires a new commit-addr
 
 Authoritative catalog: [`registry/manifests/vendors.yaml`](registry/manifests/vendors.yaml).
 
-| Vendor | Package | Kind | Identity |
-|---|---|---|---|
-| Every Inc | `compound-engineering` | Claude plugin marketplace | `compound-engineering-plugin` |
-| Jesse Vincent / Prime Radiant | `superpowers` | Claude plugin marketplace | `superpowers-dev` |
-| Trail of Bits | `trailofbits` | Claude plugin marketplace | `trailofbits` |
-| Dietrich Gebert | `ponytail` | Claude plugin marketplace | `ponytail` |
-| Julius Brussee | `caveman` | Claude plugin marketplace | `caveman` |
-| **Oraios AI** | **`serena`** | **MCP server package** | **`io.github.oraios/serena`** |
+| Vendor | Package | Initiation | Kind | Identity |
+|---|---|---|---|---|
+| Every Inc | `compound-engineering` | skill_repository | Claude plugin marketplace | `compound-engineering-plugin` |
+| Jesse Vincent / Prime Radiant | `superpowers` | skill_repository | Claude plugin marketplace | `superpowers-dev` |
+| Trail of Bits | `trailofbits` | skill_repository | Claude plugin marketplace | `trailofbits` |
+| Dietrich Gebert | `ponytail` | skill_repository | Claude plugin marketplace | `ponytail` |
+| Julius Brussee | `caveman` | skill_repository | Claude plugin marketplace | `caveman` |
+| Oraios AI | `serena` | mcp_repository | MCP server package | `io.github.oraios/serena` |
+| Upstash | `context7` | mcp_repository | MCP server package | `io.github.upstash/context7` |
+| Microsoft | `playwright-mcp` | mcp_repository | MCP server package | `io.github.microsoft/playwright-mcp` |
+| ast-grep | `ast-grep` | cli_repository | CLI runtime package | — |
 
-Serena is vended from [oraios/serena](https://github.com/oraios/serena) as a commit-pinned MCP package plus locked `serena-agent` runtime. Do not install it through third-party MCP/plugin marketplaces; upstream forbids those outdated installers.
+MCP repositories and skill repositories are initiated differently (`docs/initiation-kinds.md`). Context7 and Playwright MCP are initiated as `mcpServer` sources; HHPE application still prefers their CLI + guidance-skill transports for ordinary task work. Ast-grep is CLI-only (not MCP). Serena is vended from [oraios/serena](https://github.com/oraios/serena) as a commit-pinned MCP package plus locked `serena-agent` runtime—do not install it through third-party MCP/plugin marketplaces.
 
 Capability expansion keeps Serena and Trail of Bits as complete immutable packages. Context7 and Playwright are centrally provisioned runtimes with HHPE routing wrappers; Beads is documented as inactive because HHPE already owns live task state. See `docs/capability-expansion.md` and `registry/manifests/final-stack.yaml` for the ownership and activation policy.

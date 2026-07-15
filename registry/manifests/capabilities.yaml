@@ -1827,7 +1827,10 @@
       },
       "architecture": {
         "owner": "hhpe-hrg",
-        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md"
+        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md",
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill",
+        "upstream_package": "ast-grep"
       }
     },
     {
@@ -1935,7 +1938,7 @@
     {
       "capability_id": "context7/context7-cli",
       "display_name": "ctx7",
-      "package_id": "hhpe-overlays",
+      "package_id": "context7",
       "type": "executable",
       "source_path": ".",
       "self_contained": true,
@@ -1947,9 +1950,11 @@
         "environment": []
       },
       "architecture": {
-        "owner": "documentation-grounding",
+        "owner": "upstash",
         "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.upstash/context7",
+        "application_transport": "cli_plus_skill_preferred"
       }
     },
     {
@@ -1992,9 +1997,11 @@
         "environment": []
       },
       "architecture": {
-        "owner": "browser-acceptance",
+        "owner": "microsoft",
         "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill_preferred",
+        "related_mcp_package": "playwright-mcp"
       }
     },
     {
@@ -2503,6 +2510,80 @@
         "owner": "security-specialist-capabilities",
         "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
         "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "context7/context7-mcp",
+      "display_name": "context7-mcp",
+      "package_id": "context7",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": [
+          "CONTEXT7_API_KEY?"
+        ]
+      },
+      "architecture": {
+        "owner": "upstash",
+        "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.upstash/context7",
+        "transport": "stdio",
+        "application_transport": "cli_plus_skill_preferred",
+        "initiation_kind": "mcp_repository"
+      }
+    },
+    {
+      "capability_id": "playwright-mcp/playwright-mcp",
+      "display_name": "playwright-mcp",
+      "package_id": "playwright-mcp",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "microsoft",
+        "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.microsoft/playwright-mcp",
+        "transport": "stdio",
+        "application_transport": "cli_plus_skill_preferred",
+        "initiation_kind": "mcp_repository",
+        "related_framework": "https://github.com/microsoft/playwright"
+      }
+    },
+    {
+      "capability_id": "ast-grep/ast-grep-runtime",
+      "display_name": "ast-grep",
+      "package_id": "ast-grep",
+      "type": "executable",
+      "source_path": ".",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "executables": [
+          "ast-grep",
+          "sg"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "ast-grep",
+        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md",
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill",
+        "initiation_kind": "cli_repository"
       }
     }
   ]

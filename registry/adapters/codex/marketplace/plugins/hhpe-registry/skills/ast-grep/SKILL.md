@@ -11,4 +11,4 @@ Before searching, confirm `ast-grep --version`; if missing, report the registere
 
 For rewrites, first print or inspect matches, then preview the rewrite without `--update-all`. Review the exact diff before applying. Never run a bulk rewrite across generated, vendored, or unknown-language trees. After applying, run the repository formatter plus the narrowest parser/compiler/tests that cover the changed files. If syntax is unsupported or ambiguous, stop and report the language, pattern, and smallest failing example.
 
-Runtime provenance is recorded in `registry/manifests/tools.yaml`. Extended rule syntax is in `references/rule_reference.md`.
+Runtime provenance: ast-grep CLI package https://github.com/ast-grep/ast-grep (initiation: cli_repository — not MCP). Locked binary in `registry/manifests/tools.yaml` (`ast-grep/ast-grep-runtime`). Extended rule syntax is in `references/rule_reference.md`.

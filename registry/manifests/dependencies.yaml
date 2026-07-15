@@ -1699,6 +1699,42 @@
         ],
         "environment": []
       }
+    },
+    {
+      "capability_id": "context7/context7-mcp",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": [
+          "CONTEXT7_API_KEY?"
+        ]
+      }
+    },
+    {
+      "capability_id": "playwright-mcp/playwright-mcp",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "ast-grep/ast-grep-runtime",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "executables": [
+          "ast-grep",
+          "sg"
+        ],
+        "environment": []
+      }
     }
   ]
 }

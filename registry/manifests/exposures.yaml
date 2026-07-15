@@ -792,6 +792,33 @@
       "adapter": "registry/adapters/hhpe-hrg",
       "status": "active",
       "note": "Oraios MCP package vended by curated-market; hosts launch via locked serena-agent runtime, not third-party marketplace installers"
+    },
+    {
+      "capability_id": "context7/context7-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:context7/context7-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Upstash MCP package; HHPE application prefers CLI+skill; initiate source as mcpServer only"
+    },
+    {
+      "capability_id": "playwright-mcp/playwright-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:playwright-mcp/playwright-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Microsoft Playwright MCP; CLI acceptance path remains primary application transport"
+    },
+    {
+      "capability_id": "ast-grep/ast-grep-runtime",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:ast-grep/ast-grep-runtime",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "CLI repository provenance; not an MCP initiation"
     }
   ]
 }
