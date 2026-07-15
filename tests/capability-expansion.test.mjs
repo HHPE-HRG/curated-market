@@ -12,6 +12,33 @@ const packageFor = id => manifest('packages.lock.yaml').packages.find(item => it
 const sourceFor = capability => path.join(ROOT, packageFor(capability.package_id).package_root, capability.source_path);
 const run = (command, args, options = {}) => spawnSync(command, args, {encoding: 'utf8', timeout: options.timeout ?? 10000, env: {...process.env, ...options.env}});
 
+test('nested MCPs, quarantined MCP, and hhpe-hrg-project companion are registered', () => {
+  for (const [id, comps] of [
+    ['ponytail', ['skill', 'command', 'hook', 'mcpServer']],
+    ['caveman', ['skill', 'command', 'hook', 'agent', 'mcpServer']],
+  ]) {
+    assert.deepEqual(packageFor(id).initiation.enabled_components, comps, id);
+    assert.equal(packageFor(id).initiation.nested_mcp?.length > 0, true, id);
+  }
+  assert.equal(capabilities().find(item => item.capability_id === 'ponytail/ponytail-mcp')?.type, 'mcp-server');
+  assert.equal(capabilities().find(item => item.capability_id === 'caveman/caveman-shrink')?.type, 'mcp-server');
+  assert.equal(packageFor('private-journal-mcp').initiation.kind, 'mcp_repository');
+  assert.equal(packageFor('private-journal-mcp').approval, 'quarantined');
+  assert.equal(capabilities().find(item => item.capability_id === 'private-journal-mcp/server')?.type, 'mcp-server');
+
+  const companion = packageFor('hhpe-hrg-project');
+  assert.equal(companion.revision.type, 'companion');
+  assert.equal(companion.repository, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+  assert.equal(companion.initiation.kind, 'companion_repository');
+  assert.equal(companion.companion.overlay_package, 'hhpe-overlays');
+  assert.equal(packageFor('hhpe-overlays').repository, 'https://github.com/HHPE-HRG/curated-market');
+  assert.equal(packageFor('hhpe-overlays').companion_stack, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+  assert.ok(fs.existsSync(path.join(ROOT, companion.package_root, 'overlays.link')));
+  assert.ok(fs.existsSync(path.join(ROOT, companion.package_root, 'mcp/core-dev-services.json')));
+  assert.equal(capabilities().find(item => item.capability_id === 'hhpe-hrg-project/core-dev-services')?.type, 'mcp-server');
+  assert.equal(manifest('final-stack.yaml').owned_stack.wrapper, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+});
+
 test('Context7, Playwright MCP, and ast-grep use application-compatible initiation', () => {
   const vendors = manifest('vendors.yaml');
   const byId = Object.fromEntries(vendors.vendors.map(item => [item.vendor_id, item]));

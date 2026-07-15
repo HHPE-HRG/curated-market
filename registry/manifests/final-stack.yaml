@@ -230,5 +230,19 @@
     "routing_wrapper": "hhpe-hrg/ast-grep",
     "runtime_capability": "ast-grep/ast-grep-runtime",
     "mcp_capability": null
-  }
+  },
+  "owned_stack": {
+    "curated_market": "https://github.com/HHPE-HRG/curated-market",
+    "wrapper": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+    "overlays_package": "hhpe-overlays",
+    "wrapper_companion_package": "hhpe-hrg-project",
+    "wrapper_mcp": "hhpe-hrg-project/core-dev-services"
+  },
+  "nested_mcp": {
+    "ponytail/ponytail-mcp": "opt-in",
+    "caveman/caveman-shrink": "opt-in"
+  },
+  "quarantined_mcp": [
+    "private-journal-mcp/server"
+  ]
 }

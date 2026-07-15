@@ -63,7 +63,16 @@ Authoritative catalog: [`registry/manifests/vendors.yaml`](registry/manifests/ve
 | Upstash | `context7` | mcp_repository | MCP server package | `io.github.upstash/context7` |
 | Microsoft | `playwright-mcp` | mcp_repository | MCP server package | `io.github.microsoft/playwright-mcp` |
 | ast-grep | `ast-grep` | cli_repository | CLI runtime package | — |
+| Jesse Vincent | `private-journal-mcp` | mcp_repository (quarantined) | MCP server package | `private-journal-mcp` |
+| HHPE-HRG | `hhpe-hrg-project` | companion_repository | Owned companion | overlays + `xlotyl-dev-services` |
 
-MCP repositories and skill repositories are initiated differently (`docs/initiation-kinds.md`). Context7 and Playwright MCP are initiated as `mcpServer` sources; HHPE application still prefers their CLI + guidance-skill transports for ordinary task work. Ast-grep is CLI-only (not MCP). Serena is vended from [oraios/serena](https://github.com/oraios/serena) as a commit-pinned MCP package plus locked `serena-agent` runtime—do not install it through third-party MCP/plugin marketplaces.
+MCP repositories and skill repositories are initiated differently (`docs/initiation-kinds.md`).
+
+### Owned stack
+
+- Overlays: canonical in this repo (`hhpe-overlays` → `registry/overlays/wrappers`)
+- Wrapper companion: [`HHPE-HRG/hhpe-hrg-project`](https://github.com/HHPE-HRG/hhpe-hrg-project) (direct link via `hhpe-hrg-project` companion package; Core Dev Services MCP launches from the wrapper checkout)
+
+Nested opt-in MCPs also registered inside skill packages: `ponytail/ponytail-mcp`, `caveman/caveman-shrink`. Context7 and Playwright MCP are initiated as `mcpServer` sources; HHPE application still prefers their CLI + guidance-skill transports for ordinary task work. Ast-grep is CLI-only (not MCP). Serena is vended from [oraios/serena](https://github.com/oraios/serena) as a commit-pinned MCP package plus locked `serena-agent` runtime—do not install it through third-party MCP/plugin marketplaces.
 
 Capability expansion keeps Serena and Trail of Bits as complete immutable packages. Context7 and Playwright are centrally provisioned runtimes with HHPE routing wrappers; Beads is documented as inactive because HHPE already owns live task state. See `docs/capability-expansion.md` and `registry/manifests/final-stack.yaml` for the ownership and activation policy.

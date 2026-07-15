@@ -1735,6 +1735,75 @@
         ],
         "environment": []
       }
+    },
+    {
+      "capability_id": "ponytail/ponytail-mcp",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "ponytail-mcp/package.json",
+          "ponytail-mcp/index.js"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-shrink",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "src/mcp-servers/caveman-shrink/package.json",
+          "src/mcp-servers/caveman-shrink/index.js"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "private-journal-mcp/server",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "package.json",
+          "src/server.ts"
+        ],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg-project/overlays",
+      "self_contained": true,
+      "requires": {
+        "files": [
+          "overlays.link",
+          "README.md"
+        ],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg-project/core-dev-services",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "mcp/core-dev-services.json",
+          "README.md"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": [
+          "HHPE_HRG_HOME",
+          "HHPE_HRG_PROJECT_ROOT"
+        ]
+      }
     }
   ]
 }

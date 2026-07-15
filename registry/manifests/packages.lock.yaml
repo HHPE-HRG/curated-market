@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-15T16:26:56.927Z",
+  "generated_at": "2026-07-15T16:33:56.606Z",
   "packages": [
     {
       "package_id": "superpowers",
@@ -95,9 +95,18 @@
         "enabled_components": [
           "skill",
           "command",
-          "hook"
+          "hook",
+          "mcpServer"
         ],
-        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only."
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only. Primary initiation remains skill_repository; nested MCP companions are registered as mcp-server capabilities and enable mcpServer on this source.",
+        "nested_mcp": [
+          {
+            "capability_id": "ponytail/ponytail-mcp",
+            "source_path": "ponytail-mcp",
+            "activation": "opt-in",
+            "notes": "MCP prompt/tool bridge for hosts without always-on injection; not a replacement for native adapters."
+          }
+        ]
       }
     },
     {
@@ -128,14 +137,23 @@
           "skill",
           "command",
           "hook",
-          "agent"
+          "agent",
+          "mcpServer"
         ],
-        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only."
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only. Primary initiation remains skill_repository; nested MCP companions are registered as mcp-server capabilities and enable mcpServer on this source.",
+        "nested_mcp": [
+          {
+            "capability_id": "caveman/caveman-shrink",
+            "source_path": "src/mcp-servers/caveman-shrink",
+            "activation": "opt-in",
+            "notes": "MCP shrink proxy; opt-in due subprocess risk (ADR-007)."
+          }
+        ]
       }
     },
     {
       "package_id": "hhpe-overlays",
-      "repository": "local:hhpe-hrg",
+      "repository": "https://github.com/HHPE-HRG/curated-market",
       "revision": {
         "type": "overlay",
         "value": "1"
@@ -151,13 +169,14 @@
       "modified": true,
       "architectural_owner": "hhpe-hrg",
       "initiation": {
-        "kind": "local_overlay",
+        "kind": "owned_overlay",
         "enabled_components": [
           "skill",
           "command"
         ],
-        "notes": "HHPE-owned routing wrappers and policy skills."
-      }
+        "notes": "Canonical overlays in curated-market; hhpe-hrg-project is the owned stack consumer/companion (direct link), not a second overlay owner."
+      },
+      "companion_stack": "https://github.com/HHPE-HRG/hhpe-hrg-project"
     },
     {
       "package_id": "serena",
@@ -319,6 +338,83 @@
         "enabled_components": [],
         "application_transport": "cli_plus_skill",
         "notes": "CLI/structural-search repository, not an MCP product. HHPE initiates as CLI runtime + HHPE guidance skill. Do not initiate third-party ast-grep MCP wrappers as the HHPE application path."
+      }
+    },
+    {
+      "package_id": "private-journal-mcp",
+      "repository": "https://github.com/obra/private-journal-mcp",
+      "revision": {
+        "type": "commit",
+        "value": "8e97230e827496998427f093aa1208831acac3fe"
+      },
+      "package_root": "registry/packages/private-journal-mcp/8e97230e827496998427f093aa1208831acac3fe",
+      "integrity": {
+        "git_tree": "c0e1fc69f0499ecebbf3484dff954c8706e604bf"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "package.json",
+        "sha256": "38b046e5450df815fa16967052623f59824cac342fe8b152feee516f22941639"
+      },
+      "modified": false,
+      "architectural_owner": "obra",
+      "approval": "quarantined",
+      "vendor": {
+        "vendor_id": "obra",
+        "display_name": "Jesse Vincent",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "private-journal-mcp"
+      },
+      "initiation": {
+        "kind": "mcp_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "notes": "Standalone MCP repository. Quarantined for privacy/secrets review before host exposure."
+      }
+    },
+    {
+      "package_id": "hhpe-hrg-project",
+      "repository": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+      "revision": {
+        "type": "companion",
+        "value": "main"
+      },
+      "package_root": "registry/companions/hhpe-hrg-project",
+      "integrity": {
+        "policy": "companion-reference"
+      },
+      "license": {
+        "spdx": "Proprietary",
+        "path": "README.md"
+      },
+      "modified": true,
+      "architectural_owner": "hhpe-hrg",
+      "vendor": {
+        "vendor_id": "hhpe-hrg",
+        "display_name": "HHPE-HRG",
+        "vend_kind": "owned_companion",
+        "marketplace_identity": null
+      },
+      "initiation": {
+        "kind": "companion_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "notes": "Owned wrapper companion. Overlays stay canonical in curated-market (hhpe-overlays). Core Dev Services MCP is launched from the wrapper checkout, not copied into curated-market packages/."
+      },
+      "companion": {
+        "role": "stack_owner",
+        "overlay_package": "hhpe-overlays",
+        "overlay_path": "registry/overlays/wrappers",
+        "mcp_services": [
+          {
+            "capability_id": "hhpe-hrg-project/core-dev-services",
+            "path": "infrastructure/xlotyl/services/core-dev-services",
+            "mcp_name": "xlotyl-dev-services",
+            "launch_manifest": "mcp/core-dev-services.json"
+          }
+        ]
       }
     }
   ]

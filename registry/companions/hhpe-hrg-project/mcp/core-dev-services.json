@@ -1,0 +1,24 @@
+{
+  "name": "xlotyl-dev-services",
+  "title": "XLOTYL Core Dev Services",
+  "description": "HHPE wrapper MCP for capability inventory, approval, and host adapter emission.",
+  "repository": {
+    "url": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+    "source": "github",
+    "path": "infrastructure/xlotyl/services/core-dev-services"
+  },
+  "launch": {
+    "cwd": "${HHPE_HRG_PROJECT_ROOT}/infrastructure/xlotyl/services/core-dev-services",
+    "command": "node",
+    "args": [
+      "src/cli.ts"
+    ],
+    "env": {
+      "HHPE_HRG_HOME": "${HHPE_HRG_HOME}"
+    }
+  },
+  "overlays": {
+    "package_id": "hhpe-overlays",
+    "path": "registry/overlays/wrappers"
+  }
+}

@@ -32,3 +32,7 @@ Telemetry/state privacy needs operator policy.
 
 ## Rollback method
 Remove HHPE links and retain the existing plugin/state.
+
+## Nested MCP
+
+`caveman/caveman-shrink` is registered as an opt-in `mcp-server` capability (subprocess risk). Parent initiation remains `skill_repository` with `mcpServer` added to `enabled_components`.

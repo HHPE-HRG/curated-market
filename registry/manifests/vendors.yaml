@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-15T16:26:56.927Z",
+  "generated_at": "2026-07-15T16:33:56.606Z",
   "description": "Externally vended sources preserved inside HHPE curated-market. HHPE overlays are local and excluded.",
   "vendors": [
     {
@@ -34,6 +34,16 @@
           "marketplace_identity": "superpowers-dev",
           "role": "supporting_process_skills",
           "initiation_kind": "skill_repository"
+        },
+        {
+          "package_id": "private-journal-mcp",
+          "repository": "https://github.com/obra/private-journal-mcp",
+          "vend_kind": "mcp_server_package",
+          "initiation_kind": "mcp_repository",
+          "marketplace_identity": "private-journal-mcp",
+          "approval": "quarantined",
+          "role": "private_journaling",
+          "application": "Quarantined MCP; not exposed to ordinary host catalogs until privacy review."
         }
       ]
     },
@@ -67,7 +77,8 @@
           "vend_kind": "claude_plugin_marketplace",
           "marketplace_identity": "ponytail",
           "role": "behavioral_layer",
-          "initiation_kind": "skill_repository"
+          "initiation_kind": "skill_repository_with_nested_mcp",
+          "nested_mcp": true
         }
       ]
     },
@@ -84,7 +95,8 @@
           "vend_kind": "claude_plugin_marketplace",
           "marketplace_identity": "caveman",
           "role": "behavioral_layer",
-          "initiation_kind": "skill_repository"
+          "initiation_kind": "skill_repository_with_nested_mcp",
+          "nested_mcp": true
         }
       ]
     },
@@ -169,12 +181,45 @@
           "application": "CLI + HHPE guidance skill only. Not initiated as mcpServer; third-party ast-grep MCP wrappers are out of HHPE application scope."
         }
       ]
+    },
+    {
+      "vendor_id": "hhpe-hrg",
+      "display_name": "HHPE-HRG",
+      "organization": "HHPE-HRG",
+      "github_org": "HHPE-HRG",
+      "homepage": "https://github.com/HHPE-HRG",
+      "packages": [
+        {
+          "package_id": "hhpe-hrg-project",
+          "repository": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+          "vend_kind": "owned_companion",
+          "initiation_kind": "companion_repository",
+          "overlay_package": "hhpe-overlays",
+          "overlay_canonical_repo": "https://github.com/HHPE-HRG/curated-market",
+          "mcp_services": [
+            "xlotyl-dev-services"
+          ],
+          "role": "stack_owner",
+          "application": "Direct companion link: overlays stay in curated-market; Core Dev Services MCP launches from the wrapper checkout."
+        },
+        {
+          "package_id": "hhpe-overlays",
+          "repository": "https://github.com/HHPE-HRG/curated-market",
+          "vend_kind": "owned_overlay",
+          "initiation_kind": "owned_overlay",
+          "role": "routing_wrappers",
+          "application": "Canonical HHPE guidance/skills overlays consumed by hhpe-hrg-project."
+        }
+      ]
     }
   ],
   "initiation_policy": {
     "skill_repository": "Enable skill/agent/workflow/command/hook components from plugin marketplaces. Never coerce into mcpServer-only initiation.",
     "mcp_repository": "Enable mcpServer only from MCP server packages (server.json / mcpName). Pair with locked runtime; do not invent SKILL.md marketplaces for MCP-only products.",
     "cli_repository": "Pin CLI source for provenance; expose via tools.yaml runtime + HHPE guidance skill. Do not initiate as mcpServer unless upstream ships an official MCP package adopted by HHPE.",
-    "local_overlay": "HHPE routing wrappers only; never rewrite upstream identities."
+    "local_overlay": "HHPE routing wrappers only; never rewrite upstream identities.",
+    "skill_repository_with_nested_mcp": "Keep skill/agent/command/hook initiation; also enable mcpServer for nested MCP companions registered as mcp-server capabilities. Nested MCP activation remains opt-in unless an ADR says otherwise.",
+    "companion_repository": "Owned sibling repo reference without vendoring the whole tree. Use for overlay ownership links and wrapper-launched MCP services.",
+    "owned_overlay": "HHPE-owned overlays canonical in curated-market; companion stack consumes via HHPE_HRG_HOME."
   }
 }

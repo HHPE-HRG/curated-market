@@ -32,3 +32,7 @@ Existing authoritative mode is retained, not reset.
 
 ## Rollback method
 Remove HHPE links; leave preexisting plugin and flags.
+
+## Nested MCP
+
+`ponytail/ponytail-mcp` is registered as an opt-in `mcp-server` capability. Parent initiation remains `skill_repository` with `mcpServer` added to `enabled_components` for nested MCP projection.
