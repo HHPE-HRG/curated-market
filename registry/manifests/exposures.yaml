@@ -783,6 +783,15 @@
       "adapter": "registry/adapters/antigravity-ide",
       "status": "active",
       "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "serena/serena-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:serena/serena-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Oraios MCP package vended by curated-market; hosts launch via locked serena-agent runtime, not third-party marketplace installers"
     }
   ]
 }

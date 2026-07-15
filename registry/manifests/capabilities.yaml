@@ -1877,9 +1877,34 @@
         "environment": []
       },
       "architecture": {
-        "owner": "semantic-code-intelligence",
+        "owner": "oraios",
         "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.oraios/serena"
+      }
+    },
+    {
+      "capability_id": "serena/serena-mcp",
+      "display_name": "serena-mcp",
+      "package_id": "serena",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "oraios",
+        "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.oraios/serena",
+        "transport": "stdio"
       }
     },
     {

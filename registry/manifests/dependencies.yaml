@@ -1686,6 +1686,19 @@
         "executables": [],
         "environment": []
       }
+    },
+    {
+      "capability_id": "serena/serena-mcp",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      }
     }
   ]
 }

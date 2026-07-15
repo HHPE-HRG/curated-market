@@ -1,6 +1,6 @@
 # Capability expansion operations
 
-The registry now contains the complete pinned Serena and Trail of Bits source packages. Serena, Context7, and Playwright runtimes are user-scoped and version-locked in `registry/manifests/tools.yaml`. Context7 and Playwright are task-triggered; they are not fetched or started during session hydration. Beads is deliberately inactive because HHPE owns the live task graph.
+The registry now contains the complete pinned Serena and Trail of Bits source packages. Serena is externally vended from Oraios AI (`io.github.oraios/serena`; see `registry/manifests/vendors.yaml`) as an MCP server package with locked `serena-agent` runtime—not via third-party marketplace installers. Serena, Context7, and Playwright runtimes are user-scoped and version-locked in `registry/manifests/tools.yaml`. Context7 and Playwright are task-triggered; they are not fetched or started during session hydration. Beads is deliberately inactive because HHPE owns the live task graph.
 
 ## Routing
 

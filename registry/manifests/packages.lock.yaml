@@ -113,7 +113,13 @@
         "sha256": "16017e50562bb112006f6f32d17ca989e0e573b011bd6790b642018b1c195b0c"
       },
       "modified": false,
-      "architectural_owner": "semantic-code-intelligence"
+      "architectural_owner": "oraios",
+      "vendor": {
+        "vendor_id": "oraios",
+        "display_name": "Oraios AI",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "io.github.oraios/serena"
+      }
     },
     {
       "package_id": "trailofbits",

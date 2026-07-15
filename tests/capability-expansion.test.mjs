@@ -12,6 +12,36 @@ const packageFor = id => manifest('packages.lock.yaml').packages.find(item => it
 const sourceFor = capability => path.join(ROOT, packageFor(capability.package_id).package_root, capability.source_path);
 const run = (command, args, options = {}) => spawnSync(command, args, {encoding: 'utf8', timeout: options.timeout ?? 10000, env: {...process.env, ...options.env}});
 
+test('Oraios Serena is externally vended as an MCP package', () => {
+  const vendors = manifest('vendors.yaml');
+  const oraios = vendors.vendors.find(item => item.vendor_id === 'oraios');
+  assert.ok(oraios, 'missing oraios vendor');
+  assert.equal(oraios.github_org, 'oraios');
+  const serenaVendor = oraios.packages.find(item => item.package_id === 'serena');
+  assert.ok(serenaVendor, 'missing serena vendor package');
+  assert.equal(serenaVendor.repository, 'https://github.com/oraios/serena');
+  assert.equal(serenaVendor.vend_kind, 'mcp_server_package');
+  assert.equal(serenaVendor.marketplace_identity, 'io.github.oraios/serena');
+
+  const locked = packageFor('serena');
+  assert.equal(locked.repository, 'https://github.com/oraios/serena');
+  assert.equal(locked.vendor?.vendor_id, 'oraios');
+  assert.equal(locked.vendor?.marketplace_identity, 'io.github.oraios/serena');
+
+  const mcp = capabilities().find(item => item.capability_id === 'serena/serena-mcp');
+  assert.ok(mcp, 'missing serena/serena-mcp');
+  assert.equal(mcp.type, 'mcp-server');
+  assert.equal(mcp.source_path, 'server.json');
+  assert.equal(mcp.architecture.marketplace_identity, 'io.github.oraios/serena');
+  const server = JSON.parse(fs.readFileSync(path.join(ROOT, locked.package_root, 'server.json'), 'utf8'));
+  assert.equal(server.name, 'io.github.oraios/serena');
+
+  const stack = manifest('final-stack.yaml');
+  assert.equal(stack.semantic_code_intelligence.owner, 'oraios');
+  assert.equal(stack.semantic_code_intelligence.mcp_capability, 'serena/serena-mcp');
+  assert.equal(stack.external_vendors_manifest, 'registry/manifests/vendors.yaml');
+});
+
 test('expanded packages and creator-defined specialist identities are registered', () => {
   const packages = manifest('packages.lock.yaml').packages;
   assert.deepEqual(packages.filter(item => ['serena', 'trailofbits'].includes(item.package_id)).map(item => item.package_id), ['serena', 'trailofbits']);

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-15T16:01:14.215Z",
+  "description": "Externally vended sources preserved inside HHPE curated-market. HHPE overlays are local and excluded.",
+  "vendors": [
+    {
+      "vendor_id": "every-inc",
+      "display_name": "Every",
+      "organization": "Every Inc",
+      "github_org": "EveryInc",
+      "homepage": "https://every.to",
+      "packages": [
+        {
+          "package_id": "compound-engineering",
+          "repository": "https://github.com/EveryInc/compound-engineering-plugin",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "compound-engineering-plugin",
+          "role": "lifecycle_owner"
+        }
+      ]
+    },
+    {
+      "vendor_id": "obra",
+      "display_name": "Jesse Vincent / Prime Radiant",
+      "organization": "Prime Radiant",
+      "github_org": "obra",
+      "homepage": "https://primeradiant.com",
+      "packages": [
+        {
+          "package_id": "superpowers",
+          "repository": "https://github.com/obra/superpowers",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "superpowers-dev",
+          "role": "supporting_process_skills"
+        }
+      ]
+    },
+    {
+      "vendor_id": "trail-of-bits",
+      "display_name": "Trail of Bits",
+      "organization": "Trail of Bits",
+      "github_org": "trailofbits",
+      "homepage": "https://www.trailofbits.com",
+      "packages": [
+        {
+          "package_id": "trailofbits",
+          "repository": "https://github.com/trailofbits/skills",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "trailofbits",
+          "role": "security_specialists"
+        }
+      ]
+    },
+    {
+      "vendor_id": "dietrich-gebert",
+      "display_name": "Dietrich Gebert",
+      "organization": null,
+      "github_org": "DietrichGebert",
+      "homepage": "https://github.com/DietrichGebert",
+      "packages": [
+        {
+          "package_id": "ponytail",
+          "repository": "https://github.com/DietrichGebert/ponytail",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "ponytail",
+          "role": "behavioral_layer"
+        }
+      ]
+    },
+    {
+      "vendor_id": "julius-brussee",
+      "display_name": "Julius Brussee",
+      "organization": null,
+      "github_org": "JuliusBrussee",
+      "homepage": "https://github.com/JuliusBrussee",
+      "packages": [
+        {
+          "package_id": "caveman",
+          "repository": "https://github.com/JuliusBrussee/caveman",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "caveman",
+          "role": "behavioral_layer"
+        }
+      ]
+    },
+    {
+      "vendor_id": "oraios",
+      "display_name": "Oraios AI",
+      "organization": "Oraios AI",
+      "github_org": "oraios",
+      "homepage": "https://oraios-ai.de/",
+      "packages": [
+        {
+          "package_id": "serena",
+          "repository": "https://github.com/oraios/serena",
+          "vend_kind": "mcp_server_package",
+          "marketplace_identity": "io.github.oraios/serena",
+          "mcp_server_schema": "server.json",
+          "runtime": "uv:serena-agent==1.5.3",
+          "role": "semantic_code_intelligence",
+          "notes": "Upstream forbids third-party MCP/plugin marketplace installers; curated-market vends the commit-pinned Oraios package plus the locked uv runtime and HHPE routing wrapper."
+        }
+      ]
+    }
+  ]
+}

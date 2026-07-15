@@ -48,4 +48,19 @@ npm run agent:verify:skill-routing
 
 The update command checks candidates only. Activation requires a new commit-addressed package directory, regenerated lock, review, and passing tests. Existing native plugins remain active until parity proves they are redundant.
 
+## Externally vended sources
+
+Authoritative catalog: [`registry/manifests/vendors.yaml`](registry/manifests/vendors.yaml).
+
+| Vendor | Package | Kind | Identity |
+|---|---|---|---|
+| Every Inc | `compound-engineering` | Claude plugin marketplace | `compound-engineering-plugin` |
+| Jesse Vincent / Prime Radiant | `superpowers` | Claude plugin marketplace | `superpowers-dev` |
+| Trail of Bits | `trailofbits` | Claude plugin marketplace | `trailofbits` |
+| Dietrich Gebert | `ponytail` | Claude plugin marketplace | `ponytail` |
+| Julius Brussee | `caveman` | Claude plugin marketplace | `caveman` |
+| **Oraios AI** | **`serena`** | **MCP server package** | **`io.github.oraios/serena`** |
+
+Serena is vended from [oraios/serena](https://github.com/oraios/serena) as a commit-pinned MCP package plus locked `serena-agent` runtime. Do not install it through third-party MCP/plugin marketplaces; upstream forbids those outdated installers.
+
 Capability expansion keeps Serena and Trail of Bits as complete immutable packages. Context7 and Playwright are centrally provisioned runtimes with HHPE routing wrappers; Beads is documented as inactive because HHPE already owns live task state. See `docs/capability-expansion.md` and `registry/manifests/final-stack.yaml` for the ownership and activation policy.

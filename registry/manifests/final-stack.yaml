@@ -187,5 +187,15 @@
       ],
       "must_not_require_skill_names": true
     }
-  ]
+  ],
+  "external_vendors_manifest": "registry/manifests/vendors.yaml",
+  "semantic_code_intelligence": {
+    "owner": "oraios",
+    "package_id": "serena",
+    "marketplace_identity": "io.github.oraios/serena",
+    "vend_kind": "mcp_server_package",
+    "routing_wrapper": "hhpe-hrg/serena-guidance",
+    "runtime_capability": "serena/serena-runtime",
+    "mcp_capability": "serena/serena-mcp"
+  }
 }
