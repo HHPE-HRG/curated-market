@@ -98,7 +98,7 @@ Complete with documented host limitations
 * Host limitation: Playwright browser binaries/daemon may be absent
 * Host limitation: interactive host ranking not fully simulated offline
 * Missing optional runtime: Beads deliberately absent
-* Unrelated repository state: wrapper `hhpe-hrg-project` dirty stack-probe files left untouched
+* Unrelated host-local wrapper state: dirty stack-probe files left untouched
 
 ## Git state
 
@@ -108,7 +108,7 @@ Complete with documented host limitations
 * Commits: prior expansion commits plus this completion commit
 * Unrelated files: untouched
 
-### Wrapper (`/mnt/ssd/Ai Stack/hhpe-hrg-project`)
+### Legacy host-local wrapper (not an authoritative repository)
 
 * Branch: main (ahead of origin)
 * Unrelated dirty files preserved (stack probes, wiki votes)
