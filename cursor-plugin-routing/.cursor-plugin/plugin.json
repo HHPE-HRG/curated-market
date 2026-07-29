@@ -1,0 +1,31 @@
+{
+  "name": "hhpe-hrg-plugin-stack",
+  "displayName": "HHPE-HRG Plugin Stack",
+  "version": "0.1.0",
+  "description": "HHPE-HRG organization-wide Cursor stack for routing installed plugins, skills, MCP tools, agents, rules, and hooks before planning or multi-step execution.",
+  "author": {
+    "name": "HHPE-HRG"
+  },
+  "homepage": "https://github.com/HHPE-HRG/curated-market",
+  "repository": "https://github.com/HHPE-HRG/curated-market",
+  "license": "MIT",
+  "keywords": [
+    "cursor",
+    "routing",
+    "plugins",
+    "skills",
+    "mcp",
+    "hooks",
+    "rules"
+  ],
+  "category": "developer-tools",
+  "tags": [
+    "cursor-native",
+    "indexing",
+    "planning"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "hooks": "./hooks/hooks.json"
+}
+

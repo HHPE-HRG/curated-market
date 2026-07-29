@@ -1,0 +1,36 @@
+---
+description: Require HHPE-HRG organization stack discovery before implementation planning/execution.
+alwaysApply: true
+---
+
+# HHPE-HRG plugin-stack routing
+
+Before creating or revising an implementation plan, or beginning multi-step execution:
+
+1. Ensure the generated plugin index exists at `~/.cursor/hhpe-hrg-plugin-stack/derived/plugin-index.md`.
+2. Use the `plugin-routing` skill to:
+   - select candidate plugins (coarse routing) from the index,
+   - select needed components inside those plugins (fine routing) by reading only component description metadata,
+   - separate selected components into planning-time vs execution-time vs validation-time roles.
+3. If Cursor’s native repository tools are sufficient, record that explicitly (no plugin components needed).
+4. Record selected capabilities into the plan under:
+
+## Plugin and capability use
+
+### Planning
+
+- Plugin or component
+  - Why it is needed during plan development.
+
+### Execution
+
+- Plugin or component
+  - Which implementation steps should invoke it.
+
+### Validation
+
+- Plugin or component
+  - Which checks or evidence it provides.
+
+5. Do not ask the user to manually name plugins/skills/MCP tools/subagents when selection can be derived from installed metadata.
+
