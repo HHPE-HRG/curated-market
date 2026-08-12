@@ -18,7 +18,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-cavecrew",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman",
@@ -26,7 +26,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman-commit",
@@ -34,7 +34,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman-commit",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman-compress",
@@ -42,7 +42,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman-compress",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman-help",
@@ -50,7 +50,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman-help",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman-review",
@@ -58,7 +58,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman-review",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "caveman/caveman-stats",
@@ -66,7 +66,7 @@
       "mode": "skill-symlink",
       "target": "~/.agents/skills/caveman-caveman-stats",
       "adapter": "registry/adapters/codex",
-      "status": "planned"
+      "status": "active"
     },
     {
       "capability_id": "hhpe-hrg/ast-grep",
@@ -780,6 +780,357 @@
       "host": "antigravity-ide",
       "mode": "skill-symlink",
       "target": "~/.agents/skills/trailofbits-sarif-parsing",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-audit",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail-audit",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-audit",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail-audit",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-audit",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail-audit",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-debt",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail-debt",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-debt",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail-debt",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-debt",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail-debt",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-gain",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail-gain",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-gain",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail-gain",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-gain",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail-gain",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-help",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail-help",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-help",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail-help",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-help",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail-help",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-review",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/ponytail-ponytail-review",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-review",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/ponytail-ponytail-review",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "ponytail/ponytail-review",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/ponytail-ponytail-review",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/cavecrew",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-cavecrew",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/cavecrew",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-cavecrew",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/cavecrew",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-cavecrew",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-commit",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman-commit",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-commit",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman-commit",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-commit",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-commit",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-compress",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman-compress",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-compress",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman-compress",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-compress",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-compress",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-help",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman-help",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-help",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman-help",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-help",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-help",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-review",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman-review",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-review",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman-review",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-review",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-review",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-stats",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/caveman-caveman-stats",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-stats",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/caveman-caveman-stats",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "caveman/caveman-stats",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/caveman-caveman-stats",
       "adapter": "registry/adapters/antigravity-ide",
       "status": "active",
       "note": "individual package-preserving link; upstream frontmatter identity unchanged"
