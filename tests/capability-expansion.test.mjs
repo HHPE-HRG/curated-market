@@ -12,6 +12,99 @@ const packageFor = id => manifest('packages.lock.yaml').packages.find(item => it
 const sourceFor = capability => path.join(ROOT, packageFor(capability.package_id).package_root, capability.source_path);
 const run = (command, args, options = {}) => spawnSync(command, args, {encoding: 'utf8', timeout: options.timeout ?? 10000, env: {...process.env, ...options.env}});
 
+test('nested MCPs, quarantined MCP, and hhpe-hrg-project companion are registered', () => {
+  for (const [id, comps] of [
+    ['ponytail', ['skill', 'command', 'hook', 'mcpServer']],
+    ['caveman', ['skill', 'command', 'hook', 'agent', 'mcpServer']],
+  ]) {
+    assert.deepEqual(packageFor(id).initiation.enabled_components, comps, id);
+    assert.equal(packageFor(id).initiation.nested_mcp?.length > 0, true, id);
+  }
+  assert.equal(capabilities().find(item => item.capability_id === 'ponytail/ponytail-mcp')?.type, 'mcp-server');
+  assert.equal(capabilities().find(item => item.capability_id === 'caveman/caveman-shrink')?.type, 'mcp-server');
+  assert.equal(packageFor('private-journal-mcp').initiation.kind, 'mcp_repository');
+  assert.equal(packageFor('private-journal-mcp').approval, 'quarantined');
+  assert.equal(capabilities().find(item => item.capability_id === 'private-journal-mcp/server')?.type, 'mcp-server');
+
+  const companion = packageFor('hhpe-hrg-project');
+  assert.equal(companion.revision.type, 'companion');
+  assert.equal(companion.repository, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+  assert.equal(companion.initiation.kind, 'companion_repository');
+  assert.equal(companion.companion.overlay_package, 'hhpe-overlays');
+  assert.equal(packageFor('hhpe-overlays').repository, 'https://github.com/HHPE-HRG/curated-market');
+  assert.equal(packageFor('hhpe-overlays').companion_stack, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+  assert.ok(fs.existsSync(path.join(ROOT, companion.package_root, 'overlays.link')));
+  assert.ok(fs.existsSync(path.join(ROOT, companion.package_root, 'mcp/core-dev-services.json')));
+  assert.equal(capabilities().find(item => item.capability_id === 'hhpe-hrg-project/core-dev-services')?.type, 'mcp-server');
+  assert.equal(manifest('final-stack.yaml').owned_stack.wrapper, 'https://github.com/HHPE-HRG/hhpe-hrg-project');
+});
+
+test('Context7, Playwright MCP, and ast-grep use application-compatible initiation', () => {
+  const vendors = manifest('vendors.yaml');
+  const byId = Object.fromEntries(vendors.vendors.map(item => [item.vendor_id, item]));
+  assert.equal(byId.upstash.packages[0].initiation_kind, 'mcp_repository');
+  assert.equal(byId.upstash.packages[0].marketplace_identity, 'io.github.upstash/context7');
+  assert.equal(byId.microsoft.packages[0].initiation_kind, 'mcp_repository');
+  assert.equal(byId.microsoft.packages[0].marketplace_identity, 'io.github.microsoft/playwright-mcp');
+  assert.equal(byId.microsoft.packages[0].related_framework, 'https://github.com/microsoft/playwright');
+  assert.equal(byId['ast-grep'].packages[0].initiation_kind, 'cli_repository');
+
+  for (const [id, kind, components] of [
+    ['context7', 'mcp_repository', ['mcpServer']],
+    ['playwright-mcp', 'mcp_repository', ['mcpServer']],
+    ['ast-grep', 'cli_repository', []],
+    ['serena', 'mcp_repository', ['mcpServer']],
+    ['compound-engineering', 'skill_repository', ['skill', 'agent', 'workflow', 'command']],
+  ]) {
+    const pkg = packageFor(id);
+    assert.equal(pkg.initiation.kind, kind, id);
+    assert.deepEqual(pkg.initiation.enabled_components, components, id);
+  }
+
+  const contextMcp = capabilities().find(item => item.capability_id === 'context7/context7-mcp');
+  const playwrightMcp = capabilities().find(item => item.capability_id === 'playwright-mcp/playwright-mcp');
+  assert.equal(contextMcp?.type, 'mcp-server');
+  assert.equal(playwrightMcp?.type, 'mcp-server');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, packageFor('context7').package_root, 'server.json'), 'utf8')).name, 'io.github.upstash/context7');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, packageFor('playwright-mcp').package_root, 'server.json'), 'utf8')).name, 'io.github.microsoft/playwright-mcp');
+
+  const stack = manifest('final-stack.yaml');
+  assert.equal(stack.documentation_grounding.application_transport, 'cli_plus_skill_preferred');
+  assert.equal(stack.browser_acceptance.application_transport, 'cli_plus_skill_preferred');
+  assert.equal(stack.syntax_tree_search.initiation_kind, 'cli_repository');
+  assert.equal(stack.syntax_tree_search.mcp_capability, null);
+});
+
+test('Oraios Serena is externally vended as an MCP package', () => {
+  const vendors = manifest('vendors.yaml');
+  const oraios = vendors.vendors.find(item => item.vendor_id === 'oraios');
+  assert.ok(oraios, 'missing oraios vendor');
+  assert.equal(oraios.github_org, 'oraios');
+  const serenaVendor = oraios.packages.find(item => item.package_id === 'serena');
+  assert.ok(serenaVendor, 'missing serena vendor package');
+  assert.equal(serenaVendor.repository, 'https://github.com/oraios/serena');
+  assert.equal(serenaVendor.vend_kind, 'mcp_server_package');
+  assert.equal(serenaVendor.marketplace_identity, 'io.github.oraios/serena');
+
+  const locked = packageFor('serena');
+  assert.equal(locked.repository, 'https://github.com/oraios/serena');
+  assert.equal(locked.vendor?.vendor_id, 'oraios');
+  assert.equal(locked.vendor?.marketplace_identity, 'io.github.oraios/serena');
+
+  const mcp = capabilities().find(item => item.capability_id === 'serena/serena-mcp');
+  assert.ok(mcp, 'missing serena/serena-mcp');
+  assert.equal(mcp.type, 'mcp-server');
+  assert.equal(mcp.source_path, 'server.json');
+  assert.equal(mcp.architecture.marketplace_identity, 'io.github.oraios/serena');
+  const server = JSON.parse(fs.readFileSync(path.join(ROOT, locked.package_root, 'server.json'), 'utf8'));
+  assert.equal(server.name, 'io.github.oraios/serena');
+
+  const stack = manifest('final-stack.yaml');
+  assert.equal(stack.semantic_code_intelligence.owner, 'oraios');
+  assert.equal(stack.semantic_code_intelligence.mcp_capability, 'serena/serena-mcp');
+  assert.equal(stack.external_vendors_manifest, 'registry/manifests/vendors.yaml');
+});
+
 test('expanded packages and creator-defined specialist identities are registered', () => {
   const packages = manifest('packages.lock.yaml').packages;
   assert.deepEqual(packages.filter(item => ['serena', 'trailofbits'].includes(item.package_id)).map(item => item.package_id), ['serena', 'trailofbits']);

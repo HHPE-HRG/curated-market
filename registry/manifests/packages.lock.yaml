@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-12T04:26:28.952Z",
+  "generated_at": "2026-07-15T16:33:56.606Z",
   "packages": [
     {
       "package_id": "superpowers",
@@ -19,7 +19,21 @@
         "sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400"
       },
       "modified": false,
-      "architectural_owner": "development-process"
+      "architectural_owner": "development-process",
+      "vendor": {
+        "vendor_id": "obra",
+        "vend_kind": "claude_plugin_marketplace"
+      },
+      "initiation": {
+        "kind": "skill_repository",
+        "enabled_components": [
+          "skill",
+          "agent",
+          "command",
+          "hook"
+        ],
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only."
+      }
     },
     {
       "package_id": "compound-engineering",
@@ -38,7 +52,21 @@
         "sha256": "61d89de7646effdaba2d0a4ab7bd0eba60b4094b83efe5bc73c7940e43e93fc6"
       },
       "modified": false,
-      "architectural_owner": "engineering-lifecycle"
+      "architectural_owner": "engineering-lifecycle",
+      "vendor": {
+        "vendor_id": "every-inc",
+        "vend_kind": "claude_plugin_marketplace"
+      },
+      "initiation": {
+        "kind": "skill_repository",
+        "enabled_components": [
+          "skill",
+          "agent",
+          "workflow",
+          "command"
+        ],
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only."
+      }
     },
     {
       "package_id": "ponytail",
@@ -57,7 +85,29 @@
         "sha256": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab"
       },
       "modified": false,
-      "architectural_owner": "ponytail"
+      "architectural_owner": "ponytail",
+      "vendor": {
+        "vendor_id": "ponytail",
+        "vend_kind": "claude_plugin_marketplace"
+      },
+      "initiation": {
+        "kind": "skill_repository",
+        "enabled_components": [
+          "skill",
+          "command",
+          "hook",
+          "mcpServer"
+        ],
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only. Primary initiation remains skill_repository; nested MCP companions are registered as mcp-server capabilities and enable mcpServer on this source.",
+        "nested_mcp": [
+          {
+            "capability_id": "ponytail/ponytail-mcp",
+            "source_path": "ponytail-mcp",
+            "activation": "opt-in",
+            "notes": "MCP prompt/tool bridge for hosts without always-on injection; not a replacement for native adapters."
+          }
+        ]
+      }
     },
     {
       "package_id": "caveman",
@@ -76,11 +126,34 @@
         "sha256": "5eb826cd03151bcc7cce3f80d40e87733237fedfc6c36d6908aca5fd650a0bdb"
       },
       "modified": false,
-      "architectural_owner": "caveman"
+      "architectural_owner": "caveman",
+      "vendor": {
+        "vendor_id": "caveman",
+        "vend_kind": "claude_plugin_marketplace"
+      },
+      "initiation": {
+        "kind": "skill_repository",
+        "enabled_components": [
+          "skill",
+          "command",
+          "hook",
+          "agent",
+          "mcpServer"
+        ],
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only. Primary initiation remains skill_repository; nested MCP companions are registered as mcp-server capabilities and enable mcpServer on this source.",
+        "nested_mcp": [
+          {
+            "capability_id": "caveman/caveman-shrink",
+            "source_path": "src/mcp-servers/caveman-shrink",
+            "activation": "opt-in",
+            "notes": "MCP shrink proxy; opt-in due subprocess risk (ADR-007)."
+          }
+        ]
+      }
     },
     {
       "package_id": "hhpe-overlays",
-      "repository": "local:hhpe-hrg",
+      "repository": "https://github.com/HHPE-HRG/curated-market",
       "revision": {
         "type": "overlay",
         "value": "1"
@@ -94,7 +167,16 @@
         "path": "."
       },
       "modified": true,
-      "architectural_owner": "hhpe-hrg"
+      "architectural_owner": "hhpe-hrg",
+      "initiation": {
+        "kind": "owned_overlay",
+        "enabled_components": [
+          "skill",
+          "command"
+        ],
+        "notes": "Canonical overlays in curated-market; hhpe-hrg-project is the owned stack consumer/companion (direct link), not a second overlay owner."
+      },
+      "companion_stack": "https://github.com/HHPE-HRG/hhpe-hrg-project"
     },
     {
       "package_id": "serena",
@@ -113,7 +195,20 @@
         "sha256": "16017e50562bb112006f6f32d17ca989e0e573b011bd6790b642018b1c195b0c"
       },
       "modified": false,
-      "architectural_owner": "semantic-code-intelligence"
+      "architectural_owner": "oraios",
+      "vendor": {
+        "vendor_id": "oraios",
+        "display_name": "Oraios AI",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "io.github.oraios/serena"
+      },
+      "initiation": {
+        "kind": "mcp_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "notes": "MCP repository; CLI/runtime is complementary. Do not initiate as a skill marketplace."
+      }
     },
     {
       "package_id": "trailofbits",
@@ -132,7 +227,195 @@
         "sha256": "7abe19ec9bb73b36141b999b861d24ad855e808bafe0f81e84cce28556f6c297"
       },
       "modified": false,
-      "architectural_owner": "security-specialist-capabilities"
+      "architectural_owner": "security-specialist-capabilities",
+      "vendor": {
+        "vendor_id": "trail-of-bits",
+        "vend_kind": "claude_plugin_marketplace"
+      },
+      "initiation": {
+        "kind": "skill_repository",
+        "enabled_components": [
+          "skill",
+          "agent",
+          "command"
+        ],
+        "notes": "Skill/plugin marketplace package; do not initiate as mcpServer-only."
+      }
+    },
+    {
+      "package_id": "context7",
+      "repository": "https://github.com/upstash/context7",
+      "revision": {
+        "type": "commit",
+        "value": "eb7ac502f6e83692363375d3088d550afa298a60"
+      },
+      "package_root": "registry/packages/context7/eb7ac502f6e83692363375d3088d550afa298a60",
+      "integrity": {
+        "git_tree": "7cc356b5681cef45ab459f43800ae16468b036bb"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "85cfb556dc2b22b55d2565674fcdaac82f3f2f6b7a928d27003132721bb6736c"
+      },
+      "modified": false,
+      "architectural_owner": "upstash",
+      "vendor": {
+        "vendor_id": "upstash",
+        "display_name": "Upstash",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "io.github.upstash/context7"
+      },
+      "initiation": {
+        "kind": "mcp_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "application_transport": "cli_plus_skill_preferred",
+        "notes": "Upstream is an MCP platform (packages/mcp + server.json). HHPE application prefers task-triggered CLI (ctx7) + guidance skill over always-loaded MCP; MCP remains available as mcpServer."
+      }
+    },
+    {
+      "package_id": "playwright-mcp",
+      "repository": "https://github.com/microsoft/playwright-mcp",
+      "revision": {
+        "type": "commit",
+        "value": "55679f5f3d4b4f3e2534ec0ce2fc5683ba2eaf3f"
+      },
+      "package_root": "registry/packages/playwright-mcp/55679f5f3d4b4f3e2534ec0ce2fc5683ba2eaf3f",
+      "integrity": {
+        "git_tree": "d870c677c26220caf7cab9ec02ee0c9786d614d2"
+      },
+      "license": {
+        "spdx": "Apache-2.0",
+        "path": "LICENSE",
+        "sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda"
+      },
+      "modified": false,
+      "architectural_owner": "microsoft",
+      "vendor": {
+        "vendor_id": "microsoft",
+        "display_name": "Microsoft",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "io.github.microsoft/playwright-mcp",
+        "related_framework": "https://github.com/microsoft/playwright"
+      },
+      "initiation": {
+        "kind": "mcp_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "application_transport": "cli_plus_skill_preferred",
+        "notes": "MCP entry for Playwright browser tools. Full microsoft/playwright monorepo is not pinned; HHPE browser acceptance application uses @playwright/cli + guidance skill, with this MCP package available as mcpServer."
+      }
+    },
+    {
+      "package_id": "ast-grep",
+      "repository": "https://github.com/ast-grep/ast-grep",
+      "revision": {
+        "type": "commit",
+        "value": "fc26e866c7bf66f5a84e538525e0357dbb3ed352"
+      },
+      "package_root": "registry/packages/ast-grep/fc26e866c7bf66f5a84e538525e0357dbb3ed352",
+      "integrity": {
+        "git_tree": "95d9933f9774f18e023eca6e4d1d3a9697d07085"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "LICENSE",
+        "sha256": "81471889c77b2161a3e4dcdb1b2e6ca382e485766132d92d5fe1d7497e7dd2d9"
+      },
+      "modified": false,
+      "architectural_owner": "ast-grep",
+      "vendor": {
+        "vendor_id": "ast-grep",
+        "display_name": "ast-grep",
+        "vend_kind": "cli_runtime_package",
+        "marketplace_identity": null
+      },
+      "initiation": {
+        "kind": "cli_repository",
+        "enabled_components": [],
+        "application_transport": "cli_plus_skill",
+        "notes": "CLI/structural-search repository, not an MCP product. HHPE initiates as CLI runtime + HHPE guidance skill. Do not initiate third-party ast-grep MCP wrappers as the HHPE application path."
+      }
+    },
+    {
+      "package_id": "private-journal-mcp",
+      "repository": "https://github.com/obra/private-journal-mcp",
+      "revision": {
+        "type": "commit",
+        "value": "8e97230e827496998427f093aa1208831acac3fe"
+      },
+      "package_root": "registry/packages/private-journal-mcp/8e97230e827496998427f093aa1208831acac3fe",
+      "integrity": {
+        "git_tree": "c0e1fc69f0499ecebbf3484dff954c8706e604bf"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "package.json",
+        "sha256": "38b046e5450df815fa16967052623f59824cac342fe8b152feee516f22941639"
+      },
+      "modified": false,
+      "architectural_owner": "obra",
+      "approval": "quarantined",
+      "vendor": {
+        "vendor_id": "obra",
+        "display_name": "Jesse Vincent",
+        "vend_kind": "mcp_server_package",
+        "marketplace_identity": "private-journal-mcp"
+      },
+      "initiation": {
+        "kind": "mcp_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "notes": "Standalone MCP repository. Quarantined for privacy/secrets review before host exposure."
+      }
+    },
+    {
+      "package_id": "hhpe-hrg-project",
+      "repository": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+      "revision": {
+        "type": "companion",
+        "value": "main"
+      },
+      "package_root": "registry/companions/hhpe-hrg-project",
+      "integrity": {
+        "policy": "companion-reference"
+      },
+      "license": {
+        "spdx": "Proprietary",
+        "path": "README.md"
+      },
+      "modified": true,
+      "architectural_owner": "hhpe-hrg",
+      "vendor": {
+        "vendor_id": "hhpe-hrg",
+        "display_name": "HHPE-HRG",
+        "vend_kind": "owned_companion",
+        "marketplace_identity": null
+      },
+      "initiation": {
+        "kind": "companion_repository",
+        "enabled_components": [
+          "mcpServer"
+        ],
+        "notes": "Owned wrapper companion. Overlays stay canonical in curated-market (hhpe-overlays). Core Dev Services MCP is launched from the wrapper checkout, not copied into curated-market packages/."
+      },
+      "companion": {
+        "role": "stack_owner",
+        "overlay_package": "hhpe-overlays",
+        "overlay_path": "registry/overlays/wrappers",
+        "mcp_services": [
+          {
+            "capability_id": "hhpe-hrg-project/core-dev-services",
+            "path": "infrastructure/xlotyl/services/core-dev-services",
+            "mcp_name": "xlotyl-dev-services",
+            "launch_manifest": "mcp/core-dev-services.json"
+          }
+        ]
+      }
     }
   ]
 }

@@ -9,4 +9,4 @@ Use the registered Serena runtime (`serena-agent` 1.5.3; command `serena`) for s
 
 Do not replace Serena operations with broad text substitution when symbol identity matters. Report the active project and runtime health when the result depends on language-server state.
 
-Provenance: HHPE wrapper for `serena` from the pinned `serena` package; runtime entry `serena-runtime`.
+Provenance: HHPE routing wrapper for Oraios-vended Serena (`io.github.oraios/serena` from https://github.com/oraios/serena). Capabilities: `serena/serena-runtime`, `serena/serena-mcp` (`server.json`). Do not install Serena via third-party MCP/plugin marketplaces.

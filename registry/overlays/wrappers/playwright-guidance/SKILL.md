@@ -9,4 +9,4 @@ Use the registered `playwright-cli` runtime (0.1.17) for browser navigation, int
 
 Remain inactive for non-UI work. Use disposable fixtures, bounded browser sessions, and no production credentials. The official CLI skill bundle may be installed into a host-native project skill directory; this wrapper records the central runtime and activation policy without copying that bundle into the registry.
 
-Provenance: HHPE routing wrapper for `@playwright/cli` 0.1.17.
+Provenance: HHPE routing wrapper for Microsoft Playwright browser acceptance. Framework: https://github.com/microsoft/playwright. MCP package: playwright-mcp (`io.github.microsoft/playwright-mcp`). Initiation: mcp_repository for MCP; application transport: CLI (`playwright-cli` 0.1.17) + this skill preferred.

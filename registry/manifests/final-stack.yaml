@@ -187,5 +187,62 @@
       ],
       "must_not_require_skill_names": true
     }
+  ],
+  "external_vendors_manifest": "registry/manifests/vendors.yaml",
+  "semantic_code_intelligence": {
+    "owner": "oraios",
+    "package_id": "serena",
+    "marketplace_identity": "io.github.oraios/serena",
+    "vend_kind": "mcp_server_package",
+    "routing_wrapper": "hhpe-hrg/serena-guidance",
+    "runtime_capability": "serena/serena-runtime",
+    "mcp_capability": "serena/serena-mcp"
+  },
+  "documentation_grounding": {
+    "owner": "upstash",
+    "package_id": "context7",
+    "marketplace_identity": "io.github.upstash/context7",
+    "vend_kind": "mcp_server_package",
+    "initiation_kind": "mcp_repository",
+    "application_transport": "cli_plus_skill_preferred",
+    "routing_wrapper": "hhpe-hrg/context7-guidance",
+    "runtime_capability": "context7/context7-cli",
+    "mcp_capability": "context7/context7-mcp"
+  },
+  "browser_acceptance": {
+    "owner": "microsoft",
+    "framework": "https://github.com/microsoft/playwright",
+    "mcp_package_id": "playwright-mcp",
+    "marketplace_identity": "io.github.microsoft/playwright-mcp",
+    "vend_kind": "mcp_server_package",
+    "initiation_kind": "mcp_repository",
+    "application_transport": "cli_plus_skill_preferred",
+    "routing_wrapper": "hhpe-hrg/playwright-guidance",
+    "runtime_capability": "playwright/playwright-cli",
+    "mcp_capability": "playwright-mcp/playwright-mcp"
+  },
+  "syntax_tree_search": {
+    "owner": "ast-grep",
+    "package_id": "ast-grep",
+    "vend_kind": "cli_runtime_package",
+    "initiation_kind": "cli_repository",
+    "application_transport": "cli_plus_skill",
+    "routing_wrapper": "hhpe-hrg/ast-grep",
+    "runtime_capability": "ast-grep/ast-grep-runtime",
+    "mcp_capability": null
+  },
+  "owned_stack": {
+    "curated_market": "https://github.com/HHPE-HRG/curated-market",
+    "wrapper": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+    "overlays_package": "hhpe-overlays",
+    "wrapper_companion_package": "hhpe-hrg-project",
+    "wrapper_mcp": "hhpe-hrg-project/core-dev-services"
+  },
+  "nested_mcp": {
+    "ponytail/ponytail-mcp": "opt-in",
+    "caveman/caveman-shrink": "opt-in"
+  },
+  "quarantined_mcp": [
+    "private-journal-mcp/server"
   ]
 }

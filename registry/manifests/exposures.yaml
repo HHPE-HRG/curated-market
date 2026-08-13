@@ -783,6 +783,87 @@
       "adapter": "registry/adapters/antigravity-ide",
       "status": "active",
       "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "serena/serena-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:serena/serena-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Oraios MCP package vended by curated-market; hosts launch via locked serena-agent runtime, not third-party marketplace installers"
+    },
+    {
+      "capability_id": "context7/context7-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:context7/context7-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Upstash MCP package; HHPE application prefers CLI+skill; initiate source as mcpServer only"
+    },
+    {
+      "capability_id": "playwright-mcp/playwright-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:playwright-mcp/playwright-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Microsoft Playwright MCP; CLI acceptance path remains primary application transport"
+    },
+    {
+      "capability_id": "ast-grep/ast-grep-runtime",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:ast-grep/ast-grep-runtime",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "CLI repository provenance; not an MCP initiation"
+    },
+    {
+      "capability_id": "ponytail/ponytail-mcp",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:ponytail/ponytail-mcp",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "opt-in",
+      "note": "Nested MCP in skill package; opt-in"
+    },
+    {
+      "capability_id": "caveman/caveman-shrink",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:caveman/caveman-shrink",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "opt-in",
+      "note": "Nested MCP; opt-in due subprocess risk"
+    },
+    {
+      "capability_id": "private-journal-mcp/server",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:private-journal-mcp/server",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "quarantined",
+      "note": "Quarantined MCP; privacy review required"
+    },
+    {
+      "capability_id": "hhpe-hrg-project/overlays",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-overlays",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Direct link from owned wrapper companion to curated-market overlays"
+    },
+    {
+      "capability_id": "hhpe-hrg-project/core-dev-services",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg-project/core-dev-services",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active",
+      "note": "Wrapper MCP launched from hhpe-hrg-project checkout"
     }
   ]
 }

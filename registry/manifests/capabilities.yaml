@@ -1827,7 +1827,10 @@
       },
       "architecture": {
         "owner": "hhpe-hrg",
-        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md"
+        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md",
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill",
+        "upstream_package": "ast-grep"
       }
     },
     {
@@ -1877,9 +1880,34 @@
         "environment": []
       },
       "architecture": {
-        "owner": "semantic-code-intelligence",
+        "owner": "oraios",
         "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.oraios/serena"
+      }
+    },
+    {
+      "capability_id": "serena/serena-mcp",
+      "display_name": "serena-mcp",
+      "package_id": "serena",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [
+          "serena"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "oraios",
+        "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.oraios/serena",
+        "transport": "stdio"
       }
     },
     {
@@ -1910,7 +1938,7 @@
     {
       "capability_id": "context7/context7-cli",
       "display_name": "ctx7",
-      "package_id": "hhpe-overlays",
+      "package_id": "context7",
       "type": "executable",
       "source_path": ".",
       "self_contained": true,
@@ -1922,9 +1950,11 @@
         "environment": []
       },
       "architecture": {
-        "owner": "documentation-grounding",
+        "owner": "upstash",
         "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.upstash/context7",
+        "application_transport": "cli_plus_skill_preferred"
       }
     },
     {
@@ -1967,9 +1997,11 @@
         "environment": []
       },
       "architecture": {
-        "owner": "browser-acceptance",
+        "owner": "microsoft",
         "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
-        "activation": "task-triggered"
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill_preferred",
+        "related_mcp_package": "playwright-mcp"
       }
     },
     {
@@ -2478,6 +2510,203 @@
         "owner": "security-specialist-capabilities",
         "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
         "activation": "task-triggered"
+      }
+    },
+    {
+      "capability_id": "context7/context7-mcp",
+      "display_name": "context7-mcp",
+      "package_id": "context7",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": [
+          "CONTEXT7_API_KEY?"
+        ]
+      },
+      "architecture": {
+        "owner": "upstash",
+        "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.upstash/context7",
+        "transport": "stdio",
+        "application_transport": "cli_plus_skill_preferred",
+        "initiation_kind": "mcp_repository"
+      }
+    },
+    {
+      "capability_id": "playwright-mcp/playwright-mcp",
+      "display_name": "playwright-mcp",
+      "package_id": "playwright-mcp",
+      "type": "mcp-server",
+      "source_path": "server.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "server.json"
+        ],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "microsoft",
+        "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
+        "activation": "task-triggered",
+        "marketplace_identity": "io.github.microsoft/playwright-mcp",
+        "transport": "stdio",
+        "application_transport": "cli_plus_skill_preferred",
+        "initiation_kind": "mcp_repository",
+        "related_framework": "https://github.com/microsoft/playwright"
+      }
+    },
+    {
+      "capability_id": "ast-grep/ast-grep-runtime",
+      "display_name": "ast-grep",
+      "package_id": "ast-grep",
+      "type": "executable",
+      "source_path": ".",
+      "self_contained": false,
+      "requires": {
+        "files": [],
+        "executables": [
+          "ast-grep",
+          "sg"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "ast-grep",
+        "decision_record": "docs/decisions/ADR-008-ast-grep-runtime-and-skill.md",
+        "activation": "task-triggered",
+        "application_transport": "cli_plus_skill",
+        "initiation_kind": "cli_repository"
+      }
+    },
+    {
+      "capability_id": "ponytail/ponytail-mcp",
+      "display_name": "ponytail-mcp",
+      "package_id": "ponytail",
+      "type": "mcp-server",
+      "source_path": "ponytail-mcp",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "ponytail-mcp/package.json",
+          "ponytail-mcp/index.js"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "ponytail",
+        "decision_record": "docs/decisions/ADR-006-ponytail-deployment.md",
+        "activation": "opt-in",
+        "initiation_kind": "nested_mcp_in_skill_repository"
+      }
+    },
+    {
+      "capability_id": "caveman/caveman-shrink",
+      "display_name": "caveman-shrink",
+      "package_id": "caveman",
+      "type": "mcp-server",
+      "source_path": "src/mcp-servers/caveman-shrink",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "src/mcp-servers/caveman-shrink/package.json",
+          "src/mcp-servers/caveman-shrink/index.js"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "caveman",
+        "decision_record": "docs/decisions/ADR-007-caveman-deployment.md",
+        "activation": "opt-in",
+        "initiation_kind": "nested_mcp_in_skill_repository"
+      }
+    },
+    {
+      "capability_id": "private-journal-mcp/server",
+      "display_name": "private-journal-mcp",
+      "package_id": "private-journal-mcp",
+      "type": "mcp-server",
+      "source_path": "src/server.ts",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "package.json",
+          "src/server.ts"
+        ],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "obra",
+        "decision_record": "docs/initiation-kinds.md",
+        "activation": "quarantined",
+        "initiation_kind": "mcp_repository",
+        "approval": "quarantined"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg-project/overlays",
+      "display_name": "hhpe-overlays-link",
+      "package_id": "hhpe-hrg-project",
+      "type": "reference",
+      "source_path": "overlays.link",
+      "self_contained": true,
+      "requires": {
+        "files": [
+          "overlays.link",
+          "README.md"
+        ],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/initiation-kinds.md",
+        "activation": "always",
+        "initiation_kind": "companion_repository",
+        "points_to_package": "hhpe-overlays"
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg-project/core-dev-services",
+      "display_name": "xlotyl-dev-services",
+      "package_id": "hhpe-hrg-project",
+      "type": "mcp-server",
+      "source_path": "mcp/core-dev-services.json",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "mcp/core-dev-services.json",
+          "README.md"
+        ],
+        "executables": [
+          "node"
+        ],
+        "environment": [
+          "HHPE_HRG_HOME",
+          "HHPE_HRG_PROJECT_ROOT"
+        ]
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/initiation-kinds.md",
+        "activation": "task-triggered",
+        "initiation_kind": "companion_repository",
+        "mcp_name": "xlotyl-dev-services",
+        "launch_from": "https://github.com/HHPE-HRG/hhpe-hrg-project/tree/main/infrastructure/xlotyl/services/core-dev-services"
       }
     }
   ]

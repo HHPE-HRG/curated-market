@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-15T16:33:56.606Z",
+  "description": "Externally vended sources preserved inside HHPE curated-market. HHPE overlays are local and excluded.",
+  "vendors": [
+    {
+      "vendor_id": "every-inc",
+      "display_name": "Every",
+      "organization": "Every Inc",
+      "github_org": "EveryInc",
+      "homepage": "https://every.to",
+      "packages": [
+        {
+          "package_id": "compound-engineering",
+          "repository": "https://github.com/EveryInc/compound-engineering-plugin",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "compound-engineering-plugin",
+          "role": "lifecycle_owner",
+          "initiation_kind": "skill_repository"
+        }
+      ]
+    },
+    {
+      "vendor_id": "obra",
+      "display_name": "Jesse Vincent / Prime Radiant",
+      "organization": "Prime Radiant",
+      "github_org": "obra",
+      "homepage": "https://primeradiant.com",
+      "packages": [
+        {
+          "package_id": "superpowers",
+          "repository": "https://github.com/obra/superpowers",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "superpowers-dev",
+          "role": "supporting_process_skills",
+          "initiation_kind": "skill_repository"
+        },
+        {
+          "package_id": "private-journal-mcp",
+          "repository": "https://github.com/obra/private-journal-mcp",
+          "vend_kind": "mcp_server_package",
+          "initiation_kind": "mcp_repository",
+          "marketplace_identity": "private-journal-mcp",
+          "approval": "quarantined",
+          "role": "private_journaling",
+          "application": "Quarantined MCP; not exposed to ordinary host catalogs until privacy review."
+        }
+      ]
+    },
+    {
+      "vendor_id": "trail-of-bits",
+      "display_name": "Trail of Bits",
+      "organization": "Trail of Bits",
+      "github_org": "trailofbits",
+      "homepage": "https://www.trailofbits.com",
+      "packages": [
+        {
+          "package_id": "trailofbits",
+          "repository": "https://github.com/trailofbits/skills",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "trailofbits",
+          "role": "security_specialists",
+          "initiation_kind": "skill_repository"
+        }
+      ]
+    },
+    {
+      "vendor_id": "dietrich-gebert",
+      "display_name": "Dietrich Gebert",
+      "organization": null,
+      "github_org": "DietrichGebert",
+      "homepage": "https://github.com/DietrichGebert",
+      "packages": [
+        {
+          "package_id": "ponytail",
+          "repository": "https://github.com/DietrichGebert/ponytail",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "ponytail",
+          "role": "behavioral_layer",
+          "initiation_kind": "skill_repository_with_nested_mcp",
+          "nested_mcp": true
+        }
+      ]
+    },
+    {
+      "vendor_id": "julius-brussee",
+      "display_name": "Julius Brussee",
+      "organization": null,
+      "github_org": "JuliusBrussee",
+      "homepage": "https://github.com/JuliusBrussee",
+      "packages": [
+        {
+          "package_id": "caveman",
+          "repository": "https://github.com/JuliusBrussee/caveman",
+          "vend_kind": "claude_plugin_marketplace",
+          "marketplace_identity": "caveman",
+          "role": "behavioral_layer",
+          "initiation_kind": "skill_repository_with_nested_mcp",
+          "nested_mcp": true
+        }
+      ]
+    },
+    {
+      "vendor_id": "oraios",
+      "display_name": "Oraios AI",
+      "organization": "Oraios AI",
+      "github_org": "oraios",
+      "homepage": "https://oraios-ai.de/",
+      "packages": [
+        {
+          "package_id": "serena",
+          "repository": "https://github.com/oraios/serena",
+          "vend_kind": "mcp_server_package",
+          "marketplace_identity": "io.github.oraios/serena",
+          "mcp_server_schema": "server.json",
+          "runtime": "uv:serena-agent==1.5.3",
+          "role": "semantic_code_intelligence",
+          "notes": "Upstream forbids third-party MCP/plugin marketplace installers; curated-market vends the commit-pinned Oraios package plus the locked uv runtime and HHPE routing wrapper.",
+          "initiation_kind": "mcp_repository"
+        }
+      ]
+    },
+    {
+      "vendor_id": "upstash",
+      "display_name": "Upstash",
+      "organization": "Upstash",
+      "github_org": "upstash",
+      "homepage": "https://context7.com",
+      "packages": [
+        {
+          "package_id": "context7",
+          "repository": "https://github.com/upstash/context7",
+          "vend_kind": "mcp_server_package",
+          "initiation_kind": "mcp_repository",
+          "marketplace_identity": "io.github.upstash/context7",
+          "mcp_server_schema": "server.json",
+          "runtime_cli": "npm:ctx7@0.5.4",
+          "runtime_mcp": "npm:@upstash/context7-mcp",
+          "role": "documentation_grounding",
+          "application": "Prefer task-triggered CLI (ctx7) + hhpe-hrg/context7-guidance; expose MCP as mcpServer without always-on session load."
+        }
+      ]
+    },
+    {
+      "vendor_id": "microsoft",
+      "display_name": "Microsoft",
+      "organization": "Microsoft Corporation",
+      "github_org": "microsoft",
+      "homepage": "https://playwright.dev",
+      "packages": [
+        {
+          "package_id": "playwright-mcp",
+          "repository": "https://github.com/microsoft/playwright-mcp",
+          "vend_kind": "mcp_server_package",
+          "initiation_kind": "mcp_repository",
+          "marketplace_identity": "io.github.microsoft/playwright-mcp",
+          "mcp_server_schema": "server.json",
+          "related_framework": "https://github.com/microsoft/playwright",
+          "runtime_cli": "npm:@playwright/cli@0.1.17",
+          "runtime_mcp": "npm:@playwright/mcp@0.0.78",
+          "role": "browser_acceptance",
+          "application": "HHPE browser acceptance uses Playwright CLI + guidance skill; microsoft/playwright-mcp is the MCP-compatible vend surface for the Playwright application family (full playwright monorepo not pinned)."
+        }
+      ]
+    },
+    {
+      "vendor_id": "ast-grep",
+      "display_name": "ast-grep",
+      "organization": null,
+      "github_org": "ast-grep",
+      "homepage": "https://ast-grep.github.io/",
+      "packages": [
+        {
+          "package_id": "ast-grep",
+          "repository": "https://github.com/ast-grep/ast-grep",
+          "vend_kind": "cli_runtime_package",
+          "initiation_kind": "cli_repository",
+          "marketplace_identity": null,
+          "runtime_cli": "npm:@ast-grep/cli@0.43.0",
+          "role": "syntax_tree_search",
+          "application": "CLI + HHPE guidance skill only. Not initiated as mcpServer; third-party ast-grep MCP wrappers are out of HHPE application scope."
+        }
+      ]
+    },
+    {
+      "vendor_id": "hhpe-hrg",
+      "display_name": "HHPE-HRG",
+      "organization": "HHPE-HRG",
+      "github_org": "HHPE-HRG",
+      "homepage": "https://github.com/HHPE-HRG",
+      "packages": [
+        {
+          "package_id": "hhpe-hrg-project",
+          "repository": "https://github.com/HHPE-HRG/hhpe-hrg-project",
+          "vend_kind": "owned_companion",
+          "initiation_kind": "companion_repository",
+          "overlay_package": "hhpe-overlays",
+          "overlay_canonical_repo": "https://github.com/HHPE-HRG/curated-market",
+          "mcp_services": [
+            "xlotyl-dev-services"
+          ],
+          "role": "stack_owner",
+          "application": "Direct companion link: overlays stay in curated-market; Core Dev Services MCP launches from the wrapper checkout."
+        },
+        {
+          "package_id": "hhpe-overlays",
+          "repository": "https://github.com/HHPE-HRG/curated-market",
+          "vend_kind": "owned_overlay",
+          "initiation_kind": "owned_overlay",
+          "role": "routing_wrappers",
+          "application": "Canonical HHPE guidance/skills overlays consumed by hhpe-hrg-project."
+        }
+      ]
+    }
+  ],
+  "initiation_policy": {
+    "skill_repository": "Enable skill/agent/workflow/command/hook components from plugin marketplaces. Never coerce into mcpServer-only initiation.",
+    "mcp_repository": "Enable mcpServer only from MCP server packages (server.json / mcpName). Pair with locked runtime; do not invent SKILL.md marketplaces for MCP-only products.",
+    "cli_repository": "Pin CLI source for provenance; expose via tools.yaml runtime + HHPE guidance skill. Do not initiate as mcpServer unless upstream ships an official MCP package adopted by HHPE.",
+    "local_overlay": "HHPE routing wrappers only; never rewrite upstream identities.",
+    "skill_repository_with_nested_mcp": "Keep skill/agent/command/hook initiation; also enable mcpServer for nested MCP companions registered as mcp-server capabilities. Nested MCP activation remains opt-in unless an ADR says otherwise.",
+    "companion_repository": "Owned sibling repo reference without vendoring the whole tree. Use for overlay ownership links and wrapper-launched MCP services.",
+    "owned_overlay": "HHPE-owned overlays canonical in curated-market; companion stack consumes via HHPE_HRG_HOME."
+  }
+}
