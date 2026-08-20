@@ -1,0 +1,43 @@
+{
+  "name": "hhpe-curated-market",
+  "owner": {
+    "name": "HHPE-HRG"
+  },
+  "metadata": {
+    "description": "Private HHPE curated skills marketplace (commit-pinned vendors + HHPE overlays)",
+    "version": "1.0.0",
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "compound-engineering",
+      "source": "compound-engineering",
+      "description": "Brainstorm, plan, debug, review, and compound learnings with AI agents"
+    },
+    {
+      "name": "superpowers",
+      "source": "superpowers",
+      "description": "Core skills library: TDD, debugging, collaboration patterns, and proven techniques"
+    },
+    {
+      "name": "ponytail",
+      "source": "ponytail",
+      "description": "Lazy senior-dev mode skills for AI agents"
+    },
+    {
+      "name": "caveman",
+      "source": "caveman",
+      "description": "Ultra-compressed communication mode skills"
+    },
+    {
+      "name": "trailofbits",
+      "source": "trailofbits",
+      "description": "Trail of Bits security and review skills"
+    },
+    {
+      "name": "hhpe-registry",
+      "source": "hhpe-registry",
+      "description": "HHPE registry routing, health, and specialist guidance skills"
+    }
+  ]
+}

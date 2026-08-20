@@ -1,0 +1,15 @@
+{
+  "name": "hhpe-registry",
+  "description": "HHPE registry routing, health, specialist guidance, and session-start policy",
+  "version": "0.1.0",
+  "author": {
+    "name": "HHPE HRG"
+  },
+  "skills": "./skills/",
+  "license": "Proprietary",
+  "keywords": [
+    "hhpe",
+    "registry",
+    "routing"
+  ]
+}

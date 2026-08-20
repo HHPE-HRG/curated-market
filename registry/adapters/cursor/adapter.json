@@ -1,1 +1,14 @@
-{"mode":"retain-native-plugin-pending-probe","skill_root":null,"preserve":["settings","rules","mcp","agents","plugins"],"reload":"window-reload"}
+{
+  "mode": "cursor-team-marketplace",
+  "marketplace": ".cursor-plugin/marketplace.json",
+  "plugin_root": "plugins",
+  "preserve": [
+    "settings",
+    "rules",
+    "mcp",
+    "agents",
+    "plugins"
+  ],
+  "reload": "window-reload",
+  "note": "Import HHPE-HRG/curated-market as a Cursor Team Marketplace; Auto Refresh via Cursor GitHub App."
+}

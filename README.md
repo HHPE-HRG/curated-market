@@ -23,6 +23,22 @@ hhpe-registry-sync                 # dry run
 
 Pinned package trees under `registry/packages/` are intentionally not published in git; `registry/manifests/packages.lock.yaml` is the source of truth for repository + commit. Host-local link state lives in `migration-state.yaml` / `discovered-installations.yaml` and is regenerated on each machine via discover/sync.
 
+## Cursor Team Marketplace (private)
+
+This repo is **import-ready** as a Cursor Team Marketplace. Committed projection:
+
+- `.cursor-plugin/marketplace.json`
+- `plugins/{compound-engineering,superpowers,ponytail,caveman,trailofbits,hhpe-registry}/`
+
+**Only remaining operator step:** Dashboard → Plugins → Import from Repo → `https://github.com/HHPE-HRG/curated-market`. Details: [`docs/cursor-team-marketplace.md`](docs/cursor-team-marketplace.md).
+
+Regenerate after pin/overlay changes (requires local `registry/packages/`):
+
+```sh
+npm run marketplace:cursor
+npm run marketplace:cursor:validate
+```
+
 ## Operations
 
 ```sh
