@@ -37,7 +37,7 @@ These facts demonstrate a logical authority boundary. They do not determine its 
 2. **Portable requirements and host observations have different lifecycles.** Approval changes through review; realization changes through host, environment, installation, and runtime events.
 3. **Preserve facts instead of compressing them into one status.** Presence, version compatibility, and readiness are related but orthogonal.
 4. **Every compatibility conclusion is contextual.** It applies to one ToolSpec requirement and one execution context using identified evidence.
-5. **Historical evidence remains historical.** Newer evidence may supersede a prior conclusion for a context without deleting or rewriting the prior observation.
+5. **Historical evidence remains historical.** Supersession does not rewrite a prior observation's meaning or provenance. Retention is governed separately; where prior observations are retained, they remain historical evidence rather than current realization truth.
 6. **Tool-specific readiness is expected.** Common identity and observation linkage do not require one universal functional probe.
 7. **Physical implementation remains replaceable.** One artifact, multiple artifacts, existing reports, or runtime-emitted observations may implement the same logical contracts.
 8. **No speculative runtime is required.** The contracts may be implemented by existing validators, workers, probes, and report mechanisms.
@@ -362,7 +362,7 @@ Verify:
 - valid capability linkage;
 - approved coordinate and version provenance;
 - no host paths or presence observations in portable specification;
-- reproducible canonical specification generation;
+- where generation writes or becomes authoritative for canonical ToolSpec data, reproducible and non-destructive generation;
 - no registered tool loss during regeneration; and
 - deterministic linkage between observation and specification revision.
 
@@ -417,7 +417,7 @@ A future physical design is acceptable only if it:
 5. preserves worker portability and independent realization;
 6. truthfully distinguishes complete vendoring from approved external coordinates;
 7. keeps evidence semantics separate from storage location;
-8. reproduces canonical ToolSpec data without destructive drift;
+8. where generation writes or becomes authoritative for canonical ToolSpec data, makes that generation reproducible and non-destructive;
 9. provides a compatibility path for demonstrated consumers; and
 10. adds no infrastructure beyond what concrete consumer and evidence requirements justify.
 
