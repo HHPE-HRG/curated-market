@@ -23,6 +23,8 @@ hhpe-registry-sync                 # dry run
 
 Pinned package trees under `registry/packages/` are intentionally not published in git; `registry/manifests/packages.lock.yaml` is the source of truth for repository + commit. Host-local link state lives in `migration-state.yaml` / `discovered-installations.yaml` and is regenerated on each machine via discover/sync.
 
+`registry/manifests/tools.yaml` is initially hand-authored, reviewed canonical ToolSpec data. General manifest generation must not create or overwrite it; any future ToolSpec generator requires a separately reviewed authority and reproducibility decision.
+
 ## Operations
 
 ```sh
