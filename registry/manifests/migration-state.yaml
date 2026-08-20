@@ -99,6 +99,7 @@
       "kind": "symlink",
       "path": "/home/hold3n/.local/bin/ast-grep",
       "source": "/home/hold3n/.nvm/versions/node/v20.20.2/bin/ast-grep",
+      "tool_id": "ast-grep-runtime",
       "classification": "created_by_hhpe",
       "created_at": "2026-07-10T19:05:08.449Z"
     },
@@ -106,6 +107,7 @@
       "kind": "symlink",
       "path": "/home/hold3n/.local/bin/sg",
       "source": "/home/hold3n/.nvm/versions/node/v20.20.2/bin/sg",
+      "tool_id": "ast-grep-runtime",
       "classification": "created_by_hhpe",
       "created_at": "2026-07-10T19:05:08.608Z"
     },
