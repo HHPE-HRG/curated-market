@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {spawnSync} from 'node:child_process';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 import {
@@ -11,6 +12,46 @@ import {
 } from '../lib/opencode-specialization.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+test('project configuration selects only OpenAI and Cursor and pins classic Cursor provider', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  assert.deepEqual(files.projectConfig.enabled_providers, ['openai', 'cursor']);
+  assert.deepEqual(files.projectConfig.plugin, ['cursor-opencode-provider@0.6.3']);
+  assert.equal(validateOpencodeOnly({...files, root: ROOT}).ok, true);
+});
+
+test('project configuration contains no credential, model catalog, local path, or OpenCode 2 entrypoint', () => {
+  const text = fs.readFileSync(path.join(ROOT, 'opencode.json'), 'utf8');
+  assert.doesNotMatch(text, /OPENAI_API_KEY|api[_-]?key|auth\.json|opencode2|node_modules|(?:^|["'])\/(?:Users|home|tmp)\//i);
+  assert.equal(Object.hasOwn(JSON.parse(text), 'model'), false);
+});
+
+test('project configuration rejects non-canonical bindings and unsafe nested values', () => {
+  const {specialization, projectConfig, agents} = readOpencodeOnlyFiles({root: ROOT});
+  for (const mutate of [
+    value => { value.enabled_providers = ['openai']; },
+    value => { value.plugin = ['cursor-opencode-provider@latest']; },
+    value => { value.instructions = ['/tmp/AGENTS.md']; },
+    value => { value.model = 'openai/gpt-5'; },
+    value => { value.extra = {credentials: 'browser'}; },
+    value => { value.extra = {env: 'OPENAI_API_KEY'}; },
+    value => { value.extra = {plugin_path: './plugin.mjs'}; },
+    value => { value.extra = {source: 'https://github.com/example/provider#main'}; },
+    value => { value.extra = {entrypoint: 'opencode2'}; },
+  ]) {
+    const value = structuredClone(projectConfig);
+    mutate(value);
+    assert.equal(validateOpencodeOnly({root: ROOT, specialization, projectConfig: value, agents}).ok, false);
+  }
+});
+
+test('validate:opencode invokes static policy CLI', () => {
+  const packageJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+  assert.equal(packageJson.scripts['validate:opencode'], 'node lib/opencode-specialization.mjs');
+  const result = spawnSync(process.execPath, ['lib/opencode-specialization.mjs'], {cwd: ROOT, encoding: 'utf8'});
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(JSON.parse(result.stdout), {ok: true, errors: []});
+});
 
 test('specialization manifest is exact executable opencode_only authority', () => {
   const {specialization} = readOpencodeOnlyFiles({root: ROOT});
