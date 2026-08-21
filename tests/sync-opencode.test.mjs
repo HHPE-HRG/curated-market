@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import test from 'node:test';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {
   OPENCODE_SKILL_PROJECTIONS,
   checkOpencodeSkills,
@@ -84,6 +84,15 @@ function copyCli(fixture) {
   return script;
 }
 
+async function importEditedScript(t, edit) {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const script = copyCli(fixture);
+  const source = fs.readFileSync(script, 'utf8');
+  fs.writeFileSync(script, edit(source));
+  return import(`${pathToFileURL(script).href}?test=${Date.now()}-${Math.random()}`);
+}
+
 test('ownership mapping is the exact frozen Phase-1 seven', () => {
   assert.deepEqual(OPENCODE_SKILL_PROJECTIONS, PROJECTIONS);
   assert.deepEqual(OPENCODE_SKILL_PROJECTIONS.map(item => item.capabilityId), [
@@ -96,6 +105,28 @@ test('ownership mapping is the exact frozen Phase-1 seven', () => {
     'hhpe-hrg/session-start',
   ]);
   assert.ok(Object.isFrozen(OPENCODE_SKILL_PROJECTIONS));
+  assert.ok(OPENCODE_SKILL_PROJECTIONS.every(Object.isFrozen));
+  assert.throws(() => {
+    OPENCODE_SKILL_PROJECTIONS[0].destination = '../escape';
+  }, TypeError);
+});
+
+test('mapping rejects traversal names before use', async t => {
+  await assert.rejects(
+    importEditedScript(t, source => source.replace("source: 'ast-grep'", "source: '../ast-grep'")),
+    /source must be a basename/,
+  );
+});
+
+test('mapping rejects duplicate source and destination names', async t => {
+  await assert.rejects(
+    importEditedScript(t, source => source.replaceAll("source: 'registry-health'", "source: 'ast-grep'")),
+    /duplicate OpenCode skill source: ast-grep/,
+  );
+  await assert.rejects(
+    importEditedScript(t, source => source.replaceAll("destination: 'registry-health'", "destination: 'ast-grep'")),
+    /duplicate OpenCode skill destination: ast-grep/,
+  );
 });
 
 test('invalid source aborts before any owned destination mutation', t => {
@@ -200,6 +231,171 @@ test('output root and owned destination symlinks are rejected before mutation', 
   const before = snapshot(second.outputRoot);
   assert.throws(() => syncOpencodeSkills(second), /unsupported OpenCode output entry/);
   assert.deepEqual(snapshot(second.outputRoot), before);
+});
+
+test('sync rejects every raw output-root symlink spelling without touching its target', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const external = path.join(fixture.root, 'external-output');
+  fs.mkdirSync(path.join(external, 'ast-grep'), {recursive: true});
+  fs.writeFileSync(path.join(external, 'ast-grep/external.txt'), 'external\n');
+  const before = snapshot(external);
+  for (const [name, suffix] of [['plain', ''], ['slash', path.sep], ['dot', `${path.sep}.`]]) {
+    const link = path.join(fixture.root, `output-${name}`);
+    fs.symlinkSync(external, link, 'dir');
+    assert.throws(
+      () => syncOpencodeSkills({...fixture, outputRoot: `${link}${suffix}`}),
+      /OpenCode skills output root.*symlink/,
+    );
+    assert.deepEqual(snapshot(external), before);
+  }
+});
+
+test('comparison rejects every raw output-root symlink spelling without touching its target', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const external = path.join(fixture.root, 'external-comparison');
+  syncOpencodeSkills({...fixture, outputRoot: external});
+  const before = snapshot(external);
+  for (const [name, suffix] of [['plain', ''], ['slash', path.sep], ['dot', `${path.sep}.`]]) {
+    const link = path.join(fixture.root, `comparison-${name}`);
+    fs.symlinkSync(external, link, 'dir');
+    const result = compareOpencodeSkills({...fixture, outputRoot: `${link}${suffix}`});
+    assert.equal(result.ok, false);
+    assert.ok(result.differences.some(item => /generated OpenCode skills root is a symlink/.test(item)));
+    assert.deepEqual(snapshot(external), before);
+  }
+});
+
+test('generation uses the complete preflight snapshot after a canonical source swap', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const source = path.join(fixture.sources, 'session-start/SKILL.md');
+  const originalMkdir = fs.mkdirSync;
+  let swapped = false;
+  fs.mkdirSync = function (...args) {
+    if (!swapped) {
+      swapped = true;
+      fs.writeFileSync(source, 'changed after preflight\n');
+    }
+    return originalMkdir.apply(this, args);
+  };
+  try {
+    syncOpencodeSkills(fixture);
+  } finally {
+    fs.mkdirSync = originalMkdir;
+  }
+  assert.equal(fs.readFileSync(source, 'utf8'), 'changed after preflight\n');
+  assert.equal(fs.readFileSync(path.join(fixture.outputRoot, 'session-start/SKILL.md'), 'utf8'), 'session-start\n');
+});
+
+test('staging failure leaves all owned and neighboring output unchanged', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  fs.mkdirSync(path.join(fixture.outputRoot, 'ast-grep'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'ast-grep/old.txt'), 'old\n');
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const before = snapshot(fixture.outputRoot);
+  const originalChmod = fs.chmodSync;
+  let calls = 0;
+  fs.chmodSync = function (...args) {
+    if (++calls === 2) throw new Error('injected staging failure');
+    return originalChmod.apply(this, args);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /injected staging failure/);
+  } finally {
+    fs.chmodSync = originalChmod;
+  }
+  assert.deepEqual(snapshot(fixture.outputRoot), before);
+});
+
+test('output-root swap during staging is rejected without touching external target or neighbor', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const movedOutput = path.join(fixture.root, 'moved-output');
+  const neighborBefore = snapshot(fixture.outputRoot);
+  const external = path.join(fixture.root, 'external-swap-target');
+  fs.mkdirSync(path.join(external, 'ast-grep'), {recursive: true});
+  fs.writeFileSync(path.join(external, 'ast-grep/external.txt'), 'external\n');
+  const externalBefore = snapshot(external);
+  const originalMkdir = fs.mkdirSync;
+  let swapped = false;
+  fs.mkdirSync = function (target, ...args) {
+    if (!swapped) {
+      swapped = true;
+      fs.renameSync(fixture.outputRoot, movedOutput);
+      fs.symlinkSync(external, fixture.outputRoot, 'dir');
+    }
+    return originalMkdir.call(this, target, ...args);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /OpenCode skills output root.*symlink|changed during generation/);
+  } finally {
+    fs.mkdirSync = originalMkdir;
+  }
+  assert.deepEqual(snapshot(external), externalBefore);
+  assert.deepEqual(snapshot(movedOutput), neighborBefore);
+});
+
+test('ordinary output-root replacement during staging is rejected', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const movedOutput = path.join(fixture.root, 'moved-ordinary-output');
+  const originalBefore = snapshot(fixture.outputRoot);
+  const originalMkdir = fs.mkdirSync;
+  let swapped = false;
+  fs.mkdirSync = function (target, ...args) {
+    if (!swapped) {
+      swapped = true;
+      fs.renameSync(fixture.outputRoot, movedOutput);
+      originalMkdir.call(this, fixture.outputRoot, {recursive: true});
+      fs.writeFileSync(path.join(fixture.outputRoot, 'replacement.txt'), 'replacement\n');
+    }
+    return originalMkdir.call(this, target, ...args);
+  };
+  const replacementBefore = () => snapshot(fixture.outputRoot);
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /output root changed during generation/);
+  } finally {
+    fs.mkdirSync = originalMkdir;
+  }
+  assert.deepEqual(snapshot(movedOutput), originalBefore);
+  assert.deepEqual(replacementBefore(), [
+    {path: 'replacement.txt', type: 'file', bytes: Buffer.from('replacement\n').toString('hex'), mode: 0o644},
+  ]);
+});
+
+test('ordinary owned destination replacement during staging is rejected', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const destination = path.join(fixture.outputRoot, 'ast-grep');
+  fs.mkdirSync(destination, {recursive: true});
+  fs.writeFileSync(path.join(destination, 'old.txt'), 'old\n');
+  const movedDestination = path.join(fixture.root, 'moved-owned-destination');
+  const originalMkdir = fs.mkdirSync;
+  let swapped = false;
+  fs.mkdirSync = function (target, ...args) {
+    if (!swapped) {
+      swapped = true;
+      fs.renameSync(destination, movedDestination);
+      originalMkdir.call(this, destination, {recursive: true});
+      fs.writeFileSync(path.join(destination, 'replacement.txt'), 'replacement\n');
+    }
+    return originalMkdir.call(this, target, ...args);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /OpenCode skill destination changed during generation: ast-grep/);
+  } finally {
+    fs.mkdirSync = originalMkdir;
+  }
+  assert.equal(fs.readFileSync(path.join(movedDestination, 'old.txt'), 'utf8'), 'old\n');
+  assert.equal(fs.readFileSync(path.join(destination, 'replacement.txt'), 'utf8'), 'replacement\n');
 });
 
 test('sync recursively copies only mapped skills with normalized deterministic modes', t => {
@@ -339,6 +535,26 @@ test('CLI rejects unknown modes with usage and exit 2', t => {
   cleanFixture(t, fixture);
   const script = copyCli(fixture);
   const result = spawnSync(process.execPath, [script, 'unknown'], {encoding: 'utf8'});
+  assert.equal(result.status, 2);
+  assert.equal(result.stderr, 'usage: sync-opencode.mjs [generate|check]\n');
+  assert.equal(fs.existsSync(path.join(fixture.root, '.opencode/skills')), false);
+});
+
+test('CLI rejects bare invocation without generating output', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const script = copyCli(fixture);
+  const result = spawnSync(process.execPath, [script], {encoding: 'utf8'});
+  assert.equal(result.status, 2);
+  assert.equal(result.stderr, 'usage: sync-opencode.mjs [generate|check]\n');
+  assert.equal(fs.existsSync(path.join(fixture.root, '.opencode/skills')), false);
+});
+
+test('CLI rejects extra arguments without generating output', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const script = copyCli(fixture);
+  const result = spawnSync(process.execPath, [script, 'generate', 'extra'], {encoding: 'utf8'});
   assert.equal(result.status, 2);
   assert.equal(result.stderr, 'usage: sync-opencode.mjs [generate|check]\n');
   assert.equal(fs.existsSync(path.join(fixture.root, '.opencode/skills')), false);

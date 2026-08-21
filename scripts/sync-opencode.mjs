@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-export const OPENCODE_SKILL_PROJECTIONS = Object.freeze([
+const OPENCODE_SKILL_PROJECTION_RECORDS = [
   {capabilityId: 'hhpe-hrg/ast-grep', source: 'ast-grep', destination: 'ast-grep'},
   {capabilityId: 'hhpe-hrg/registry-health', source: 'registry-health', destination: 'registry-health'},
   {capabilityId: 'hhpe-hrg/stack-router', source: 'stack-router', destination: 'stack-router'},
@@ -12,7 +12,34 @@ export const OPENCODE_SKILL_PROJECTIONS = Object.freeze([
   {capabilityId: 'hhpe-hrg/context7-guidance', source: 'context7-guidance', destination: 'context7-guidance'},
   {capabilityId: 'hhpe-hrg/playwright-guidance', source: 'playwright-guidance', destination: 'playwright-guidance'},
   {capabilityId: 'hhpe-hrg/session-start', source: 'session-start', destination: 'session-start'},
-]);
+];
+
+function requireClosedProjectionMapping(projections) {
+  for (const field of ['source', 'destination']) {
+    const seen = new Set();
+    for (const projection of projections) {
+      const name = projection[field];
+      if (
+        typeof name !== 'string' ||
+        name === '' ||
+        name === '.' ||
+        name === '..' ||
+        path.basename(name) !== name ||
+        name.includes('/') ||
+        name.includes('\\')
+      ) {
+        throw new Error(`OpenCode skill ${field} must be a basename: ${name}`);
+      }
+      if (seen.has(name)) throw new Error(`duplicate OpenCode skill ${field}: ${name}`);
+      seen.add(name);
+    }
+  }
+}
+
+requireClosedProjectionMapping(OPENCODE_SKILL_PROJECTION_RECORDS);
+export const OPENCODE_SKILL_PROJECTIONS = Object.freeze(
+  OPENCODE_SKILL_PROJECTION_RECORDS.map(projection => Object.freeze(projection)),
+);
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const canonicalSkillsRoot = root => path.join(root, 'registry/overlays/wrappers');
@@ -29,6 +56,16 @@ function resolvedLocation(file) {
     existing = parent;
   }
   return path.join(fs.realpathSync(existing), ...missing);
+}
+
+function existingParent(directory) {
+  let current = path.dirname(directory);
+  while (!fs.existsSync(current)) {
+    const parent = path.dirname(current);
+    if (parent === current) break;
+    current = parent;
+  }
+  return fs.realpathSync(current);
 }
 
 function contains(parent, child) {
@@ -55,25 +92,41 @@ function validateRoots(sourceRoot, outputRoot) {
   if (source === output || contains(source, output) || contains(output, source)) {
     throw new Error('canonical source and output roots overlap');
   }
-  return output;
+  return {source, output};
 }
 
-function requireCanonicalSkill(source, name) {
+function requireCanonicalSkillRoot(source, name) {
   const stat = fs.lstatSync(source, {throwIfNoEntry: false});
   if (!stat?.isDirectory() || stat.isSymbolicLink()) {
     throw new Error(`missing canonical OpenCode skill: ${name}`);
   }
-  const visit = directory => {
+}
+
+function snapshotCanonicalSkill(source) {
+  const entries = [];
+  const visit = (directory, prefix = '') => {
     fs.accessSync(directory, fs.constants.R_OK | fs.constants.X_OK);
-    for (const name of fs.readdirSync(directory).sort()) {
-      const file = path.join(directory, name);
+    for (const child of fs.readdirSync(directory).sort()) {
+      const file = path.join(directory, child);
+      const relative = path.join(prefix, child);
       const entry = fs.lstatSync(file);
-      if (entry.isDirectory()) visit(file);
-      else if (entry.isFile()) fs.accessSync(file, fs.constants.R_OK);
+      if (entry.isDirectory()) {
+        entries.push(Object.freeze({relative, type: 'directory'}));
+        visit(file, relative);
+      } else if (entry.isFile()) {
+        fs.accessSync(file, fs.constants.R_OK);
+        entries.push(Object.freeze({
+          relative,
+          type: 'file',
+          bytes: fs.readFileSync(file).toString('base64'),
+          executable: Boolean(entry.mode & 0o111),
+        }));
+      }
       else throw new Error(`unsupported canonical entry: ${file}`);
     }
   };
   visit(source);
+  return Object.freeze(entries);
 }
 
 function requireSafeOwnedOutput(destination) {
@@ -91,17 +144,52 @@ function requireSafeOwnedOutput(destination) {
   visit(destination);
 }
 
-function copyCanonicalTree(source, destination) {
+function materializeSnapshot(snapshot, destination) {
   fs.mkdirSync(destination, {recursive: true, mode: 0o755});
   fs.chmodSync(destination, 0o755);
-  for (const name of fs.readdirSync(source).sort()) {
-    const from = path.join(source, name);
-    const to = path.join(destination, name);
-    const stat = fs.lstatSync(from);
-    if (stat.isDirectory()) copyCanonicalTree(from, to);
-    else {
-      fs.copyFileSync(from, to);
-      fs.chmodSync(to, stat.mode & 0o111 ? 0o755 : 0o644);
+  for (const entry of snapshot) {
+    const target = path.join(destination, entry.relative);
+    if (entry.type === 'directory') {
+      fs.mkdirSync(target, {recursive: true, mode: 0o755});
+      fs.chmodSync(target, 0o755);
+    } else {
+      fs.writeFileSync(target, Buffer.from(entry.bytes, 'base64'));
+      fs.chmodSync(target, entry.executable ? 0o755 : 0o644);
+    }
+  }
+}
+
+function nodeIdentity(file) {
+  const stat = fs.lstatSync(file, {throwIfNoEntry: false});
+  return stat ? {exists: true, device: stat.dev, inode: stat.ino} : {exists: false};
+}
+
+function sameIdentity(left, right) {
+  return left.exists === right.exists && (!left.exists || (left.device === right.device && left.inode === right.inode));
+}
+
+function validateOwnedOutputs(
+  outputRoot,
+  resolvedOutputRoot,
+  skills,
+  expectedOutputIdentity,
+  expectedDestinationIdentities,
+) {
+  requireDirectoryRoot(outputRoot, 'OpenCode skills output root');
+  if (resolvedLocation(outputRoot) !== resolvedOutputRoot) {
+    throw new Error('OpenCode skills output root changed during generation');
+  }
+  if (expectedOutputIdentity && !sameIdentity(nodeIdentity(outputRoot), expectedOutputIdentity)) {
+    throw new Error('OpenCode skills output root changed during generation');
+  }
+  for (const skill of skills) {
+    if (!contains(resolvedOutputRoot, resolvedLocation(skill.destinationPath))) {
+      throw new Error(`unsafe OpenCode skill destination: ${skill.destination}`);
+    }
+    requireSafeOwnedOutput(skill.destinationPath);
+    const expected = expectedDestinationIdentities?.get(skill.destination);
+    if (expected && !sameIdentity(nodeIdentity(skill.destinationPath), expected)) {
+      throw new Error(`OpenCode skill destination changed during generation: ${skill.destination}`);
     }
   }
 }
@@ -191,25 +279,61 @@ export function syncOpencodeSkills({
   outputRoot = checkedInSkillsRoot(root),
 } = {}) {
   const sourceRoot = canonicalSkillsRoot(root);
-  const resolvedOutputRoot = validateRoots(sourceRoot, outputRoot);
+  const normalizedOutputRoot = path.resolve(outputRoot);
+  const {source: resolvedSourceRoot, output: resolvedOutputRoot} = validateRoots(sourceRoot, normalizedOutputRoot);
   const skills = OPENCODE_SKILL_PROJECTIONS.map(projection => ({
     ...projection,
     sourcePath: path.join(sourceRoot, projection.source),
-    destinationPath: path.join(outputRoot, projection.destination),
+    destinationPath: path.join(normalizedOutputRoot, projection.destination),
   }));
 
-  for (const skill of skills) requireCanonicalSkill(skill.sourcePath, skill.source);
   for (const skill of skills) {
-    if (!contains(resolvedOutputRoot, resolvedLocation(skill.destinationPath))) {
-      throw new Error(`unsafe OpenCode skill destination: ${skill.destination}`);
+    requireCanonicalSkillRoot(skill.sourcePath, skill.source);
+    const resolvedSource = resolvedLocation(skill.sourcePath);
+    if (!contains(resolvedSourceRoot, resolvedSource)) {
+      throw new Error(`unsafe canonical OpenCode skill source: ${skill.source}`);
     }
-    requireSafeOwnedOutput(skill.destinationPath);
+    skill.snapshot = snapshotCanonicalSkill(skill.sourcePath);
   }
+  validateOwnedOutputs(normalizedOutputRoot, resolvedOutputRoot, skills);
+  let outputIdentity = nodeIdentity(normalizedOutputRoot);
+  const destinationIdentities = new Map(
+    skills.map(skill => [skill.destination, nodeIdentity(skill.destinationPath)]),
+  );
 
-  fs.mkdirSync(outputRoot, {recursive: true, mode: 0o755});
-  for (const skill of skills) {
-    fs.rmSync(skill.destinationPath, {recursive: true, force: true});
-    copyCanonicalTree(skill.sourcePath, skill.destinationPath);
+  const stagingRoot = fs.mkdtempSync(path.join(existingParent(normalizedOutputRoot), '.hhpe-opencode-stage-'));
+  try {
+    for (const skill of skills) materializeSnapshot(skill.snapshot, path.join(stagingRoot, skill.destination));
+
+    validateOwnedOutputs(
+      normalizedOutputRoot,
+      resolvedOutputRoot,
+      skills,
+      outputIdentity,
+      destinationIdentities,
+    );
+    fs.mkdirSync(normalizedOutputRoot, {recursive: true, mode: 0o755});
+    if (!outputIdentity.exists) outputIdentity = nodeIdentity(normalizedOutputRoot);
+    validateOwnedOutputs(
+      normalizedOutputRoot,
+      resolvedOutputRoot,
+      skills,
+      outputIdentity,
+      destinationIdentities,
+    );
+    for (const skill of skills) {
+      validateOwnedOutputs(
+        normalizedOutputRoot,
+        resolvedOutputRoot,
+        [skill],
+        outputIdentity,
+        destinationIdentities,
+      );
+      fs.rmSync(skill.destinationPath, {recursive: true, force: true});
+      fs.renameSync(path.join(stagingRoot, skill.destination), skill.destinationPath);
+    }
+  } finally {
+    fs.rmSync(stagingRoot, {recursive: true, force: true});
   }
   return {
     capabilities: skills.map(skill => skill.capabilityId),
@@ -221,7 +345,7 @@ export function compareOpencodeSkills({
   root = REPOSITORY_ROOT,
   outputRoot = checkedInSkillsRoot(root),
 } = {}) {
-  return compareProjectionRoots(canonicalSkillsRoot(root), 'source', outputRoot);
+  return compareProjectionRoots(canonicalSkillsRoot(root), 'source', path.resolve(outputRoot));
 }
 
 export function checkOpencodeSkills({root = REPOSITORY_ROOT} = {}) {
@@ -235,11 +359,11 @@ export function checkOpencodeSkills({root = REPOSITORY_ROOT} = {}) {
 }
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
-  const command = process.argv[2] || 'generate';
-  if (command === 'generate') {
+  const command = process.argv[2];
+  if (process.argv.length === 3 && command === 'generate') {
     const result = syncOpencodeSkills();
     console.log(`generated ${result.destinations.length} project-local OpenCode skills`);
-  } else if (command === 'check') {
+  } else if (process.argv.length === 3 && command === 'check') {
     const result = checkOpencodeSkills();
     if (!result.ok) {
       console.error(result.differences.join('\n'));
