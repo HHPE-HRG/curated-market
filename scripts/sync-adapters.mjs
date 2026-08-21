@@ -51,7 +51,16 @@ function requireCanonicalWrapper(source, name) {
   if (!stat?.isDirectory() || stat.isSymbolicLink()) {
     throw new Error(`missing canonical Codex wrapper: ${name}`);
   }
-  fs.accessSync(source, fs.constants.R_OK | fs.constants.X_OK);
+  const visit = directory => {
+    fs.accessSync(directory, fs.constants.R_OK | fs.constants.X_OK);
+    for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+      const file = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(file);
+      else if (entry.isFile()) fs.accessSync(file, fs.constants.R_OK);
+      else throw new Error(`unsupported canonical entry: ${file}`);
+    }
+  };
+  visit(source);
 }
 
 function copyCanonicalTree(source, destination) {

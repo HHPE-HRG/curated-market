@@ -102,6 +102,17 @@ test('missing late canonical source causes zero output mutation', t => {
   assert.deepEqual(snapshot(outputRoot), before);
 });
 
+test('invalid nested content in a late canonical source causes zero output mutation', t => {
+  const {root, outputRoot} = fixture();
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  syncAdapters({root, outputRoot});
+  fs.writeFileSync(path.join(outputRoot, 'ast-grep/stale.txt'), 'preserve on failed preflight');
+  const before = snapshot(outputRoot);
+  fs.symlinkSync('SKILL.md', path.join(root, 'registry/overlays/wrappers/session-start/nested-link'));
+  assert.throws(() => syncAdapters({root, outputRoot}), /unsupported canonical entry/);
+  assert.deepEqual(snapshot(outputRoot), before);
+});
+
 test('generator rejects source and output overlap without mutating canonical wrappers', t => {
   const {root} = fixture();
   t.after(() => fs.rmSync(root, {recursive: true, force: true}));
