@@ -10,7 +10,7 @@ import {
   readOpencodeOnlyFiles,
   validateOpencodeOnly,
 } from '../lib/opencode-specialization.mjs';
-import {syncOpencodeSkills} from '../scripts/sync-opencode.mjs';
+import {checkOpencodeSkills, syncOpencodeSkills} from '../scripts/sync-opencode.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -227,18 +227,57 @@ test('static specialization validation does not inspect hosts or local auth stat
 test('specialization generation does not inspect or mutate provider home skill roots', t => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-only-home-'));
   t.after(() => fs.rmSync(home, {recursive: true, force: true}));
-  const sentinels = [
-    '.cursor/skills/sentinel',
-    '.agents/skills/sentinel',
-    '.config/opencode/skills/sentinel',
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-only-repository-'));
+  t.after(() => fs.rmSync(fixtureRoot, {recursive: true, force: true}));
+  const originalEnvironment = {HOME: process.env.HOME, XDG_CONFIG_HOME: process.env.XDG_CONFIG_HOME};
+  t.after(() => {
+    for (const [name, value] of Object.entries(originalEnvironment)) {
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }
+  });
+  process.env.HOME = home;
+  process.env.XDG_CONFIG_HOME = path.join(home, 'xdg-config');
+  assert.equal(process.env.HOME, home);
+  assert.equal(process.env.XDG_CONFIG_HOME, path.join(home, 'xdg-config'));
+
+  const providerRoots = [
+    path.join(home, '.cursor/skills'),
+    path.join(home, '.agents/skills'),
+    path.join(process.env.XDG_CONFIG_HOME, 'opencode/skills'),
   ];
-  for (const relative of sentinels) {
-    fs.mkdirSync(path.dirname(path.join(home, relative)), {recursive: true});
-    fs.writeFileSync(path.join(home, relative), 'unchanged');
+  for (const root of providerRoots) {
+    fs.mkdirSync(path.join(root, 'nested'), {recursive: true, mode: 0o755});
+    fs.writeFileSync(path.join(root, 'sentinel'), 'unchanged');
+    fs.writeFileSync(path.join(root, 'nested/executable'), '#!/bin/sh\nexit 0\n', {mode: 0o755});
   }
+
+  const snapshot = root => {
+    const entries = [];
+    const visit = (directory, relative = '') => {
+      const stat = fs.lstatSync(directory);
+      entries.push({relative, type: stat.isDirectory() ? 'directory' : stat.isFile() ? 'file' : stat.isSymbolicLink() ? 'symlink' : 'other', mode: stat.mode & 0o777, bytes: stat.isFile() ? fs.readFileSync(directory).toString('base64') : undefined, target: stat.isSymbolicLink() ? fs.readlinkSync(directory) : undefined});
+      if (stat.isDirectory()) for (const name of fs.readdirSync(directory).sort()) visit(path.join(directory, name), path.join(relative, name));
+    };
+    visit(root);
+    return entries;
+  };
+  const before = providerRoots.map(snapshot);
+
+  for (const projection of [
+    'ast-grep', 'registry-health', 'stack-router', 'serena-guidance', 'context7-guidance', 'playwright-guidance', 'session-start',
+  ]) {
+    fs.cpSync(path.join(ROOT, 'registry/overlays/wrappers', projection), path.join(fixtureRoot, 'registry/overlays/wrappers', projection), {recursive: true});
+  }
+  syncOpencodeSkills({root: fixtureRoot});
+
   const outputRoot = path.join(home, 'project/.opencode/skills');
-  const providerRoots = sentinels.map(relative => path.dirname(path.join(home, relative)));
-  const originals = Object.fromEntries(['existsSync', 'lstatSync', 'readdirSync', 'readFileSync'].map(name => [name, fs[name]]));
+  const guardedFunctions = [
+    'accessSync', 'chmodSync', 'copyFileSync', 'existsSync', 'lstatSync', 'mkdirSync', 'mkdtempSync',
+    'readFileSync', 'readlinkSync', 'readdirSync', 'realpathSync', 'renameSync', 'rmSync', 'writeFileSync',
+  ];
+  const originals = Object.fromEntries(guardedFunctions.map(name => [name, fs[name]]));
+  const originalRealpathNative = fs.realpathSync.native;
   const forbidden = value => providerRoots.some(root => {
     const candidate = path.resolve(String(value));
     return candidate === root || candidate.startsWith(`${root}${path.sep}`);
@@ -246,17 +285,21 @@ test('specialization generation does not inspect or mutate provider home skill r
   try {
     for (const [name, original] of Object.entries(originals)) {
       fs[name] = function(value, ...args) {
-        if (forbidden(value)) throw new Error(`provider home skill root inspected: ${value}`);
+        if (forbidden(value)) throw new Error(`provider home skill root accessed through ${name}: ${value}`);
         return original.call(this, value, ...args);
       };
     }
+    fs.realpathSync.native = function(value, ...args) {
+      if (forbidden(value)) throw new Error(`provider home skill root accessed through realpathSync.native: ${value}`);
+      return originalRealpathNative.call(this, value, ...args);
+    };
     syncOpencodeSkills({root: ROOT, outputRoot});
+    assert.deepEqual(checkOpencodeSkills({root: fixtureRoot}), {ok: true, differences: []});
   } finally {
     Object.assign(fs, originals);
+    fs.realpathSync.native = originalRealpathNative;
   }
-  for (const relative of sentinels) {
-    assert.equal(fs.readFileSync(path.join(home, relative), 'utf8'), 'unchanged');
-  }
+  assert.deepEqual(providerRoots.map(snapshot), before);
 });
 
 test('general exposure declarations remain while OpenCode specialization bypasses them', () => {
