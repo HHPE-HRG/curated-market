@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -19,15 +20,82 @@ test('specialization manifest is exact executable opencode_only authority', () =
 
 test('specialization rejects contradictory runtime, target, range, and bypass selection', () => {
   for (const mutate of [
+    value => { value.schema_version = 2; },
     value => { value.specialization_id = 'general'; },
     value => { value.agent_runtime = 'cursor'; },
     value => { value.personalization_target = 'codex'; },
+    value => { value.opencode_runtime.minimum = '1.18.18'; },
     value => { value.opencode_runtime.maximum_exclusive = '3.0.0'; },
+    value => { value.provider_bindings[0].auth_realization = 'api-key'; },
+    value => { value.provider_bindings[1].package.version = '0.6.4'; },
     value => { value.personalization_paths_bypassed = ['codex-direct', 'cursor-direct']; },
   ]) {
     const value = structuredClone(APPROVED_OPENCODE_ONLY_POLICY);
     mutate(value);
     assert.equal(validateOpencodeOnly({specialization: value}).ok, false);
+  }
+});
+
+test('specialization comparison ignores object insertion order but rejects extra undefined data', () => {
+  const reordered = Object.fromEntries(Object.entries(APPROVED_OPENCODE_ONLY_POLICY).reverse());
+  assert.equal(validateOpencodeOnly({specialization: reordered}).ok, true);
+
+  const withExtraUndefined = structuredClone(APPROVED_OPENCODE_ONLY_POLICY);
+  withExtraUndefined.unapproved = undefined;
+  assert.equal(validateOpencodeOnly({specialization: withExtraUndefined}).ok, false);
+});
+
+test('approved policy is deeply frozen', () => {
+  assert.equal(Object.isFrozen(APPROVED_OPENCODE_ONLY_POLICY), true);
+  assert.equal(Object.isFrozen(APPROVED_OPENCODE_ONLY_POLICY.opencode_runtime), true);
+  assert.equal(Object.isFrozen(APPROVED_OPENCODE_ONLY_POLICY.provider_bindings), true);
+  assert.equal(Object.isFrozen(APPROVED_OPENCODE_ONLY_POLICY.provider_bindings[1].package), true);
+});
+
+test('reader rejects symlinked specialization, configuration, agent directory, and agent file', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-specialization-'));
+  const sentinel = path.join(tmp, 'sentinel.json');
+  fs.writeFileSync(sentinel, '{"outside":true}');
+  const forbiddenReads = [];
+  const original = fs.readFileSync;
+  fs.readFileSync = function(file, ...args) {
+    if (path.resolve(String(file)) === sentinel) forbiddenReads.push(file);
+    return original.call(this, file, ...args);
+  };
+  try {
+    for (const target of [
+      ['registry/manifests/specialization.yaml'],
+      ['opencode.json'],
+      ['.opencode/agents'],
+      ['.opencode/agents/operator.md'],
+    ]) {
+      const root = fs.mkdtempSync(path.join(tmp, 'root-'));
+      fs.mkdirSync(path.join(root, 'registry/manifests'), {recursive: true});
+      fs.writeFileSync(path.join(root, 'registry/manifests/specialization.yaml'), JSON.stringify(APPROVED_OPENCODE_ONLY_POLICY));
+      fs.mkdirSync(path.join(root, '.opencode/agents'), {recursive: true});
+      const link = path.join(root, ...target[0].split('/'));
+      fs.rmSync(link, {recursive: true, force: true});
+      fs.symlinkSync(sentinel, link);
+      assert.throws(() => readOpencodeOnlyFiles({root}), /path escapes repository root/);
+    }
+    assert.deepEqual(forbiddenReads, []);
+  } finally {
+    fs.readFileSync = original;
+    fs.rmSync(tmp, {recursive: true, force: true});
+  }
+});
+
+test('reader retains exact agent filenames as map keys', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-specialization-'));
+  try {
+    fs.mkdirSync(path.join(tmp, 'registry/manifests'), {recursive: true});
+    fs.mkdirSync(path.join(tmp, '.opencode/agents'), {recursive: true});
+    fs.writeFileSync(path.join(tmp, 'registry/manifests/specialization.yaml'), JSON.stringify(APPROVED_OPENCODE_ONLY_POLICY));
+    fs.writeFileSync(path.join(tmp, '.opencode/agents/operator.md'), 'operator');
+    fs.writeFileSync(path.join(tmp, '.opencode/agents/worker.md'), 'worker');
+    assert.deepEqual([...readOpencodeOnlyFiles({root: tmp}).agents.keys()].sort(), ['operator.md', 'worker.md']);
+  } finally {
+    fs.rmSync(tmp, {recursive: true, force: true});
   }
 });
 
