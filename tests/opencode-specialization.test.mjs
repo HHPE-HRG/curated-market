@@ -52,11 +52,14 @@ test('provider policy fails closed on every unapproved realization', () => {
   const cases = [
     ['OpenAI API key', value => { value.projectConfig.provider = {openai: {apiKey: '{env:OPENAI_API_KEY}'}}; }, 'opencode.json provider.openai.apiKey'],
     ['extra provider', value => { value.projectConfig.enabled_providers.push('anthropic'); }, 'opencode.json enabled_providers'],
+    ['unversioned Cursor package', value => { value.projectConfig.plugin = ['cursor-opencode-provider']; }, 'opencode.json plugin[0]'],
     ['floating Cursor package', value => { value.projectConfig.plugin = ['cursor-opencode-provider@latest']; }, 'opencode.json plugin[0]'],
     ['Git Cursor package', value => { value.projectConfig.plugin = ['github:oakimov/cursor-opencode-provider#main']; }, 'opencode.json plugin[0]'],
     ['local Cursor package', value => { value.projectConfig.plugin = ['/tmp/cursor-opencode-provider']; }, 'opencode.json plugin[0]'],
     ['OpenCode 2 entrypoint', value => { value.projectConfig.plugin = ['cursor-opencode-provider/plugin/opencode2']; }, 'opencode.json plugin[0]'],
+    ['wrong OpenAI auth', value => { value.specialization.provider_bindings[0].auth_realization = 'api-key'; }, 'specialization.provider_bindings[0].auth_realization'],
     ['Cursor API key auth', value => { value.specialization.provider_bindings[1].auth_realization = 'api-key'; }, 'specialization.provider_bindings[1].auth_realization'],
+    ['wrong package name', value => { value.specialization.provider_bindings[1].package.name = 'cursor-provider'; }, 'specialization.provider_bindings[1].package.name'],
     ['wrong package version', value => { value.specialization.provider_bindings[1].package.version = '0.6.4'; }, 'specialization.provider_bindings[1].package.version'],
     ['wrong upstream commit', value => { value.specialization.provider_bindings[1].package.upstream_commit = 'deadbeef'; }, 'specialization.provider_bindings[1].package.upstream_commit'],
     ['wrong npm integrity', value => { value.specialization.provider_bindings[1].package.npm_integrity = 'sha512-wrong'; }, 'specialization.provider_bindings[1].package.npm_integrity'],
@@ -94,16 +97,31 @@ test('accepted provider schema contains and accepts no account or model data', (
   }
 });
 
-test('static provider validation performs no subprocess, fetch, or sensitive state access', async () => {
+test('static provider validation permits only repository Git integrity subprocesses', async () => {
   const originalSpawnSync = childProcess.spawnSync;
   const originalFetch = globalThis.fetch;
   const originalReadFileSync = fs.readFileSync;
-  const calls = {spawnSync: [], fetch: [], sensitiveReads: []};
+  const calls = {git: [], prohibitedSubprocess: [], fetch: [], sensitiveReads: []};
   const sensitivePath = /(?:^|[\\/])(?:auth\.json|credentials?(?:\.json)?|accounts?(?:\.json)?|models?(?:\.json)?|hosts\.yaml|node_modules|\.cache|opencode[^\\/]*cache)(?:$|[\\/])/i;
+  const allowedGitArguments = new Set([
+    'rev-parse\0HEAD',
+    'rev-parse\0HEAD^{tree}',
+    'status\0--porcelain',
+  ]);
 
-  childProcess.spawnSync = (...args) => {
-    calls.spawnSync.push(args);
-    throw new Error(`forbidden subprocess: ${String(args[0])}`);
+  childProcess.spawnSync = (command, args, options) => {
+    const packageRoot = Array.isArray(args) && args[0] === '-C' ? path.resolve(String(args[1])) : null;
+    const repositoryPackages = path.join(ROOT, 'registry', 'packages');
+    const gitArguments = Array.isArray(args) ? args.slice(2).join('\0') : '';
+    const allowed = command === 'git'
+      && packageRoot?.startsWith(`${repositoryPackages}${path.sep}`)
+      && allowedGitArguments.has(gitArguments);
+    if (!allowed) {
+      calls.prohibitedSubprocess.push({command, args});
+      throw new Error(`forbidden subprocess: ${String(command)} ${Array.isArray(args) ? args.join(' ') : ''}`.trim());
+    }
+    calls.git.push({command, args});
+    return originalSpawnSync(command, args, options);
   };
   globalThis.fetch = async (...args) => {
     calls.fetch.push(args);
@@ -115,11 +133,7 @@ test('static provider validation performs no subprocess, fetch, or sensitive sta
       calls.sensitiveReads.push(value);
       throw new Error(`forbidden sensitive read: ${value}`);
     }
-    const body = originalReadFileSync.call(this, file, ...args);
-    if (path.basename(value) !== 'packages.lock.yaml') return body;
-    const manifest = JSON.parse(String(body));
-    for (const pkg of manifest.packages) pkg.revision = {type: 'overlay'};
-    return args[0] ? JSON.stringify(manifest) : Buffer.from(JSON.stringify(manifest));
+    return originalReadFileSync.call(this, file, ...args);
   };
   syncBuiltinESMExports();
 
@@ -132,7 +146,14 @@ test('static provider validation performs no subprocess, fetch, or sensitive sta
     assert.equal(validateOpencodeOnly({root: ROOT}).ok, true);
     assert.equal(validate().status, 'passed');
     assert.equal(staticIntegrity().status, 'PASS');
-    assert.deepEqual(calls, {spawnSync: [], fetch: [], sensitiveReads: []});
+    assert.ok(calls.git.length > 0);
+    assert.ok(calls.git.every(call => call.command === 'git'));
+    assert.equal(calls.git.some(call =>
+      /\b(?:codex|opencode|provider|auth|plugin)\b/i.test([call.command, ...call.args.slice(2)].join(' '))), false);
+    assert.deepEqual(
+      {prohibitedSubprocess: calls.prohibitedSubprocess, fetch: calls.fetch, sensitiveReads: calls.sensitiveReads},
+      {prohibitedSubprocess: [], fetch: [], sensitiveReads: []},
+    );
   } finally {
     childProcess.spawnSync = originalSpawnSync;
     globalThis.fetch = originalFetch;
