@@ -73,6 +73,28 @@ function contains(parent, child) {
   return relative !== '' && relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
 }
 
+function requireRepositoryPath(root, target, role) {
+  const trustedRoot = path.resolve(root);
+  const absoluteTarget = path.resolve(target);
+  if (!contains(trustedRoot, absoluteTarget)) throw new Error(`${role} is outside trusted repository root`);
+  let current = trustedRoot;
+  for (const component of path.relative(trustedRoot, absoluteTarget).split(path.sep)) {
+    current = path.join(current, component);
+    const stat = fs.lstatSync(current, {throwIfNoEntry: false});
+    if (!stat) break;
+    if (stat.isSymbolicLink()) throw new Error(`${role} path component is a symlink: ${current}`);
+  }
+}
+
+function requireCanonicalRepositorySource(root, sourceRoot) {
+  requireRepositoryPath(root, sourceRoot, 'canonical source');
+  const physicalRoot = fs.realpathSync(path.resolve(root));
+  const physicalSource = resolvedLocation(sourceRoot);
+  if (!contains(physicalRoot, physicalSource)) {
+    throw new Error('canonical source resolves outside trusted repository root');
+  }
+}
+
 function requireDirectoryRoot(root, role) {
   const stat = fs.lstatSync(root, {throwIfNoEntry: false});
   if (!stat) {
@@ -194,6 +216,78 @@ function validateOwnedOutputs(
   }
 }
 
+function stagedDifference(snapshot, stagedRoot) {
+  const expected = new Map(snapshot.map(entry => [entry.relative, entry]));
+  const actual = entries(stagedRoot);
+  const paths = [...new Set([...expected.keys(), ...actual.keys()])].sort();
+  for (const relative of paths) {
+    const wanted = expected.get(relative);
+    const found = actual.get(relative);
+    if (!wanted || !found || wanted.type !== found.type) return relative;
+    if (found.type === 'file' && wanted.bytes !== found.bytes.toString('base64')) return relative;
+    if (found.type === 'file' && wanted.executable !== found.executable) return relative;
+    if (found.type === 'symlink' || found.type === 'unsupported') return relative;
+  }
+}
+
+function validateStagedSkill(stagingRoot, stagingIdentity, resolvedStagingRoot, skill, stagedIdentity) {
+  if (!sameIdentity(nodeIdentity(stagingRoot), stagingIdentity)) {
+    throw new Error('OpenCode staging root changed during generation');
+  }
+  const stagedPath = path.join(stagingRoot, skill.destination);
+  if (!contains(resolvedStagingRoot, resolvedLocation(stagedPath))) {
+    throw new Error(`staged OpenCode skill escapes staging root: ${skill.destination}`);
+  }
+  const stat = fs.lstatSync(stagedPath, {throwIfNoEntry: false});
+  if (!stat?.isDirectory() || stat.isSymbolicLink() || !sameIdentity(nodeIdentity(stagedPath), stagedIdentity)) {
+    throw new Error(`staged OpenCode skill changed during generation: ${skill.destination}`);
+  }
+  const difference = stagedDifference(skill.snapshot, stagedPath);
+  if (difference !== undefined) {
+    throw new Error(`staged OpenCode skill changed during generation: ${skill.destination}/${difference}`);
+  }
+}
+
+function rollbackReplacements(records) {
+  const errors = [];
+  for (const record of [...records].reverse()) {
+    try {
+      if (record.installed) fs.rmSync(record.skill.destinationPath, {recursive: true, force: true});
+      if (record.backedUp) fs.renameSync(record.backupPath, record.skill.destinationPath);
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+  return errors;
+}
+
+function findIdentity(root, identity) {
+  const stat = fs.lstatSync(root, {throwIfNoEntry: false});
+  if (!stat || stat.isSymbolicLink()) return;
+  if (sameIdentity(nodeIdentity(root), identity)) return root;
+  if (!stat.isDirectory()) return;
+  for (const name of fs.readdirSync(root)) {
+    const found = findIdentity(path.join(root, name), identity);
+    if (found) return found;
+  }
+}
+
+function cleanupStaging(stagingRoot, stagingIdentity, outputRoot, outputIdentity, searchRoot) {
+  const currentIdentity = nodeIdentity(stagingRoot);
+  if (currentIdentity.exists) {
+    fs.rmSync(stagingRoot, {recursive: true, force: true});
+    if (sameIdentity(currentIdentity, stagingIdentity)) return;
+  }
+  if (!outputIdentity.exists) return;
+  const movedOutputRoot = findIdentity(searchRoot, outputIdentity);
+  if (movedOutputRoot) {
+    const movedStaging = path.join(movedOutputRoot, path.basename(stagingRoot));
+    if (sameIdentity(nodeIdentity(movedStaging), stagingIdentity)) {
+      fs.rmSync(movedStaging, {recursive: true, force: true});
+    }
+  }
+}
+
 function entries(directory) {
   const result = new Map();
   const visit = (current, prefix = '') => {
@@ -274,12 +368,18 @@ function compareProjectionRoots(expectedRoot, expectedKey, actualRoot) {
   return {ok: differences.length === 0, differences};
 }
 
-export function syncOpencodeSkills({
-  root = REPOSITORY_ROOT,
-  outputRoot = checkedInSkillsRoot(root),
-} = {}) {
+export function syncOpencodeSkills(options = {}) {
+  const root = options.root ?? REPOSITORY_ROOT;
+  const defaultOutputRoot = checkedInSkillsRoot(root);
+  const outputRoot = options.outputRoot ?? defaultOutputRoot;
   const sourceRoot = canonicalSkillsRoot(root);
   const normalizedOutputRoot = path.resolve(outputRoot);
+  const trustedRoot = path.resolve(root);
+  requireDirectoryRoot(sourceRoot, 'canonical OpenCode skills root');
+  requireCanonicalRepositorySource(root, sourceRoot);
+  if (normalizedOutputRoot === path.resolve(defaultOutputRoot)) {
+    requireRepositoryPath(root, normalizedOutputRoot, 'OpenCode output');
+  }
   const {source: resolvedSourceRoot, output: resolvedOutputRoot} = validateRoots(sourceRoot, normalizedOutputRoot);
   const skills = OPENCODE_SKILL_PROJECTIONS.map(projection => ({
     ...projection,
@@ -301,9 +401,16 @@ export function syncOpencodeSkills({
     skills.map(skill => [skill.destination, nodeIdentity(skill.destinationPath)]),
   );
 
-  const stagingRoot = fs.mkdtempSync(path.join(existingParent(normalizedOutputRoot), '.hhpe-opencode-stage-'));
+  const stagingParent = outputIdentity.exists ? normalizedOutputRoot : existingParent(normalizedOutputRoot);
+  const stagingRoot = fs.mkdtempSync(path.join(stagingParent, '.hhpe-opencode-stage-'));
+  const stagingIdentity = nodeIdentity(stagingRoot);
+  let preserveStaging = false;
   try {
     for (const skill of skills) materializeSnapshot(skill.snapshot, path.join(stagingRoot, skill.destination));
+    const resolvedStagingRoot = resolvedLocation(stagingRoot);
+    const stagedIdentities = new Map(
+      skills.map(skill => [skill.destination, nodeIdentity(path.join(stagingRoot, skill.destination))]),
+    );
 
     validateOwnedOutputs(
       normalizedOutputRoot,
@@ -314,6 +421,11 @@ export function syncOpencodeSkills({
     );
     fs.mkdirSync(normalizedOutputRoot, {recursive: true, mode: 0o755});
     if (!outputIdentity.exists) outputIdentity = nodeIdentity(normalizedOutputRoot);
+    if (stagingIdentity.device !== outputIdentity.device) {
+      const error = new Error('OpenCode staging and destination parent are on different devices');
+      error.code = 'EXDEV';
+      throw error;
+    }
     validateOwnedOutputs(
       normalizedOutputRoot,
       resolvedOutputRoot,
@@ -321,19 +433,63 @@ export function syncOpencodeSkills({
       outputIdentity,
       destinationIdentities,
     );
-    for (const skill of skills) {
-      validateOwnedOutputs(
-        normalizedOutputRoot,
-        resolvedOutputRoot,
-        [skill],
-        outputIdentity,
-        destinationIdentities,
-      );
-      fs.rmSync(skill.destinationPath, {recursive: true, force: true});
-      fs.renameSync(path.join(stagingRoot, skill.destination), skill.destinationPath);
+    const backupsRoot = path.join(stagingRoot, 'backups');
+    fs.mkdirSync(backupsRoot, {mode: 0o700});
+    const records = [];
+    try {
+      for (const skill of skills) {
+        validateOwnedOutputs(
+          normalizedOutputRoot,
+          resolvedOutputRoot,
+          [skill],
+          outputIdentity,
+          destinationIdentities,
+        );
+        validateStagedSkill(
+          stagingRoot,
+          stagingIdentity,
+          resolvedStagingRoot,
+          skill,
+          stagedIdentities.get(skill.destination),
+        );
+        const record = {
+          skill,
+          backupPath: path.join(backupsRoot, skill.destination),
+          backedUp: false,
+          installed: false,
+        };
+        records.push(record);
+        if (fs.existsSync(skill.destinationPath)) {
+          fs.renameSync(skill.destinationPath, record.backupPath);
+          record.backedUp = true;
+        }
+        fs.renameSync(path.join(stagingRoot, skill.destination), skill.destinationPath);
+        record.installed = true;
+      }
+    } catch (error) {
+      const rollbackErrors = rollbackReplacements(records);
+      if (rollbackErrors.length) {
+        preserveStaging = true;
+        throw new AggregateError(
+          [error, ...rollbackErrors],
+          `OpenCode skill replacement and rollback failed; preserved staging at ${stagingRoot}`,
+        );
+      }
+      throw error;
     }
   } finally {
-    fs.rmSync(stagingRoot, {recursive: true, force: true});
+    if (!preserveStaging) {
+      const cleanupSearchRoot = contains(trustedRoot, normalizedOutputRoot)
+        ? trustedRoot
+        : path.dirname(normalizedOutputRoot);
+      cleanupStaging(
+        stagingRoot,
+        stagingIdentity,
+        normalizedOutputRoot,
+        outputIdentity,
+        cleanupSearchRoot,
+      );
+    }
   }
   return {
     capabilities: skills.map(skill => skill.capabilityId),
@@ -345,13 +501,28 @@ export function compareOpencodeSkills({
   root = REPOSITORY_ROOT,
   outputRoot = checkedInSkillsRoot(root),
 } = {}) {
-  return compareProjectionRoots(canonicalSkillsRoot(root), 'source', path.resolve(outputRoot));
+  const sourceRoot = canonicalSkillsRoot(root);
+  const normalizedOutputRoot = path.resolve(outputRoot);
+  try {
+    requireCanonicalRepositorySource(root, sourceRoot);
+    if (normalizedOutputRoot === path.resolve(checkedInSkillsRoot(root))) {
+      requireRepositoryPath(root, normalizedOutputRoot, 'OpenCode output');
+    }
+  } catch (error) {
+    return {ok: false, differences: [error.message]};
+  }
+  return compareProjectionRoots(sourceRoot, 'source', normalizedOutputRoot);
 }
 
 export function checkOpencodeSkills({root = REPOSITORY_ROOT} = {}) {
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-opencode-skills-'));
   try {
     syncOpencodeSkills({root, outputRoot: temporaryRoot});
+    try {
+      requireRepositoryPath(root, checkedInSkillsRoot(root), 'OpenCode output');
+    } catch (error) {
+      return {ok: false, differences: [error.message]};
+    }
     return compareProjectionRoots(temporaryRoot, 'destination', checkedInSkillsRoot(root));
   } finally {
     fs.rmSync(temporaryRoot, {recursive: true, force: true});

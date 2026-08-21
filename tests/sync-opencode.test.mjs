@@ -170,6 +170,45 @@ test('canonical wrappers root symlink is rejected before mutation', t => {
   assert.deepEqual(snapshot(fixture.outputRoot), before);
 });
 
+test('default output rejects a symlinked repository ancestor for sync, compare, and check', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const external = path.join(fixture.root, 'external-opencode');
+  fs.mkdirSync(external);
+  fs.symlinkSync(external, path.join(fixture.root, '.opencode'), 'dir');
+  const before = snapshot(external);
+
+  assert.throws(() => syncOpencodeSkills({root: fixture.root}), /OpenCode output path component.*symlink/);
+  assert.deepEqual(snapshot(external), before);
+  const compared = compareOpencodeSkills({root: fixture.root});
+  assert.equal(compared.ok, false);
+  assert.ok(compared.differences.some(item => /OpenCode output path component.*symlink/.test(item)));
+  const checked = checkOpencodeSkills({root: fixture.root});
+  assert.equal(checked.ok, false);
+  assert.ok(checked.differences.some(item => /OpenCode output path component.*symlink/.test(item)));
+  assert.deepEqual(snapshot(external), before);
+});
+
+test('canonical source rejects a symlinked repository ancestor outside trusted root', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  const externalRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-opencode-source-external-'));
+  t.after(() => fs.rmSync(externalRoot, {recursive: true, force: true}));
+  const overlays = path.join(fixture.root, 'registry/overlays');
+  const externalOverlays = path.join(externalRoot, 'overlays');
+  fs.renameSync(overlays, externalOverlays);
+  fs.symlinkSync(externalOverlays, overlays, 'dir');
+  const before = seedOwnedOutput(fixture);
+
+  assert.throws(() => syncOpencodeSkills(fixture), /canonical source path component.*symlink/);
+  assert.deepEqual(snapshot(fixture.outputRoot), before);
+  const compared = compareOpencodeSkills(fixture);
+  assert.equal(compared.ok, false);
+  assert.ok(compared.differences.some(item => /canonical source path component.*symlink/.test(item)));
+  assert.throws(() => checkOpencodeSkills({root: fixture.root}), /canonical source path component.*symlink/);
+  assert.deepEqual(snapshot(fixture.outputRoot), before);
+});
+
 test('unsupported FIFO in a late source aborts before mutation when FIFOs are available', t => {
   const fixture = makeFixture();
   cleanFixture(t, fixture);
@@ -396,6 +435,86 @@ test('ordinary owned destination replacement during staging is rejected', t => {
   }
   assert.equal(fs.readFileSync(path.join(movedDestination, 'old.txt'), 'utf8'), 'old\n');
   assert.equal(fs.readFileSync(path.join(destination, 'replacement.txt'), 'utf8'), 'replacement\n');
+});
+
+test('injected EXDEV during installation rolls back every owned tree and preserves neighbor', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  for (const {destination} of PROJECTIONS) {
+    fs.mkdirSync(path.join(fixture.outputRoot, destination), {recursive: true});
+    fs.writeFileSync(path.join(fixture.outputRoot, destination, 'old.txt'), `${destination} old\n`);
+  }
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const before = snapshot(fixture.outputRoot);
+  const originalRename = fs.renameSync;
+  let injected = false;
+  fs.renameSync = function (source, destination) {
+    if (
+      !injected &&
+      source.includes('.hhpe-opencode-stage-') &&
+      !source.includes(`${path.sep}backups${path.sep}`) &&
+      destination === path.join(fixture.outputRoot, 'stack-router')
+    ) {
+      injected = true;
+      const error = new Error('injected cross-device rename');
+      error.code = 'EXDEV';
+      throw error;
+    }
+    return originalRename.call(this, source, destination);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), error => error.code === 'EXDEV');
+  } finally {
+    fs.renameSync = originalRename;
+  }
+  assert.equal(injected, true);
+  assert.deepEqual(snapshot(fixture.outputRoot), before);
+});
+
+test('staged-child symlink swap is rejected before old output removal', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  for (const {destination} of PROJECTIONS) {
+    fs.mkdirSync(path.join(fixture.outputRoot, destination), {recursive: true});
+    fs.writeFileSync(path.join(fixture.outputRoot, destination, 'old.txt'), `${destination} old\n`);
+  }
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const outputBefore = snapshot(fixture.outputRoot);
+  const external = path.join(fixture.root, 'external-staged-target');
+  fs.mkdirSync(external);
+  fs.writeFileSync(path.join(external, 'external.txt'), 'external\n');
+  const externalBefore = snapshot(external);
+  const originalLstat = fs.lstatSync;
+  let swapped = false;
+  fs.lstatSync = function (target, ...args) {
+    if (!swapped && target === fixture.outputRoot) {
+      const parents = [fixture.outputRoot, path.dirname(fixture.outputRoot)];
+      const stagingRoot = parents
+        .flatMap(parent => fs.existsSync(parent) ? fs.readdirSync(parent).map(name => path.join(parent, name)) : [])
+        .find(candidate => path.basename(candidate).startsWith('.hhpe-opencode-stage-'));
+      const stagedChild = stagingRoot && path.join(stagingRoot, 'ast-grep');
+      if (stagedChild && fs.existsSync(stagedChild)) {
+        swapped = true;
+        fs.rmSync(stagedChild, {recursive: true});
+        fs.symlinkSync(external, stagedChild, 'dir');
+      }
+    }
+    return originalLstat.call(this, target, ...args);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /staged OpenCode skill.*ast-grep/);
+  } finally {
+    fs.lstatSync = originalLstat;
+  }
+  assert.equal(swapped, true);
+  assert.deepEqual(snapshot(fixture.outputRoot), outputBefore);
+  assert.deepEqual(snapshot(external), externalBefore);
+  assert.equal(
+    fs.readdirSync(fixture.outputRoot).some(name => name.startsWith('.hhpe-opencode-stage-')),
+    false,
+  );
 });
 
 test('sync recursively copies only mapped skills with normalized deterministic modes', t => {
