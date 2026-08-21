@@ -22,6 +22,7 @@ const PROJECTIONS = [
   {capabilityId: 'hhpe-hrg/session-start', source: 'session-start', destination: 'session-start'},
 ];
 const SCRIPT = fileURLToPath(new URL('../scripts/sync-opencode.mjs', import.meta.url));
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function makeFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-opencode-'));
@@ -717,6 +718,26 @@ test('isolated check detects drift without rewriting checked-in output', t => {
   assert.equal(result.ok, false);
   assert.ok(result.differences.some(item => /session-start\/SKILL.md.*content differs/.test(item)));
   assert.deepEqual(snapshot(path.join(fixture.root, '.opencode')), before);
+});
+
+test('checked-in OpenCode skills match isolated generation with exact owned mappings and no symlinks', () => {
+  assert.deepEqual(checkOpencodeSkills({root: ROOT}), {ok: true, differences: []});
+
+  const skillsRoot = path.join(ROOT, '.opencode/skills');
+  assert.deepEqual(fs.readdirSync(skillsRoot).sort(), PROJECTIONS.map(item => item.destination).sort());
+  assert.deepEqual(
+    OPENCODE_SKILL_PROJECTIONS.map(({capabilityId, source, destination}) => ({capabilityId, source, destination})),
+    PROJECTIONS,
+  );
+
+  const visit = directory => {
+    for (const name of fs.readdirSync(directory)) {
+      const entry = path.join(directory, name);
+      assert.equal(fs.lstatSync(entry).isSymbolicLink(), false, `checked-in skill entry is a symlink: ${entry}`);
+      if (fs.lstatSync(entry).isDirectory()) visit(entry);
+    }
+  };
+  visit(skillsRoot);
 });
 
 test('CLI generate and check modes produce deterministic summaries', t => {

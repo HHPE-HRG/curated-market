@@ -10,6 +10,7 @@ import {
   readOpencodeOnlyFiles,
   validateOpencodeOnly,
 } from '../lib/opencode-specialization.mjs';
+import {syncOpencodeSkills} from '../scripts/sync-opencode.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -221,4 +222,55 @@ test('static specialization validation does not inspect hosts or local auth stat
   } finally {
     fs.readFileSync = original;
   }
+});
+
+test('specialization generation does not inspect or mutate provider home skill roots', t => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-only-home-'));
+  t.after(() => fs.rmSync(home, {recursive: true, force: true}));
+  const sentinels = [
+    '.cursor/skills/sentinel',
+    '.agents/skills/sentinel',
+    '.config/opencode/skills/sentinel',
+  ];
+  for (const relative of sentinels) {
+    fs.mkdirSync(path.dirname(path.join(home, relative)), {recursive: true});
+    fs.writeFileSync(path.join(home, relative), 'unchanged');
+  }
+  const outputRoot = path.join(home, 'project/.opencode/skills');
+  const providerRoots = sentinels.map(relative => path.dirname(path.join(home, relative)));
+  const originals = Object.fromEntries(['existsSync', 'lstatSync', 'readdirSync', 'readFileSync'].map(name => [name, fs[name]]));
+  const forbidden = value => providerRoots.some(root => {
+    const candidate = path.resolve(String(value));
+    return candidate === root || candidate.startsWith(`${root}${path.sep}`);
+  });
+  try {
+    for (const [name, original] of Object.entries(originals)) {
+      fs[name] = function(value, ...args) {
+        if (forbidden(value)) throw new Error(`provider home skill root inspected: ${value}`);
+        return original.call(this, value, ...args);
+      };
+    }
+    syncOpencodeSkills({root: ROOT, outputRoot});
+  } finally {
+    Object.assign(fs, originals);
+  }
+  for (const relative of sentinels) {
+    assert.equal(fs.readFileSync(path.join(home, relative), 'utf8'), 'unchanged');
+  }
+});
+
+test('general exposure declarations remain while OpenCode specialization bypasses them', () => {
+  const exposures = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/manifests/exposures.yaml'), 'utf8')).exposures;
+  for (const [host, target] of [
+    ['codex', '~/.agents/skills/'],
+    ['cursor', '~/.cursor/skills/'],
+    ['opencode', '~/.config/opencode/skills/'],
+  ]) {
+    assert.ok(exposures.some(exposure => exposure.host === host && exposure.target.startsWith(target)));
+  }
+  assert.deepEqual(APPROVED_OPENCODE_ONLY_POLICY.personalization_paths_bypassed, [
+    'codex-direct',
+    'cursor-direct',
+    'opencode-global-home',
+  ]);
 });
