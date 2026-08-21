@@ -18,6 +18,42 @@ const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)
 const canonicalWrappersRoot = root => path.join(root, 'registry/overlays/wrappers');
 const codexSkillsRoot = root => path.join(root, 'registry/adapters/codex/marketplace/plugins/hhpe-registry/skills');
 
+function resolvedLocation(file) {
+  const absolute = path.resolve(file);
+  const missing = [];
+  let existing = absolute;
+  while (!fs.existsSync(existing)) {
+    const parent = path.dirname(existing);
+    if (parent === existing) break;
+    missing.unshift(path.basename(existing));
+    existing = parent;
+  }
+  return path.join(fs.realpathSync(existing), ...missing);
+}
+
+function contains(parent, child) {
+  const relative = path.relative(parent, child);
+  return relative !== '' && relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+}
+
+function assertDisjoint(sourceRoot, outputRoot) {
+  const source = resolvedLocation(sourceRoot);
+  const output = resolvedLocation(outputRoot);
+  if (source === output || contains(source, output) || contains(output, source)) {
+    throw new Error('canonical source and output roots overlap');
+  }
+  if (output === path.parse(output).root) throw new Error('Codex adapter output root cannot be a filesystem root');
+  return output;
+}
+
+function requireCanonicalWrapper(source, name) {
+  const stat = fs.lstatSync(source, {throwIfNoEntry: false});
+  if (!stat?.isDirectory() || stat.isSymbolicLink()) {
+    throw new Error(`missing canonical Codex wrapper: ${name}`);
+  }
+  fs.accessSync(source, fs.constants.R_OK | fs.constants.X_OK);
+}
+
 function copyCanonicalTree(source, destination) {
   fs.mkdirSync(destination, {recursive: true, mode: 0o755});
   fs.chmodSync(destination, 0o755);
@@ -58,7 +94,18 @@ function entries(directory) {
   return result;
 }
 
+function validateTreeRoot(root, role, wrapper, differences) {
+  const stat = fs.lstatSync(root, {throwIfNoEntry: false});
+  if (!stat) differences.push(`${wrapper}: ${role} root missing`);
+  else if (stat.isSymbolicLink()) differences.push(`${wrapper}: ${role} root is a symlink`);
+  else if (!stat.isDirectory()) differences.push(`${wrapper}: ${role} root is not a directory`);
+  return Boolean(stat?.isDirectory() && !stat.isSymbolicLink());
+}
+
 function compareTrees(expectedRoot, actualRoot, wrapper, differences) {
+  const expectedValid = validateTreeRoot(expectedRoot, 'canonical', wrapper, differences);
+  const actualValid = validateTreeRoot(actualRoot, 'generated', wrapper, differences);
+  if (!expectedValid || !actualValid) return;
   const expected = entries(expectedRoot);
   const actual = entries(actualRoot);
   const paths = [...new Set([...expected.keys(), ...actual.keys()])].sort();
@@ -85,12 +132,14 @@ function compareProjectionRoots(expectedRoot, actualRoot) {
 }
 
 export function syncAdapters({root = REPOSITORY_ROOT, outputRoot = codexSkillsRoot(root)} = {}) {
-  for (const name of CODEX_WRAPPER_PROJECTIONS) {
-    const source = path.join(canonicalWrappersRoot(root), name);
+  const sourceRoot = canonicalWrappersRoot(root);
+  const resolvedOutputRoot = assertDisjoint(sourceRoot, outputRoot);
+  const sources = CODEX_WRAPPER_PROJECTIONS.map(name => ({name, source: path.join(sourceRoot, name)}));
+  for (const {name, source} of sources) requireCanonicalWrapper(source, name);
+
+  for (const {name, source} of sources) {
     const destination = path.join(outputRoot, name);
-    if (!fs.statSync(source, {throwIfNoEntry: false})?.isDirectory()) {
-      throw new Error(`missing canonical Codex wrapper: ${name}`);
-    }
+    if (!contains(resolvedOutputRoot, resolvedLocation(destination))) throw new Error(`unsafe Codex adapter destination: ${name}`);
     fs.rmSync(destination, {recursive: true, force: true});
     copyCanonicalTree(source, destination);
   }

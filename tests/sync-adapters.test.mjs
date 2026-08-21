@@ -91,6 +91,26 @@ test('missing canonical source fails instead of silently omitting owned output',
   assert.throws(() => syncAdapters({root, outputRoot}), /missing canonical Codex wrapper: session-start/);
 });
 
+test('missing late canonical source causes zero output mutation', t => {
+  const {root, outputRoot} = fixture();
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  syncAdapters({root, outputRoot});
+  fs.writeFileSync(path.join(outputRoot, 'ast-grep/stale.txt'), 'preserve on failed preflight');
+  const before = snapshot(outputRoot);
+  fs.rmSync(path.join(root, 'registry/overlays/wrappers/session-start'), {recursive: true});
+  assert.throws(() => syncAdapters({root, outputRoot}), /missing canonical Codex wrapper: session-start/);
+  assert.deepEqual(snapshot(outputRoot), before);
+});
+
+test('generator rejects source and output overlap without mutating canonical wrappers', t => {
+  const {root} = fixture();
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  const canonicalRoot = path.join(root, 'registry/overlays/wrappers');
+  const before = snapshot(canonicalRoot);
+  assert.throws(() => syncAdapters({root, outputRoot: canonicalRoot}), /source and output roots overlap/);
+  assert.deepEqual(snapshot(canonicalRoot), before);
+});
+
 test('generated trees recursively match source bytes, types, and executable bits', t => {
   const {root, outputRoot} = fixture();
   t.after(() => fs.rmSync(root, {recursive: true, force: true}));
@@ -115,6 +135,31 @@ test('a byte-equivalent symlink fails representation parity', t => {
   const result = compareAdapterProjection({root, outputRoot});
   assert.equal(result.ok, false);
   assert.ok(result.differences.some(item => /ast-grep\/SKILL.md.*symlink/.test(item)));
+});
+
+test('whole-wrapper symlink fails representation parity', t => {
+  const {root, outputRoot} = fixture();
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  syncAdapters({root, outputRoot});
+  const wrapper = path.join(outputRoot, 'ast-grep');
+  const backing = path.join(root, 'ast-grep-backing');
+  fs.renameSync(wrapper, backing);
+  fs.symlinkSync(backing, wrapper, 'dir');
+  const result = compareAdapterProjection({root, outputRoot});
+  assert.equal(result.ok, false);
+  assert.ok(result.differences.some(item => /ast-grep.*root.*symlink/.test(item)));
+});
+
+test('missing canonical and generated wrapper roots fail parity', t => {
+  const {root, outputRoot} = fixture();
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  syncAdapters({root, outputRoot});
+  fs.rmSync(path.join(root, 'registry/overlays/wrappers/ast-grep'), {recursive: true});
+  fs.rmSync(path.join(outputRoot, 'ast-grep'), {recursive: true});
+  const result = compareAdapterProjection({root, outputRoot});
+  assert.equal(result.ok, false);
+  assert.ok(result.differences.some(item => /ast-grep.*canonical root.*missing/.test(item)));
+  assert.ok(result.differences.some(item => /ast-grep.*generated root.*missing/.test(item)));
 });
 
 test('comparison detects unexpected generated files', t => {
