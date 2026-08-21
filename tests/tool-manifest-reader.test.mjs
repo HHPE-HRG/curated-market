@@ -30,6 +30,33 @@ test('v2 rejects host realization truth and absolute command values', () => {
   assert.ok(absolute.some(error => error.includes('commands')));
 });
 
+test('v2 recursively rejects nested host-bound and traversal command fields and root generated_at', () => {
+  const valid = {schema_version: 2, record_kind: 'tool-spec', tools: [portable]};
+  const table = [
+    ['root generated_at', {...valid, generated_at: '2026-08-20T00:00:00.000Z'}, 'generated_at'],
+    ['discovery required absolute', {...valid, tools: [{...portable, discovery: {...portable.discovery, required: ['/host/demo']}}]}, 'discovery'],
+    ['discovery required traversal', {...valid, tools: [{...portable, discovery: {...portable.discovery, required: ['../demo']}}]}, 'discovery'],
+    ['discovery alias absolute', {...valid, tools: [{...portable, discovery: {...portable.discovery, aliases: ['/tmp/sg']}}]}, 'discovery'],
+    ['discovery alias traversal', {...valid, tools: [{...portable, discovery: {...portable.discovery, aliases: ['..\\sg']}}]}, 'discovery'],
+    ['version_probe command absolute', {...valid, tools: [{...portable, version_probe: {...portable.version_probe, command: '/usr/bin/demo'}}]}, 'version_probe'],
+    ['version_probe command traversal', {...valid, tools: [{...portable, version_probe: {...portable.version_probe, command: '../demo'}}]}, 'version_probe'],
+    ['version_probe args absolute', {...valid, tools: [{...portable, version_probe: {...portable.version_probe, args: ['--config', '/etc/demo.conf']}}]}, 'version_probe'],
+    ['version_probe args traversal', {...valid, tools: [{...portable, version_probe: {...portable.version_probe, args: ['../../secret']}}]}, 'version_probe'],
+  ];
+  for (const [label, manifest, needle] of table) {
+    const errors = validateToolManifest(manifest, new Set(['demo/use']));
+    assert.ok(errors.some(error => error.includes(needle)), `${label}: ${errors.join('; ') || 'no errors'}`);
+  }
+  assert.deepEqual(validateToolManifest({
+    ...valid,
+    tools: [{
+      ...portable,
+      discovery: {method: 'path', required: ['demo'], aliases: ['demo-alias']},
+      version_probe: {...portable.version_probe, args: ['--version', '--json']},
+    }],
+  }, new Set(['demo/use'])), []);
+});
+
 test('unknown schemas fail closed', () => {
   assert.throws(() => readToolSpecs({schema_version: 99, tools: []}), /unsupported tools manifest schema/);
 });

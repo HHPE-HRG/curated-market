@@ -73,6 +73,31 @@ test('PATH discovery retains executable and symlink target', () => {
   fs.rmSync(root, {recursive: true, force: true});
 });
 
+test('discovery inspection failures are indeterminate, not absent', () => {
+  const cases = [
+    ['permission denied', Object.assign(new Error('EACCES'), {code: 'EACCES'}), 'permission-denied'],
+    ['symlink loop', Object.assign(new Error('ELOOP'), {code: 'ELOOP'}), 'symlink-loop'],
+    ['realpath failure', Object.assign(new Error('EINVAL'), {code: 'EINVAL'}), 'realpath-failed'],
+    ['filesystem I/O error', Object.assign(new Error('EIO'), {code: 'EIO'}), 'io-error'],
+  ];
+  for (const [label, error, reason] of cases) {
+    const result = resolveExecutable('demo', {
+      env: {PATH: '/only'},
+      access: () => {
+        if (reason === 'realpath-failed') return;
+        throw error;
+      },
+      realpath: () => {
+        throw error;
+      },
+    });
+    assert.equal(result.outcome, 'indeterminate', label);
+    assert.equal(result.command, 'demo', label);
+    assert.equal(result.reason, reason, label);
+    assert.notEqual(result.outcome, 'absent', label);
+  }
+});
+
 test('absence differs from version probe failure', () => {
   const absent = observeToolVersion(spec, {...base, resolve: () => ({outcome: 'absent', command: 'demo'}), run: () => assert.fail('must not run')});
   assert.equal(absent.discovery.outcome, 'absent');
