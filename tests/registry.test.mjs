@@ -18,10 +18,10 @@ test('generic repository validation includes opencode_only policy statically',()
   try{
     const registryResult=validate();
     assert.equal(registryResult.status,'failed');
-    assert.ok(registryResult.errors.some(error=>error.includes('opencode project configuration')));
+    assert.ok(registryResult.errors.some(error=>error.includes('opencode.json credentials')&&/(?:unsupported|forbidden)/.test(error)));
     const staticResult=staticIntegrity();
     assert.equal(staticResult.status,'FAIL_STATIC_INTEGRITY');
-    assert.ok(staticResult.errors.some(error=>error.includes('opencode project configuration')));
+    assert.ok(staticResult.errors.some(error=>error.includes('opencode.json credentials')&&/(?:unsupported|forbidden)/.test(error)));
     assert.ok(projectConfigReads>=3);
   }finally{fs.readFileSync=original;}
 });

@@ -15,6 +15,20 @@ import {checkOpencodeSkills, syncOpencodeSkills} from '../scripts/sync-opencode.
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
+test('host adapter documentation separates deterministic and live OpenCode acceptance', () => {
+  const text = fs.readFileSync(path.join(ROOT, 'docs/host-adapters.md'), 'utf8');
+  for (const required of [
+    'npm run opencode:generate',
+    'npm run opencode:check',
+    'npm run validate:opencode',
+    'ChatGPT Plus/Pro OAuth',
+    'Cursor browser OAuth',
+    'cursor-opencode-provider@0.6.3',
+    'separate live-acceptance plan',
+    'PR #4',
+  ]) assert.match(text, new RegExp(required.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+});
+
 test('project configuration selects only OpenAI and Cursor and pins classic Cursor provider', () => {
   const files = readOpencodeOnlyFiles({root: ROOT});
   assert.deepEqual(files.projectConfig.enabled_providers, ['openai', 'cursor']);
