@@ -272,11 +272,11 @@ function findIdentity(root, identity) {
   }
 }
 
-function cleanupStaging(stagingRoot, stagingIdentity, outputRoot, outputIdentity, searchRoot) {
+function cleanupStaging(stagingRoot, stagingIdentity, outputIdentity, searchRoot) {
   const currentIdentity = nodeIdentity(stagingRoot);
-  if (currentIdentity.exists) {
+  if (sameIdentity(currentIdentity, stagingIdentity)) {
     fs.rmSync(stagingRoot, {recursive: true, force: true});
-    if (sameIdentity(currentIdentity, stagingIdentity)) return;
+    return;
   }
   if (!outputIdentity.exists) return;
   const movedOutputRoot = findIdentity(searchRoot, outputIdentity);
@@ -485,7 +485,6 @@ export function syncOpencodeSkills(options = {}) {
       cleanupStaging(
         stagingRoot,
         stagingIdentity,
-        normalizedOutputRoot,
         outputIdentity,
         cleanupSearchRoot,
       );

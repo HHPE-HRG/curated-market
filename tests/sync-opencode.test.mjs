@@ -360,7 +360,6 @@ test('output-root swap during staging is rejected without touching external targ
   const external = path.join(fixture.root, 'external-swap-target');
   fs.mkdirSync(path.join(external, 'ast-grep'), {recursive: true});
   fs.writeFileSync(path.join(external, 'ast-grep/external.txt'), 'external\n');
-  const externalBefore = snapshot(external);
   const originalMkdir = fs.mkdirSync;
   let swapped = false;
   fs.mkdirSync = function (target, ...args) {
@@ -376,7 +375,46 @@ test('output-root swap during staging is rejected without touching external targ
   } finally {
     fs.mkdirSync = originalMkdir;
   }
-  assert.deepEqual(snapshot(external), externalBefore);
+  assert.equal(fs.readFileSync(path.join(external, 'ast-grep/external.txt'), 'utf8'), 'external\n');
+  assert.deepEqual(snapshot(movedOutput), neighborBefore);
+});
+
+test('cleanup leaves mismatched current staging pathname untouched and removes original moved staging', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const movedOutput = path.join(fixture.root, 'moved-output-with-colliding-stage');
+  const neighborBefore = snapshot(fixture.outputRoot);
+  const external = path.join(fixture.root, 'external-with-colliding-stage');
+  fs.mkdirSync(external);
+  const originalMkdir = fs.mkdirSync;
+  let stagingName;
+  let swapped = false;
+  fs.mkdirSync = function (target, ...args) {
+    if (!swapped) {
+      stagingName = fs.readdirSync(fixture.outputRoot)
+        .find(name => name.startsWith('.hhpe-opencode-stage-'));
+      assert.ok(stagingName);
+      const collidingStage = path.join(external, stagingName);
+      originalMkdir.call(this, collidingStage);
+      fs.writeFileSync(path.join(collidingStage, 'sentinel.txt'), 'external sentinel\n');
+      swapped = true;
+      fs.renameSync(fixture.outputRoot, movedOutput);
+      fs.symlinkSync(external, fixture.outputRoot, 'dir');
+    }
+    return originalMkdir.call(this, target, ...args);
+  };
+  try {
+    assert.throws(() => syncOpencodeSkills(fixture), /output root.*symlink|changed during generation/i);
+  } finally {
+    fs.mkdirSync = originalMkdir;
+  }
+  assert.equal(
+    fs.readFileSync(path.join(external, stagingName, 'sentinel.txt'), 'utf8'),
+    'external sentinel\n',
+  );
+  assert.equal(fs.existsSync(path.join(movedOutput, stagingName)), false);
   assert.deepEqual(snapshot(movedOutput), neighborBefore);
 });
 
@@ -398,16 +436,13 @@ test('ordinary output-root replacement during staging is rejected', t => {
     }
     return originalMkdir.call(this, target, ...args);
   };
-  const replacementBefore = () => snapshot(fixture.outputRoot);
   try {
     assert.throws(() => syncOpencodeSkills(fixture), /output root changed during generation/);
   } finally {
     fs.mkdirSync = originalMkdir;
   }
   assert.deepEqual(snapshot(movedOutput), originalBefore);
-  assert.deepEqual(replacementBefore(), [
-    {path: 'replacement.txt', type: 'file', bytes: Buffer.from('replacement\n').toString('hex'), mode: 0o644},
-  ]);
+  assert.equal(fs.readFileSync(path.join(fixture.outputRoot, 'replacement.txt'), 'utf8'), 'replacement\n');
 });
 
 test('ordinary owned destination replacement during staging is rejected', t => {
@@ -470,6 +505,67 @@ test('injected EXDEV during installation rolls back every owned tree and preserv
   }
   assert.equal(injected, true);
   assert.deepEqual(snapshot(fixture.outputRoot), before);
+});
+
+test('rollback restoration failure preserves recovery backup and reports AggregateError', t => {
+  const fixture = makeFixture();
+  cleanFixture(t, fixture);
+  for (const {destination} of PROJECTIONS) {
+    fs.mkdirSync(path.join(fixture.outputRoot, destination), {recursive: true});
+    fs.writeFileSync(path.join(fixture.outputRoot, destination, 'old.txt'), `${destination} old\n`);
+  }
+  fs.mkdirSync(path.join(fixture.outputRoot, 'neighbor'), {recursive: true});
+  fs.writeFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'keep\n');
+  const originalRename = fs.renameSync;
+  let installFailed = false;
+  let restoreFailed = false;
+  fs.renameSync = function (source, destination) {
+    if (
+      !installFailed &&
+      source.includes('.hhpe-opencode-stage-') &&
+      !source.includes(`${path.sep}backups${path.sep}`) &&
+      destination === path.join(fixture.outputRoot, 'stack-router')
+    ) {
+      installFailed = true;
+      throw new Error('injected installation failure');
+    }
+    if (
+      !restoreFailed &&
+      source.includes(`${path.sep}backups${path.sep}stack-router`) &&
+      destination === path.join(fixture.outputRoot, 'stack-router')
+    ) {
+      restoreFailed = true;
+      throw new Error('injected backup restoration failure');
+    }
+    return originalRename.call(this, source, destination);
+  };
+  let failure;
+  try {
+    syncOpencodeSkills(fixture);
+  } catch (error) {
+    failure = error;
+  } finally {
+    fs.renameSync = originalRename;
+  }
+  assert.ok(failure instanceof AggregateError);
+  assert.match(failure.message, /preserved staging/);
+  assert.equal(installFailed, true);
+  assert.equal(restoreFailed, true);
+  const stagingName = fs.readdirSync(fixture.outputRoot)
+    .find(name => name.startsWith('.hhpe-opencode-stage-'));
+  assert.ok(stagingName);
+  assert.equal(
+    fs.readFileSync(path.join(fixture.outputRoot, stagingName, 'backups/stack-router/old.txt'), 'utf8'),
+    'stack-router old\n',
+  );
+  assert.equal(fs.existsSync(path.join(fixture.outputRoot, 'stack-router')), false);
+  for (const destination of ['ast-grep', 'registry-health', 'serena-guidance', 'context7-guidance']) {
+    assert.equal(
+      fs.readFileSync(path.join(fixture.outputRoot, destination, 'old.txt'), 'utf8'),
+      `${destination} old\n`,
+    );
+  }
+  assert.equal(fs.readFileSync(path.join(fixture.outputRoot, 'neighbor/keep.txt'), 'utf8'), 'keep\n');
 });
 
 test('staged-child symlink swap is rejected before old output removal', t => {
