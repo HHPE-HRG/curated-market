@@ -71,7 +71,7 @@ Each generated projection has exactly one canonical source directory:
 | `playwright-guidance` | `registry/overlays/wrappers/playwright-guidance` | `registry/adapters/codex/marketplace/plugins/hhpe-registry/skills/playwright-guidance` |
 | `session-start` | `registry/overlays/wrappers/session-start` | `registry/adapters/codex/marketplace/plugins/hhpe-registry/skills/session-start` |
 
-All seven are generator-owned. The ownership set is explicit and closed for this migration; discovering another wrapper does not add it automatically.
+All seven are generator-owned. The ownership set is explicit, closed, and review-governed for this migration. Directory discovery must not expand generator scope merely because another wrapper appears under `registry/overlays/wrappers`. Adding another generator-owned projection requires an intentional reviewed change to the ownership set and its source-to-output mapping.
 
 Generator ownership covers each complete wrapper directory recursively, not only `SKILL.md`. Supporting files and subdirectories remain package-relative inside the generated wrapper exactly as they are under the canonical overlay.
 
@@ -101,7 +101,7 @@ For every owned wrapper, generation must:
 
 1. resolve source and destination relative to the selected repository root;
 2. reject a missing canonical source rather than silently omit it;
-3. replace only that wrapper's owned destination;
+3. reconcile only that wrapper's owned destination so output exactly represents the current canonical tree;
 4. recursively copy the complete source directory as regular files/directories;
 5. preserve file contents and relative supporting-file layout;
 6. avoid embedding repository root, home directory, username, platform path, or generation time in output;
@@ -109,6 +109,10 @@ For every owned wrapper, generation must:
 8. perform no plugin installation, activation, registration, removal, or host configuration.
 
 Repeated generation from unchanged sources must produce byte-equivalent output and no Git diff.
+
+Generation is reconciliation, not append-only copying. A file removed from a canonical owned wrapper must not survive as stale generated output. Deletion authority is limited to the seven explicitly owned destination directories. The generator must not recursively clean the enclosing plugin, plugin metadata, neighboring skills, or any non-owned adapter content.
+
+Generator-owned regular-file modes must preserve the canonical source's Git-relevant executable bit. Generation must not invent executable permission for a non-executable canonical file. Other platform-specific permission bits are not projection semantics and must not cause nondeterministic checked-in output; directories receive only the access permissions needed to represent and traverse the tree. The implementation plan must make this mode handling explicit in generation and parity tests.
 
 The generator's authority stops at producing these checked-in adapter directories. It is not authoritative for canonical wrapper content, exposure activation, native plugin installation, or provider-wide realization policy.
 
@@ -150,9 +154,9 @@ The projection consumes canonical content. Editing a generated copy directly doe
 Two complementary checks are required:
 
 1. **Tree parity:** every canonical file under each owned wrapper has a corresponding regular generated file with identical content, and the generated wrapper has no unexplained extra entries.
-2. **Regeneration check:** generation into an isolated output or otherwise non-destructive comparison reproduces checked-in output without modifying canonical repository state.
+2. **Regeneration check:** a check mode or equivalent test strategy generates all seven projections into isolated temporary output and compares that result with checked-in output without modifying canonical repository state.
 
-CI or local check tooling may generate into a temporary directory and compare trees. It must not need to rewrite the checked-in adapter merely to determine whether it is current. Exact command naming and whether the existing script receives an optional output/root parameter are implementation-plan decisions, provided the check remains non-destructive.
+CI and static local verification must be capable of using that isolated temporary output. They must not rewrite the checked-in adapter merely to determine whether it is current. Exact command naming and whether the existing script receives an optional output/root parameter are implementation-plan decisions, provided the check remains non-destructive.
 
 A source change without regenerated output fails parity. A direct generated-output change without matching canonical source also fails parity. A file-type change to a symlink fails even if reading through that link happens to yield matching bytes on one host.
 
@@ -168,18 +172,23 @@ A clean checkout must be able to read every projected wrapper without relying on
 - plugin installation state; or
 - generation having run after checkout.
 
-Tests must exercise projection comparison from a repository or fixture rooted at a noncanonical temporary path. Platform-independent path construction must be used. Generated content must not contain absolute source paths.
+Tests must exercise projection comparison from a repository or fixture rooted at a noncanonical temporary path. Platform-independent path construction must be used. Generator mechanics and generated representation must not introduce checkout-specific, username-specific, home-specific, worktree-specific, or historical realization paths.
+
+Portability checks must distinguish generated-path leakage from intentional canonical content. A canonical wrapper may legitimately document an example absolute path. Such source-authored bytes remain valid when copied unchanged. Verification therefore detects paths introduced by generator metadata, symlink targets, or output that differs from the corresponding canonical source; it must not use a blanket string rejection that fails merely because the canonical wrapper intentionally contains an example path.
 
 ## Parity semantics
 
 Parity means structural and content equivalence between one canonical wrapper tree and its one generated Codex projection:
 
-- every source directory is represented;
-- every source file is represented as a regular file;
-- relative paths match;
-- bytes match;
-- no host-specific link target participates; and
-- generated destination contains no stale files absent from canonical source.
+- canonical and generated relative path sets match;
+- every source directory is represented as a directory;
+- every source file is represented as a regular file, with the canonical Git-relevant executable bit;
+- bytes match for every regular file;
+- supporting nested files and directories are included;
+- generated destination contains no stale or unexpected files absent from canonical source; and
+- no generator-owned output entry is a symlink.
+
+Representation is part of parity. A symlink that resolves to bytes identical to a canonical regular file is not equivalent to the approved regular-file representation.
 
 Parity does not prove:
 
@@ -200,7 +209,7 @@ Generation and verification fail closed when:
 - copied output differs from canonical source;
 - an owned output contains a symlink;
 - an unexpected extra file remains in an owned destination;
-- host-absolute path material appears in generated output; or
+- generator mechanics introduce checkout-specific or realization-specific path material absent from canonical source; or
 - regeneration changes output when sources are unchanged.
 
 Failure reports identify wrapper and relative path. They do not repair plugin installation or host state.
@@ -213,8 +222,10 @@ A future implementation must prove:
 - all seven are generated from the documented canonical directories;
 - supporting files and nested directories are copied;
 - generated entries are regular files/directories;
+- generated relative path sets, file contents, nested supporting files, and Git-relevant executable bits match canonical sources;
+- generator-owned output has no stale, unexpected, or symlink entries;
 - historical absolute symlinks are absent;
-- no output contains home, checkout, worktree, or historical Linux absolute paths;
+- generator mechanics introduce no home, checkout, worktree, username, or historical realization paths beyond intentional canonical source content;
 - generation is deterministic and idempotent;
 - a clean checkout contains readable complete projection;
 - arbitrary checkout roots, Linux path semantics, and macOS path semantics do not change output;
@@ -264,6 +275,8 @@ The design is satisfied when a future implementation can establish all of the fo
 6. Generated output is clearly identifiable by path, explicit generator ownership, documented source mapping, and parity without modifying canonical skill bytes.
 7. Generator execution has no plugin or host-configuration side effects.
 8. No generalized Compatibility infrastructure is introduced.
+
+Canonical overlays remain source-content authority. The generator remains the write mechanism for these seven projection trees. Reviewed checked-in generated state remains publication and approval state. A clean checkout already contains the readable complete projection, while plugin installation and activation remain outside generator authority.
 
 ## Deferred implementation decisions
 
