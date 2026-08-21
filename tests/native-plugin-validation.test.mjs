@@ -208,3 +208,17 @@ test('explicit host command accepts repeated planned targets and rejects unknown
   assert.equal(invalid.status, 2);
   assert.match(invalid.stderr, /no matching planned declaration/);
 });
+
+test('valid static declarations and missing required realization remain separate results', () => {
+  assert.deepEqual(validateExposureDeclarations([exposure('pkg/a', 'one@market')], new Set(['pkg/a'])), []);
+  const host = validateHostRealization({host: 'codex', context: 'deploy-5', exposures: [exposure('pkg/a', 'one@market')], inventoryProbe: observed('other@market')});
+  assert.equal(host.category, 'host-realization');
+  assert.equal(host.status, 'failed');
+});
+
+test('installed realization cannot approve malformed repository declaration', () => {
+  const malformed = exposure('missing/cap', 'one@market');
+  assert.ok(validateExposureDeclarations([malformed], new Set()).length > 0);
+  const host = validateHostRealization({host: 'codex', context: 'deploy-6', exposures: [malformed], inventoryProbe: observed('one@market')});
+  assert.equal(host.status, 'passed');
+});
