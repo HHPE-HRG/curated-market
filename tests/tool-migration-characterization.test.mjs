@@ -6,8 +6,13 @@ import {ROOT} from '../lib/registry.mjs';
 
 const readJson = file => JSON.parse(fs.readFileSync(path.join(ROOT, file), 'utf8'));
 
-test('v1 records four approved tool identities and mixed host facts', () => {
-  const manifest = readJson('registry/manifests/tools.yaml');
+test('historical v1 shape mixed approved identity and host facts', () => {
+  const manifest = {schema_version: 1, tools: [
+    {tool_id: 'ast-grep-runtime', version: '0.43.0', source: 'npm:@ast-grep/cli@0.43.0', binary_paths: ['/home/hold3n/.local/bin/ast-grep'], status: 'present'},
+    {tool_id: 'serena-runtime', version: '1.5.3', source: 'uv:serena-agent==1.5.3', binary_paths: ['/home/hold3n/.local/bin/serena'], status: 'present'},
+    {tool_id: 'context7-runtime', version: '0.5.4', source: 'npm:ctx7@0.5.4', binary_paths: ['/home/hold3n/.nvm/bin/ctx7'], status: 'present'},
+    {tool_id: 'playwright-cli-runtime', version: '0.1.17', source: 'npm:@playwright/cli@0.1.17', binary_paths: ['/home/hold3n/.nvm/bin/playwright-cli'], status: 'present'}
+  ]};
   assert.equal(manifest.schema_version, 1);
   assert.deepEqual(manifest.tools.map(({tool_id, version, source}) => [tool_id, version, source]), [
     ['ast-grep-runtime', '0.43.0', 'npm:@ast-grep/cli@0.43.0'],
@@ -31,9 +36,7 @@ test('tracked tool reports retain legacy envelopes', () => {
 
 test('generator cannot reproduce checked-in tool registry', () => {
   const source = fs.readFileSync(path.join(ROOT, 'scripts/generate-manifests.mjs'), 'utf8');
-  assert.match(source, /save\('tools\.yaml'/);
-  const literalToolIds = [...source.matchAll(/tool_id:'([^']+)'/g)].map(match => match[1]);
-  assert.deepEqual(literalToolIds, ['ast-grep-runtime']);
+  assert.doesNotMatch(source, /save\('tools\.yaml'/);
   assert.equal(readJson('registry/manifests/tools.yaml').tools.length, 4);
 });
 
@@ -41,6 +44,6 @@ test('tool classes carry distinct readiness dependencies', () => {
   const checks = fs.readFileSync(path.join(ROOT, 'lib/capability-checks.mjs'), 'utf8');
   assert.match(checks, /project.*create/s);
   assert.match(checks, /library.*react.*useEffect/s);
-  assert.match(checks, /packagedSkill/);
-  assert.match(checks, /browser daemon\/browser binaries/);
+  assert.match(checks, /inspectSkillMaterial/);
+  assert.match(checks, /inspectBrowserRuntime/);
 });

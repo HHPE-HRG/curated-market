@@ -73,3 +73,7 @@ external-rollout: unknown
 ```
 
 Local migration is allowed because every discovered local consumer has an explicit migration or compatibility task. External rollout remains unknown because documented integrations were unavailable for inspection.
+
+## Final local re-audit
+
+The Task 12 search found no canonical runtime reader of v1 host fields. Remaining `binary_paths`, `source_binary_paths`, and `status: present` references are validator rejection vocabulary, historical characterization fixtures, this audit, or architecture/plan documentation. Canonical v1 reading may therefore be retired locally. External rollout remains `unknown`.

@@ -12,10 +12,11 @@ const portable = {
   readiness_probe: 'demo-functional', provisioning: {execution: 'manual-only', upgrade: 'install demo', removal: 'remove demo'}
 };
 
-test('transitional reader preserves portable identity from v1 and v2', () => {
+test('canonical reader rejects v1 after inspected consumers migrate', () => {
   const v1 = {schema_version: 1, tools: [{tool_id: 'demo-runtime', capability_id: 'demo/use', version: '1.2.3', source: 'npm:demo@1.2.3', binary_paths: ['/host/demo'], status: 'present'}]};
+  assert.throws(() => readToolSpecs(v1), /unsupported tools manifest schema 1/);
   const v2 = {schema_version: 2, record_kind: 'tool-spec', tools: [portable]};
-  for (const manifest of [v1, v2]) assert.deepEqual(readToolSpecs(manifest).map(({tool_id, capability_id, version, source}) => ({tool_id, capability_id, version, source})), [{tool_id: 'demo-runtime', capability_id: 'demo/use', version: '1.2.3', source: 'npm:demo@1.2.3'}]);
+  assert.deepEqual(readToolSpecs(v2).map(({tool_id, capability_id, version, source}) => ({tool_id, capability_id, version, source})), [{tool_id: 'demo-runtime', capability_id: 'demo/use', version: '1.2.3', source: 'npm:demo@1.2.3'}]);
 });
 
 test('v2 rejects host realization truth and absolute command values', () => {
