@@ -10,6 +10,7 @@ import {
   projectLegacyResult
 } from '../lib/capability-checks.mjs';
 import {toolSpecRevision} from '../lib/tool-contracts.mjs';
+import fs from 'node:fs';
 
 const context = {id: 'worker-a', platform: 'linux', arch: 'x64', reusable: true};
 const found = command => ({outcome: 'present', command, executable: `/worker/bin/${command}`, realpath: `/worker/runtime/${command}`});
@@ -123,4 +124,23 @@ test('all migrated checks separate construction from optional report persistence
     const value = check({...baseOptions, writeReport: (reportName, report) => writes.push([reportName, report])});
     assert.deepEqual(writes, [[name, value]]);
   }
+});
+
+test('two workers satisfy one ToolSpec through different valid paths', () => {
+  const run = (_command, args) => args[0] === '--version' ? {status: 0, stdout: 'ast-grep 0.43.0', stderr: ''} : {status: 0, stdout: 'fixture match', stderr: ''};
+  const a = checkAstGrep({...options, context: {id: 'worker-a', platform: 'linux', arch: 'x64', reusable: true}, resolve: () => ({outcome: 'present', command: 'ast-grep', executable: '/worker-a/bin/ast-grep', realpath: '/worker-a/runtime/ast-grep'}), run});
+  const b = checkAstGrep({...options, context: {id: 'worker-b', platform: 'darwin', arch: 'arm64', reusable: true}, resolve: () => ({outcome: 'present', command: 'ast-grep', executable: '/opt/homebrew/bin/ast-grep', realpath: '/opt/homebrew/Cellar/ast-grep'}), run});
+  assert.equal(a.tool_observation.tool_spec_revision, b.tool_observation.tool_spec_revision);
+  assert.notEqual(a.tool_observation.discovery.executable, b.tool_observation.discovery.executable);
+  assert.notEqual(a.tool_observation.execution_context.id, b.tool_observation.execution_context.id);
+});
+
+test('worker contract requires contextual evidence only for consequential claims', () => {
+  const worker = JSON.parse(fs.readFileSync(new URL('../registry/adapters/hhpe-hrg/worker-contract.json', import.meta.url), 'utf8'));
+  assert.equal(worker.host_absolute_paths_allowed, false);
+  assert.equal(worker.tool_spec_schema_version, 2);
+  assert.equal(worker.tool_realization, 'independent-per-execution-context');
+  assert.equal(worker.consequential_satisfaction_claim_requires_context_evidence, true);
+  assert.equal(worker.durable_tool_observation_required_for_every_operation, false);
+  assert.equal('tool_observation_required' in worker, false);
 });

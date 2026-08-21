@@ -5,14 +5,19 @@
   "exposure_manifest": "registry/manifests/exposures.yaml",
   "policy_manifest": "registry/manifests/final-stack.yaml",
   "tool_manifest": "registry/manifests/tools.yaml",
+  "tool_spec_schema_version": 2,
+  "tool_realization": "independent-per-execution-context",
   "source_mode": "read-only-package-mount-or-verified-bundle",
   "generated_state": "separate-read-write-mount",
   "required_worker_checks": [
     "package revisions and tree hashes match packages.lock.yaml",
     "active capability set matches final-stack.yaml",
-    "tool versions match tools.yaml",
+    "worker realization satisfies the applicable ToolSpec version and readiness policy",
+    "consequential satisfaction claims identify the ToolSpec revision and execution context",
     "relative source and supporting paths resolve",
     "policy manifest hash matches the lead runtime"
   ],
-  "host_absolute_paths_allowed": false
+  "host_absolute_paths_allowed": false,
+  "consequential_satisfaction_claim_requires_context_evidence": true,
+  "durable_tool_observation_required_for_every_operation": false
 }

@@ -1,6 +1,8 @@
 # Capability expansion operations
 
-The registry now contains the complete pinned Serena and Trail of Bits source packages. Serena, Context7, and Playwright runtimes are user-scoped and version-locked in `registry/manifests/tools.yaml`. Context7 and Playwright are task-triggered; they are not fetched or started during session hydration. Beads is deliberately inactive because HHPE owns the live task graph.
+The registry now contains the complete pinned Serena and Trail of Bits source packages. `registry/manifests/tools.yaml` is the initial repository-local storage for portable approved tool identity, version, source coordinate, discovery policy, and probe policy. It does not assert installation or health on the current host. Each execution context realizes the applicable ToolSpec independently; capability checks may retain a structured observation in existing reports, but retention is not required for every check.
+
+Context7 service/network/authentication readiness remains distinct from local CLI presence. Playwright generated material and browser/daemon readiness remain distinct from local CLI presence. Physical ownership of Compatibility implementation remains unresolved. Context7 and Playwright are task-triggered; they are not fetched or started during session hydration. Beads is deliberately inactive because HHPE owns the live task graph.
 
 ## Routing
 
