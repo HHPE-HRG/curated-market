@@ -172,6 +172,9 @@ test('agent validation rejects non-native frontmatter and unsafe agent text', ()
     agents => { agents.get('operator.md').body = 'Read [configuration](/Users/example/.config/opencode).'; },
     agents => { agents.get('operator.md').body = 'Use "/Users/example/.config/opencode".'; },
     agents => { agents.get('operator.md').body = 'Use "C:\\Users\\example\\opencode".'; },
+    agents => { agents.get('operator.md').body = 'Set ROOT=/Users/example/project.'; },
+    agents => { agents.get('operator.md').body = 'Use </Users/example/project> or [/Users/example/project].'; },
+    agents => { agents.get('operator.md').body = 'Use \\\\server\\share.'; },
     agents => { agents.get('operator.md').body = 'Set OPENAI_API_KEY before work.'; },
   ]) {
     const agents = structuredClone(files.agents);
