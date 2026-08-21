@@ -26,7 +26,7 @@ npm run opencode:check
 npm run validate:opencode
 ```
 
-Generation reconciles only the seven owned project skill roots from canonical wrapper sources. Checking compares isolated fresh generation with checked-in parity. Validation checks the Git-visible specialization, project configuration, agents, sources, and generated state. These commands perform no network inference, OAuth, plugin installation, auth/cache/model inspection, model invocation, or home mutation.
+Generation reconciles only the seven owned project skill roots from canonical wrapper sources. `npm run opencode:check` validates checked-in generated OpenCode skill parity against isolated generation. `npm run validate:opencode` validates Git-visible specialization policy, project configuration, and native agent source. These commands remain separate responsibilities and are not combined. They perform no network inference, OAuth, plugin installation, auth/cache/model inspection, model invocation, or home mutation.
 
 Provider policy fails closed. OpenAI permits only ChatGPT Plus/Pro OAuth; unavailable OAuth, entitlement, or model access is an explicit contextual failure and never falls back to API-key billing or another provider. Cursor permits only Cursor browser OAuth through the supply-pinned `cursor-opencode-provider@0.6.3`; unavailable authentication, entitlement, discovery, or operation never falls back to an API key, direct Cursor, proxy, alternate package, unpinned source, or disguised OpenAI result.
 
