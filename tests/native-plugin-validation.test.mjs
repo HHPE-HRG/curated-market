@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import test from 'node:test';
+import {fileURLToPath} from 'node:url';
 import {validateExposureDeclarations, validateHostRealization} from '../lib/registry.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const capabilityIds = new Set(['pkg/cap']);
 const valid = {
@@ -136,4 +143,68 @@ test('ordinary current-manifest validation does not broaden scope to planned tar
 
 test('explicit planned selection rejects an unknown target before probing', () => {
   assert.throws(() => validateHostRealization({host: 'codex', context: 'activation-2', exposures: [exposure('pkg/a', 'one@market', 'planned')], requiredPlannedTargets: ['unknown@market'], inventoryProbe: () => { throw new Error('must not probe'); }}), /no matching planned declaration/);
+});
+
+function cliFixture(t, {inventory = '', exitStatus = 0} = {}) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-host-cli-'));
+  const marker = path.join(directory, 'called');
+  const executable = path.join(directory, 'codex');
+  fs.writeFileSync(executable, `#!/bin/sh\nprintf called > '${marker}'\nprintf '%s' '${inventory}'\nexit ${exitStatus}\n`);
+  fs.chmodSync(executable, 0o755);
+  t.after(() => fs.rmSync(directory, {recursive: true, force: true}));
+  return {
+    probeMarker: marker,
+    run(args) {
+      return spawnSync(process.execPath, ['lib/registry.mjs', ...args], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        env: {...process.env, PATH: `${directory}${path.delimiter}${process.env.PATH}`},
+      });
+    },
+  };
+}
+
+test('explicit host command fails required planned target as host realization, not static integrity', t => {
+  const fixture = cliFixture(t, {inventory: 'other@market installed\n'});
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-4', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  assert.equal(result.status, 1);
+  const body = JSON.parse(result.stdout);
+  assert.equal(body.category, 'host-realization');
+  assert.equal(body.status, 'failed');
+  assert.equal(result.stdout.includes('FAIL_STATIC_INTEGRITY'), false);
+  assert.equal(body.observations[0].outcome, 'absent');
+});
+
+test('explicit host command rejects missing context before probing', t => {
+  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\n'});
+  const result = fixture.run(['validate-host', '--host', 'codex']);
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /--context/);
+  assert.equal(fs.existsSync(fixture.probeMarker), false);
+});
+
+test('explicit host command passes installed selected target', t => {
+  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\n'});
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-5', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  assert.equal(result.status, 0);
+  assert.equal(JSON.parse(result.stdout).observations[0].outcome, 'installed');
+});
+
+test('explicit host command reports unavailable inventory as indeterminate host failure', t => {
+  const fixture = cliFixture(t, {exitStatus: 9});
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-6', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  assert.equal(result.status, 1);
+  const body = JSON.parse(result.stdout);
+  assert.equal(body.observations[0].outcome, 'indeterminate');
+  assert.equal(body.probe.exit_status, 9);
+});
+
+test('explicit host command accepts repeated planned targets and rejects unknown selection', t => {
+  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\nsuperpowers@hhpe-hrg installed\n'});
+  const pass = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-7', '--require-planned-target', '00-hhpe-registry@hhpe-hrg', '--require-planned-target', 'superpowers@hhpe-hrg']);
+  assert.equal(pass.status, 0);
+  assert.equal(JSON.parse(pass.stdout).observations.length, 2);
+  const invalid = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-8', '--require-planned-target', 'unknown@market']);
+  assert.equal(invalid.status, 2);
+  assert.match(invalid.stderr, /no matching planned declaration/);
 });

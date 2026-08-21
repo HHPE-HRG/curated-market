@@ -7,6 +7,7 @@ export PATH="${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}/bin:$PATH"
 hhpe-registry-discover
 hhpe-registry-status
 hhpe-registry-validate
+hhpe-registry-validate-host --host codex --context <id>
 hhpe-registry-sync                 # dry run
 hhpe-registry-sync --apply         # additive links only
 hhpe-registry-diff
@@ -17,6 +18,8 @@ hhpe-registry-capability-check all
 ```
 
 Run discovery, then validation, then sync without `--apply`. Resolve every `COLLISION`. Apply is additive: it creates only absent individual links and records each one in `migration-state.yaml`. Re-run validation and start a new host session. Never run upstream installers during registry deployment.
+
+`hhpe-registry-validate` and `npm run validate` validate checked-in repository declarations only. They do not inspect native-plugin installation. Use `hhpe-registry-validate-host --host codex --context <id>` when an applicable active Codex exposure must be realized. Add `--require-planned-target <plugin@marketplace>` only for an explicitly selected pre-activation target. A designated host runs static validation and host validation as separate gates. Host failure reports `host-realization`; it is not `FAIL_STATIC_INTEGRITY`. Validation never installs or activates a plugin.
 
 Backups belong under `backups/<timestamp>` and must be recorded as `backup_only`. The current additive phase has not modified host config files, so no config backup is required yet.
 
