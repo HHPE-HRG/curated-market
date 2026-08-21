@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
+import childProcess, {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
+import {syncBuiltinESMExports} from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
-import {spawnSync} from 'node:child_process';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 import {
@@ -43,6 +44,100 @@ test('project configuration rejects non-canonical bindings and unsafe nested val
     const value = structuredClone(projectConfig);
     mutate(value);
     assert.equal(validateOpencodeOnly({root: ROOT, specialization, projectConfig: value, agents}).ok, false);
+  }
+});
+
+test('provider policy fails closed on every unapproved realization', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  const cases = [
+    ['OpenAI API key', value => { value.projectConfig.provider = {openai: {apiKey: '{env:OPENAI_API_KEY}'}}; }, 'opencode.json provider.openai.apiKey'],
+    ['extra provider', value => { value.projectConfig.enabled_providers.push('anthropic'); }, 'opencode.json enabled_providers'],
+    ['floating Cursor package', value => { value.projectConfig.plugin = ['cursor-opencode-provider@latest']; }, 'opencode.json plugin[0]'],
+    ['Git Cursor package', value => { value.projectConfig.plugin = ['github:oakimov/cursor-opencode-provider#main']; }, 'opencode.json plugin[0]'],
+    ['local Cursor package', value => { value.projectConfig.plugin = ['/tmp/cursor-opencode-provider']; }, 'opencode.json plugin[0]'],
+    ['OpenCode 2 entrypoint', value => { value.projectConfig.plugin = ['cursor-opencode-provider/plugin/opencode2']; }, 'opencode.json plugin[0]'],
+    ['Cursor API key auth', value => { value.specialization.provider_bindings[1].auth_realization = 'api-key'; }, 'specialization.provider_bindings[1].auth_realization'],
+    ['wrong package version', value => { value.specialization.provider_bindings[1].package.version = '0.6.4'; }, 'specialization.provider_bindings[1].package.version'],
+    ['wrong upstream commit', value => { value.specialization.provider_bindings[1].package.upstream_commit = 'deadbeef'; }, 'specialization.provider_bindings[1].package.upstream_commit'],
+    ['wrong npm integrity', value => { value.specialization.provider_bindings[1].package.npm_integrity = 'sha512-wrong'; }, 'specialization.provider_bindings[1].package.npm_integrity'],
+    ['nested model catalog', value => { value.projectConfig.metadata = {runtime: {models: ['cursor/model']}}; }, 'opencode.json metadata.runtime.models'],
+  ];
+  for (const [name, mutate, errorPath] of cases) {
+    const value = structuredClone({specialization: files.specialization, projectConfig: files.projectConfig});
+    mutate(value);
+    const result = validateOpencodeOnly({...files, ...value, root: ROOT});
+    assert.equal(result.ok, false, name);
+    assert.ok(result.errors.some(error => error.includes(errorPath)), `${name}: ${result.errors.join('; ')}`);
+  }
+});
+
+test('accepted provider schema contains and accepts no account or model data', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  const keys = value => value && typeof value === 'object'
+    ? Object.entries(value).flatMap(([key, child]) => [key, ...keys(child)])
+    : [];
+  assert.deepEqual(
+    keys({specialization: files.specialization, projectConfig: files.projectConfig})
+      .filter(key => /^(?:accounts?|models?)$/i.test(key)),
+    [],
+  );
+
+  for (const [name, metadata] of [
+    ['account', {account: {id: 'personal'}}],
+    ['model', {catalog: {model: 'cursor/model'}}],
+  ]) {
+    const projectConfig = structuredClone(files.projectConfig);
+    projectConfig.metadata = metadata;
+    const result = validateOpencodeOnly({...files, projectConfig, root: ROOT});
+    assert.equal(result.ok, false, name);
+    assert.ok(result.errors.some(error => error.includes(`opencode.json metadata.${name === 'account' ? 'account' : 'catalog.model'}`)));
+  }
+});
+
+test('static provider validation performs no subprocess, fetch, or sensitive state access', async () => {
+  const originalSpawnSync = childProcess.spawnSync;
+  const originalFetch = globalThis.fetch;
+  const originalReadFileSync = fs.readFileSync;
+  const calls = {spawnSync: [], fetch: [], sensitiveReads: []};
+  const sensitivePath = /(?:^|[\\/])(?:auth\.json|credentials?(?:\.json)?|accounts?(?:\.json)?|models?(?:\.json)?|hosts\.yaml|node_modules|\.cache|opencode[^\\/]*cache)(?:$|[\\/])/i;
+
+  childProcess.spawnSync = (...args) => {
+    calls.spawnSync.push(args);
+    throw new Error(`forbidden subprocess: ${String(args[0])}`);
+  };
+  globalThis.fetch = async (...args) => {
+    calls.fetch.push(args);
+    throw new Error(`forbidden fetch: ${String(args[0])}`);
+  };
+  fs.readFileSync = function(file, ...args) {
+    const value = String(file);
+    if (sensitivePath.test(value)) {
+      calls.sensitiveReads.push(value);
+      throw new Error(`forbidden sensitive read: ${value}`);
+    }
+    const body = originalReadFileSync.call(this, file, ...args);
+    if (path.basename(value) !== 'packages.lock.yaml') return body;
+    const manifest = JSON.parse(String(body));
+    for (const pkg of manifest.packages) pkg.revision = {type: 'overlay'};
+    return args[0] ? JSON.stringify(manifest) : Buffer.from(JSON.stringify(manifest));
+  };
+  syncBuiltinESMExports();
+
+  try {
+    const nonce = `${Date.now()}-${Math.random()}`;
+    const [{validate}, {staticIntegrity}] = await Promise.all([
+      import(`../lib/registry.mjs?static-provider-policy=${nonce}`),
+      import(`../lib/skills-ci.mjs?static-provider-policy=${nonce}`),
+    ]);
+    assert.equal(validateOpencodeOnly({root: ROOT}).ok, true);
+    assert.equal(validate().status, 'passed');
+    assert.equal(staticIntegrity().status, 'PASS');
+    assert.deepEqual(calls, {spawnSync: [], fetch: [], sensitiveReads: []});
+  } finally {
+    childProcess.spawnSync = originalSpawnSync;
+    globalThis.fetch = originalFetch;
+    fs.readFileSync = originalReadFileSync;
+    syncBuiltinESMExports();
   }
 });
 
