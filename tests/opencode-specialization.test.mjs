@@ -244,8 +244,15 @@ test('specialization generation does not inspect or mutate provider home skill r
   const providerRoots = [
     path.join(home, '.cursor/skills'),
     path.join(home, '.agents/skills'),
+    path.join(home, '.config/opencode/skills'),
     path.join(process.env.XDG_CONFIG_HOME, 'opencode/skills'),
   ];
+  assert.deepEqual(providerRoots, [
+    path.join(home, '.cursor/skills'),
+    path.join(home, '.agents/skills'),
+    path.join(home, '.config/opencode/skills'),
+    path.join(process.env.XDG_CONFIG_HOME, 'opencode/skills'),
+  ]);
   for (const root of providerRoots) {
     fs.mkdirSync(path.join(root, 'nested'), {recursive: true, mode: 0o755});
     fs.writeFileSync(path.join(root, 'sentinel'), 'unchanged');
