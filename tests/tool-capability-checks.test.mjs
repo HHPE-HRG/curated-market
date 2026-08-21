@@ -46,6 +46,92 @@ test('AST Grep retains absence, probe failure, wrong version and readiness failu
   assert.equal(readiness.tool_observation.readiness.outcome, 'failed');
 });
 
+test('AST Grep structural readiness forwards fixture stdin through the default runner path', () => {
+  const calls = [];
+  const value = checkAstGrep({
+    ...options,
+    run: (command, args, opts = {}) => {
+      calls.push({command, args, opts});
+      return args.includes('--version')
+        ? {status: 0, stdout: 'ast-grep 0.43.0', stderr: ''}
+        : {status: 0, stdout: 'fixture match', stderr: ''};
+    },
+  });
+  const readiness = calls.find(call => call.args.includes('--stdin'));
+  assert.ok(readiness, 'structural fixture runner was not invoked');
+  assert.equal(readiness.opts.input, 'console.log(1);');
+  assert.equal(value.tool_observation.readiness.outcome, 'satisfied');
+  assert.equal(value.tool_observation.readiness.probe, 'ast-grep-structural-fixture');
+});
+
+test('default capability process runner forwards stdin input to child processes', async () => {
+  const {runCapabilityProcess} = await import('../lib/capability-checks.mjs');
+  const result = runCapabilityProcess(
+    process.execPath,
+    ['-e', 'let data=""; process.stdin.on("data", chunk => data += chunk); process.stdin.on("end", () => process.stdout.write(data));'],
+    {input: 'console.log(1);', timeout: 5000},
+  );
+  assert.equal(result.status, 0);
+  assert.equal(result.stdout, 'console.log(1);');
+});
+
+test('AST Grep observes declared sg alias when primary command is absent', () => {
+  const value = checkAstGrep({
+    ...options,
+    resolve: command => command === 'sg'
+      ? {outcome: 'present', command: 'sg', executable: '/worker/bin/sg', realpath: '/worker/runtime/sg'}
+      : {outcome: 'absent', command},
+    run: (_command, args) => args.includes('--version')
+      ? {status: 0, stdout: 'ast-grep 0.43.0', stderr: ''}
+      : {status: 0, stdout: 'fixture match', stderr: ''},
+  });
+  assert.equal(value.tool_observation.discovery.outcome, 'present');
+  assert.equal(value.tool_observation.discovery.command, 'sg');
+  assert.equal(value.tool_observation.discovery.executable, '/worker/bin/sg');
+  assert.equal(value.tool_observation.version.outcome, 'compatible');
+  assert.equal(value.tool_observation.readiness.outcome, 'satisfied');
+});
+
+test('capability checks use canonical fail-closed ToolSpec reader without legacy fallback', () => {
+  const source = fs.readFileSync(new URL('../lib/capability-checks.mjs', import.meta.url), 'utf8');
+  assert.match(source, /readToolSpecs/);
+  assert.doesNotMatch(source, /legacyPolicies/);
+  assert.throws(
+    () => checkAstGrep({
+      ...options,
+      manifest: {schema_version: 1, tools: [{tool_id: 'ast-grep-runtime', capability_id: 'hhpe-hrg/ast-grep', version: '0.43.0', source: 'npm:x', binary_paths: ['/host']}]},
+    }),
+    /unsupported tools manifest schema/,
+  );
+});
+
+test('requirement evaluation and legacy projection fail closed on unknown requirements and identity mismatch', () => {
+  const observed = checkAstGrep(options).tool_observation;
+  const unknown = evaluateAstGrep('made-up-requirement', observed);
+  assert.equal(unknown.satisfied, false);
+  assert.match(unknown.evidence, /unknown requirement/);
+  const evaluation = evaluateAstGrep('structural-refactor', observed);
+  assert.throws(
+    () => projectLegacyResult('ast-grep', {...observed, tool_id: 'other-runtime'}, evaluation),
+    /tool identity/,
+  );
+  assert.throws(
+    () => projectLegacyResult('ast-grep', {...observed, tool_spec_revision: 'hhpe-toolspec-json-v1-sha256:deadbeef'}, evaluation),
+    /revision/,
+  );
+  assert.throws(
+    () => projectLegacyResult('ast-grep', {...observed, execution_context: {...observed.execution_context, id: 'worker-b'}}, evaluation),
+    /context identity/,
+  );
+  const foreign = evaluateToolRequirement(
+    'cli-inspection',
+    {...observed, tool_id: 'serena-runtime', tool_spec_revision: 'hhpe-toolspec-json-v1-sha256:deadbeef'},
+    {spec: {tool_id: 'ast-grep-runtime', capability_id: 'hhpe-hrg/ast-grep', version: '0.43.0', source: 'npm:@ast-grep/cli@0.43.0', provenance: {strength: 'approved-external-coordinate'}, commands: ['ast-grep', 'sg'], discovery: {method: 'path', required: ['ast-grep'], aliases: ['sg']}, version_probe: {parser: 'ast-grep-semver', command: 'ast-grep', args: ['--version'], requirement: '0.43.0'}, readiness_probe: 'ast-grep-structural-fixture'}},
+  );
+  assert.equal(foreign.satisfied, false);
+  assert.match(foreign.evidence, /identity/);
+});
+
 test('same blocked observation has requirement-specific compatibility conclusions', () => {
   const observed = checkAstGrep({...options}).tool_observation;
   const blocked = {...observed, readiness: {outcome: 'blocked', probe: 'ast-grep-structural-fixture', reason: 'fixture unavailable'}};

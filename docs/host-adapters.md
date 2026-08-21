@@ -32,14 +32,12 @@ Provider policy fails closed. OpenAI permits only ChatGPT Plus/Pro OAuth; unavai
 
 Deterministic verification does not establish provider authentication, account entitlement, model discovery, text/tool execution, restart behavior, or cache behavior. Those require a separate live-acceptance plan in an authorized environment. No live acceptance has been run or passed by this workflow.
 
-### Production gate
+### Production readiness
 
-Deterministic success is not production readiness. The following five inherited PR #4 ToolSpec/runtime findings remain separate prerequisites, unchanged by this specialization:
+Live provider acceptance remains a separate runtime verification in an authorized environment. The five inherited PR #4 ToolSpec/runtime findings are remediated in this branch under existing ToolSpec and ToolRealizationObservation authority:
 
-1. AST Grep structural readiness does not forward or validate its fixture through the default child-process runner and does not observe the declared `sg` alias.
-2. ToolSpec v2 portability validation does not reject host-bound or traversal values in nested discovery/probe command fields and does not reject the forbidden root `generated_at` field.
-3. Capability checks bypass the canonical fail-closed ToolSpec reader and retain a duplicated legacy policy fallback, allowing retired or unknown schemas to drive checks.
-4. Requirement evaluation and legacy projection fail open for unknown requirements or same-timestamp observations with mismatched tool/revision/context identity.
-5. Executable discovery collapses permission, symlink-loop, realpath, and I/O inspection errors into `absent` rather than indeterminate evidence.
-
-Production merge/readiness remains blocked until separately owned remediation resolves all five findings and the preserved ToolSpec and ToolRealizationObservation paths are reverified.
+1. AST Grep structural readiness forwards its fixture through the default child-process runner and observes the declared `sg` alias.
+2. ToolSpec v2 portability validation recursively rejects host-bound or traversal values in nested discovery/probe command fields and rejects forbidden root `generated_at`.
+3. Capability checks consume the canonical fail-closed ToolSpec reader; legacy policy fallback is removed.
+4. Requirement evaluation and legacy projection fail closed for unknown requirements and mismatched tool/revision/context identity.
+5. Executable discovery reports permission, symlink-loop, realpath, and I/O inspection failures as indeterminate rather than absent.
