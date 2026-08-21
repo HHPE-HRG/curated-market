@@ -140,6 +140,42 @@ test('reader retains exact agent filenames as map keys', () => {
   }
 });
 
+test('native agent source is the closed operator and worker set', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  assert.deepEqual([...files.agents.keys()].sort(), ['operator.md', 'worker.md']);
+  assert.equal(files.agents.get('operator.md').frontmatter.mode, 'primary');
+  assert.equal(files.agents.get('worker.md').frontmatter.mode, 'subagent');
+  assert.equal('model' in files.agents.get('operator.md').frontmatter, false);
+  assert.equal('model' in files.agents.get('worker.md').frontmatter, false);
+  assert.equal(validateOpencodeOnly({...files, root: ROOT}).ok, true);
+});
+
+test('worker cannot delegate and agent source rejects host-bound or secret values', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  assert.equal(files.agents.get('worker.md').frontmatter.permission.task, 'deny');
+  const agents = new Map(files.agents);
+  agents.set('extra.md', {frontmatter: {description: 'extra', mode: 'all'}, body: '/Users/example/auth.json'});
+  assert.equal(validateOpencodeOnly({...files, agents, root: ROOT}).ok, false);
+});
+
+test('agent validation rejects non-native frontmatter and unsafe agent text', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  for (const mutate of [
+    agents => { agents.get('operator.md').frontmatter.description = ''; },
+    agents => { agents.get('operator.md').frontmatter.mode = 'subagent'; },
+    agents => { agents.get('worker.md').frontmatter.permission.task = 'allow'; },
+    agents => { agents.get('worker.md').frontmatter.permission.edit = 'prompt'; },
+    agents => { agents.get('worker.md').frontmatter.model = 'openai/gpt-5'; },
+    agents => { agents.get('operator.md').frontmatter.description = '/Users/example/operator'; },
+    agents => { agents.get('operator.md').body = 'Use /Users/example/.config/opencode.'; },
+    agents => { agents.get('operator.md').body = 'Set OPENAI_API_KEY before work.'; },
+  ]) {
+    const agents = structuredClone(files.agents);
+    mutate(agents);
+    assert.equal(validateOpencodeOnly({...files, agents, root: ROOT}).ok, false);
+  }
+});
+
 test('static specialization validation does not inspect hosts or local auth state', () => {
   const original = fs.readFileSync;
   fs.readFileSync = function(file, ...args) {
