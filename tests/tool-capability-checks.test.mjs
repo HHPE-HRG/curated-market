@@ -2,7 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   checkAstGrep,
+  checkContext7,
+  checkPlaywright,
+  checkSerena,
   evaluateAstGrep,
+  evaluateToolRequirement,
   projectLegacyResult
 } from '../lib/capability-checks.mjs';
 import {toolSpecRevision} from '../lib/tool-contracts.mjs';
@@ -76,4 +80,47 @@ test('shared boundary links identity and observation without flattening readines
     ['network', 'authentication', 'service'],
     ['generated-material', 'browser', 'daemon']
   ]);
+});
+
+test('Serena requires project activation beyond compatible installation', () => {
+  const ready = checkSerena({...options, resolve: () => found('serena'), run: (_command, args) => args[0] === '--version' ? {status: 0, stdout: 'serena 1.5.3', stderr: ''} : assert.fail('unexpected generic run'), activateProject: () => ({outcome: 'satisfied', probe: 'serena-project-activation', project_configuration: true})});
+  assert.equal(ready.tool_observation.readiness.outcome, 'satisfied');
+  const blocked = checkSerena({...options, resolve: () => found('serena'), run: () => ({status: 0, stdout: 'serena 1.5.3', stderr: ''}), activateProject: () => ({outcome: 'blocked', probe: 'serena-project-activation', reason: 'language toolchain missing'})});
+  assert.equal(blocked.result, 'FAIL_TOOL_RUNTIME');
+  assert.equal(evaluateToolRequirement('cli-inspection', blocked.tool_observation).satisfied, true);
+  assert.equal(evaluateToolRequirement('project-semantic-readiness', blocked.tool_observation).satisfied, false);
+});
+
+test('Context7 service/auth/network state remains distinct from CLI presence', () => {
+  const value = checkContext7({...options, resolve: () => found('ctx7'), run: () => ({status: 0, stdout: 'ctx7 0.5.4', stderr: ''}), lookupService: () => ({outcome: 'blocked', probe: 'context7-live-lookup', reason: 'authentication unavailable'})});
+  assert.equal(value.tool_observation.discovery.outcome, 'present');
+  assert.equal(value.tool_observation.version.outcome, 'compatible');
+  assert.equal(value.tool_observation.readiness.outcome, 'blocked');
+  assert.equal(evaluateToolRequirement('live-lookup', value.tool_observation).satisfied, false);
+});
+
+test('Playwright observes generated material and browser readiness without provisioning', () => {
+  const calls = [];
+  const value = checkPlaywright({...options, resolve: () => found('playwright-cli'), run: (_command, args) => { calls.push(args); return {status: 0, stdout: 'playwright-cli 0.1.17', stderr: ''}; }, inspectSkillMaterial: () => ({outcome: 'satisfied', present: true}), inspectBrowserRuntime: () => ({outcome: 'blocked', reason: 'browser unavailable'})});
+  assert.equal(value.tool_observation.readiness.outcome, 'blocked');
+  assert.equal(value.tool_observation.readiness.generated_material.outcome, 'satisfied');
+  assert.equal(value.tool_observation.readiness.browser_runtime.outcome, 'blocked');
+  assert.equal(calls.some(args => args.includes('--skills')), false);
+  assert.equal(evaluateToolRequirement('cli-inspection', value.tool_observation).satisfied, true);
+  assert.equal(evaluateToolRequirement('browser-execution', value.tool_observation).satisfied, false);
+});
+
+test('all migrated checks separate construction from optional report persistence', () => {
+  for (const [name, check, extra, version] of [
+    ['serena', checkSerena, {activateProject: () => ({outcome: 'satisfied', probe: 'serena-project-activation'})}, '1.5.3'],
+    ['context7', checkContext7, {lookupService: () => ({outcome: 'satisfied', probe: 'context7-live-lookup'})}, '0.5.4'],
+    ['playwright', checkPlaywright, {inspectSkillMaterial: () => ({outcome: 'satisfied'}), inspectBrowserRuntime: () => ({outcome: 'satisfied'})}, '0.1.17']
+  ]) {
+    const writes = [];
+    const baseOptions = {...options, resolve: command => found(command), run: () => ({status: 0, stdout: `${name} ${version}`, stderr: ''}), ...extra};
+    check(baseOptions);
+    assert.equal(writes.length, 0);
+    const value = check({...baseOptions, writeReport: (reportName, report) => writes.push([reportName, report])});
+    assert.deepEqual(writes, [[name, value]]);
+  }
 });
