@@ -74,13 +74,17 @@ The existing `validate()` operation becomes repository/static validation. It ans
 - source paths and required supporting files are safe and present;
 - skill frontmatter is structurally valid;
 - exposure capability references exist;
-- exposure targets are structurally safe;
-- exposure host, mode, target, adapter, and existing status values form accepted declarations;
+- exposure status is one of the supported reviewed values;
+- native-plugin targets are well formed and structurally safe;
+- exposure host, mode, target, and adapter combinations form accepted declarations;
+- contradictory static exposure policy fails where existing repository rules define a contradiction;
 - final-stack constraints are internally consistent;
 - portable ToolSpec declarations are valid; and
 - managed-object ownership records satisfy their static and safely inspectable invariants.
 
 Repository/static validation must not invoke `codex plugin list` or otherwise require ambient plugin installation. It must remain deterministic for the same checkout and locked package inputs.
+
+“Static” describes the absence of ambient realization inspection; it does not make realization declarations unchecked strings. Unsupported status, unknown capability, malformed or unsafe native-plugin target, invalid host/mode declaration, and statically contradictory reviewed policy remain repository/static failures.
 
 `staticIntegrity()` consumes repository/static validation only. `FAIL_STATIC_INTEGRITY` means a static declaration, source, reference, policy, or portable configuration failure—not missing ambient host realization.
 
@@ -91,7 +95,7 @@ A separate narrow operation, logically equivalent to `validateHostRealization(..
 It:
 
 1. consumes already-valid exposure declarations;
-2. selects applicable Codex `native-plugin` exposures for the requested scope;
+2. selects applicable Codex `native-plugin` exposures from reviewed exposure/policy semantics and the explicit requested scope;
 3. groups them by host and plugin target;
 4. executes Codex's native inventory probe once per validation invocation, not once per capability;
 5. preserves process availability, exit status, and relevant output or limitations;
@@ -122,7 +126,7 @@ Explicit pre-activation validation does not mutate the exposure to `active`. It 
 
 `active` means:
 
-- Compatibility policy currently requires this exposure for the applicable host/context;
+- Compatibility policy currently requires this exposure only for the explicitly selected host/provider/context to which reviewed exposure policy applies;
 - explicit host-realization validation includes it by default when validating that applicable host/context;
 - missing required realization fails that explicit host validation; and
 - the active declaration still does not assert installation as portable Supply truth.
@@ -131,11 +135,11 @@ An installed plugin alone does not activate an exposure. Activation remains an e
 
 ### Status applicability
 
-Status is evaluated together with host, mode, target, and requested context. `active` is not a claim that every machine in existence must realize the exposure. A host validation invocation must identify which selected context it is evaluating; exact context identifier representation is outside this seam and need not create a global host registry.
+Status is evaluated together with reviewed host/provider binding, mode, target, policy applicability, and explicit requested context. `active` is not a claim that every machine in existence—or every machine that happens to run host validation—must realize the exposure. Applicability must not be inferred merely because Codex is installed, because `codex` is on `PATH`, or because the validator runs on a developer workstation. A host validation invocation must identify which selected context and reviewed policy scope it is evaluating; exact context identifier representation is outside this seam and need not create a global host registry.
 
 ## Planned-target pre-activation validation
 
-A deployment or activation workflow may need to prove a planned plugin target before policy changes it to `active`. That workflow must explicitly supply the planned targets or capability IDs under review.
+A deployment or activation workflow may need to prove a planned plugin target before policy changes it to `active`. That workflow must explicitly supply the planned target, capability IDs, or a specifically selected requirement set under review.
 
 Conceptually:
 
@@ -148,7 +152,7 @@ validate selected host
 
 Missing explicitly requested planned target fails that pre-activation validation. It does not make the repository invalid, change the stored status, or imply that unselected planned targets are required.
 
-No generic option that silently treats every planned exposure as active is allowed.
+No generic option or default equivalent to “require all planned plugins” is allowed.
 
 ## Target-level observation and evaluation
 
@@ -159,19 +163,19 @@ selected host/context
 + native-plugin target
 ```
 
-One target-level result carries:
+One target-level observation carries:
 
 - selected host/context supplied by caller;
 - plugin target;
 - affected capability IDs;
 - each affected exposure's status;
-- whether each capability/target is required by active policy or explicit pre-activation scope;
 - probe command identity;
 - process availability and exit status;
 - bounded relevant stdout/stderr or parsed inventory facts;
 - observed target state such as installed, not installed, or indeterminate;
-- limitations such as missing Codex executable or unusable output; and
-- requirement-specific satisfaction conclusion.
+- limitations such as missing Codex executable or unusable output.
+
+That one observation may support N capability/policy evaluations. Each evaluation retains its capability ID, reviewed applicability, exposure status, requirement source, and requirement-specific satisfaction conclusion. Target deduplication removes redundant inventory probes and duplicate observations; it must not erase capability-specific applicability or policy.
 
 Exact field names and serialization are implementation details. The operation must preserve enough underlying evidence to distinguish:
 
@@ -184,7 +188,17 @@ Exact field names and serialization are implementation details. The operation mu
 
 Those conditions must not collapse into one generic “missing” string.
 
-One absent `00-hhpe-registry@hhpe-hrg` target produces one result listing `hhpe-hrg/ast-grep`, `hhpe-hrg/registry-health`, and `hhpe-hrg/stack-router`, rather than three duplicate errors. Distinct targets remain distinct results.
+One absent `00-hhpe-registry@hhpe-hrg` target produces one observation listing `hhpe-hrg/ast-grep`, `hhpe-hrg/registry-health`, and `hhpe-hrg/stack-router`, rather than three duplicate inventory errors. Where their applicability or requirement scope differs, it still produces separate capability/policy evaluations. Distinct targets remain distinct observations.
+
+## Host observation states
+
+Explicit host validation preserves at least three distinct observation states:
+
+1. **Inventory observed, target installed.** Codex inventory executed successfully and positively identified the target.
+2. **Inventory observed, target absent.** Codex inventory executed successfully with usable output and did not contain the target.
+3. **Inventory unavailable or indeterminate.** Codex could not execute, inventory probing failed, or output could not establish installed/absent state.
+
+The third state is not positive evidence of absence. Raw process failure evidence—command availability, exit status, and bounded relevant stdout/stderr—must be preserved where appropriate. A required realization that cannot be established may remain unsatisfied and cause explicit host validation to fail, but its observation remains unavailable or indeterminate rather than absent.
 
 ## Missing Codex executable
 
@@ -221,6 +235,8 @@ explicit host-realization validation for selected context
 
 Success in one cannot mask failure in the other. Generic developer checkout validation invokes only the repository/static question.
 
+Static and host-realization operations require distinguishable result and exit semantics. A host-realization failure must never surface as `FAIL_STATIC_INTEGRITY`. Exact result names and exit codes are implementation details, but callers and tests must be able to determine which authority question failed and whether both were requested.
+
 Full host-loader or model-backed CI may include host-realization validation only when its invocation explicitly selects that context and requirement scope. It must not be inherited merely because a static helper calls `validate()`.
 
 ## Documentation semantics
@@ -250,28 +266,34 @@ Host-realization results identify:
 
 Probe execution failure is not plugin absence unless native output establishes absence. An unavailable or failed probe is indeterminate execution evidence; a required realization still remains unsatisfied because satisfaction was not established.
 
+Host validation reports its own category and exit outcome. It does not append host realization failures to the static error category. A composed command may report both result sections, but each retains its independent category, evidence, and conclusion.
+
 Host results need not be persisted. If retained by an existing report workflow, they remain contextual evidence with observation time and invocation scope. No evidence database or universal retention policy is introduced.
 
 ## Verification requirements
 
 A future implementation must prove repository/static behavior:
 
-- static validation never invokes `codex plugin list`;
+- static validation never invokes `codex plugin list` or another ambient native-plugin inventory subprocess;
+- a fail-if-called or invocation-counting native-inventory probe proves `validate()` and `staticIntegrity()` make zero probe calls; a test that passes only because Codex is missing is insufficient;
 - valid planned native-plugin declarations pass without installed plugins;
 - malformed targets and unknown capability references still fail;
+- invalid host/mode declarations and contradictory static policy still fail under reviewed repository rules;
 - unsupported exposure status values fail closed;
 - `staticIntegrity()` remains deterministic and ambient-plugin-independent; and
 - generic developer checkout validation does not require configured deployment state.
 
 It must prove explicit host-realization behavior:
 
-- installed required active target passes;
-- absent required active target fails;
+- installed required active target passes when reviewed policy applies to the explicitly selected context;
+- absent required active target fails when reviewed policy applies to the explicitly selected context;
 - missing Codex executable is contextual indeterminate evidence and fails required satisfaction without corrupting repository status;
 - inventory command failure and unparseable output remain distinguishable from absence;
 - unrequired planned target absence does not fail ordinary host validation;
 - explicitly selected planned target absence fails its pre-activation check;
+- ordinary host validation does not broaden scope to all planned targets;
 - one shared target produces one result containing all affected capability IDs;
+- one shared target observation preserves separate capability/policy evaluations where applicability or requirements differ;
 - distinct targets produce distinct results;
 - one inventory probe can support grouped target evaluation without repeated identical process calls; and
 - explicit host-validation command exits nonzero when required realization is unsatisfied.
@@ -324,12 +346,13 @@ The design is satisfied when a future implementation can demonstrate:
 1. Repository/static validity is deterministic and independent of ambient Codex plugin installation.
 2. Explicit native-plugin host validation preserves and evaluates current execution evidence for one selected context.
 3. `planned` and `active` retain the semantics defined here without new lifecycle states.
-4. Designated hosts fail explicit validation when required active plugins are absent.
+4. An explicitly selected context fails host validation when reviewed policy makes an active plugin applicable and that plugin is absent.
 5. Planned-target pre-activation checks are explicit and do not mutate policy.
-6. Shared plugin targets produce one target-level result with all affected capability IDs.
+6. Shared plugin targets produce one target observation with all affected capability IDs while preserving distinct capability/policy evaluations where required.
 7. Missing executables, failed probes, absence, and installed state remain distinguishable.
 8. Static and host results can be composed without either borrowing the other's authority.
-9. No generalized Compatibility infrastructure or host inventory is introduced.
+9. Host-realization failures are distinguishable from `FAIL_STATIC_INTEGRITY` in result and exit semantics.
+10. No generalized Compatibility infrastructure or host inventory is introduced.
 
 ## Deferred implementation decisions
 
