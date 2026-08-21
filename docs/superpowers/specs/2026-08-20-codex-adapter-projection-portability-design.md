@@ -1,7 +1,7 @@
 # Codex Adapter Projection Portability Design
 
-**Status:** Proposed for written-spec review  
-**Date:** 2026-08-20  
+**Status:** Proposed for written-spec review
+**Date:** 2026-08-20
 **Architectural authority:** [ADR-026: HHPE plane authority model](../../decisions/ADR-026-hhpe-plane-authority-model.md)
 
 ## Purpose
