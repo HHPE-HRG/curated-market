@@ -5,6 +5,7 @@ import {
   evaluateAstGrep,
   projectLegacyResult
 } from '../lib/capability-checks.mjs';
+import {toolSpecRevision} from '../lib/tool-contracts.mjs';
 
 const context = {id: 'worker-a', platform: 'linux', arch: 'x64', reusable: true};
 const found = command => ({outcome: 'present', command, executable: `/worker/bin/${command}`, realpath: `/worker/runtime/${command}`});
@@ -58,4 +59,21 @@ test('explicit report writer receives exactly the returned projection', () => {
   const writes = [];
   const value = checkAstGrep({...options, writeReport: (name, report) => writes.push([name, report])});
   assert.deepEqual(writes, [['ast-grep', value]]);
+});
+
+test('shared boundary links identity and observation without flattening readiness classes', () => {
+  const common = {version: '1.0.0', provenance: {strength: 'approved-external-coordinate'}, discovery: {method: 'path'}, version_probe: {parser: 'semver', command: 'tool', args: ['--version'], requirement: '1.0.0'}};
+  const classes = [
+    {tool_id: 'ast-grep-runtime', readiness_probe: 'ast-grep-structural-fixture', dependencies: ['local-executable', 'alias-realpath']},
+    {tool_id: 'serena-runtime', readiness_probe: 'serena-project-activation', dependencies: ['project', 'language-toolchain']},
+    {tool_id: 'context7-runtime', readiness_probe: 'context7-live-lookup', dependencies: ['network', 'authentication', 'service']},
+    {tool_id: 'playwright-cli-runtime', readiness_probe: 'playwright-layered-readiness', dependencies: ['generated-material', 'browser', 'daemon']}
+  ].map(entry => ({...common, ...entry}));
+  assert.equal(new Set(classes.map(toolSpecRevision)).size, 4);
+  assert.deepEqual(classes.map(item => item.dependencies), [
+    ['local-executable', 'alias-realpath'],
+    ['project', 'language-toolchain'],
+    ['network', 'authentication', 'service'],
+    ['generated-material', 'browser', 'daemon']
+  ]);
 });
