@@ -168,11 +168,39 @@ test('agent validation rejects non-native frontmatter and unsafe agent text', ()
     agents => { agents.get('worker.md').frontmatter.model = 'openai/gpt-5'; },
     agents => { agents.get('operator.md').frontmatter.description = '/Users/example/operator'; },
     agents => { agents.get('operator.md').body = 'Use /Users/example/.config/opencode.'; },
+    agents => { agents.get('operator.md').body = 'Use `/Users/example/.config/opencode`.'; },
+    agents => { agents.get('operator.md').body = 'Read [configuration](/Users/example/.config/opencode).'; },
+    agents => { agents.get('operator.md').body = 'Use "/Users/example/.config/opencode".'; },
+    agents => { agents.get('operator.md').body = 'Use "C:\\Users\\example\\opencode".'; },
     agents => { agents.get('operator.md').body = 'Set OPENAI_API_KEY before work.'; },
   ]) {
     const agents = structuredClone(files.agents);
     mutate(agents);
     assert.equal(validateOpencodeOnly({...files, agents, root: ROOT}).ok, false);
+  }
+});
+
+test('agent text permits web URLs but rejects duplicate nested permission keys', () => {
+  const files = readOpencodeOnlyFiles({root: ROOT});
+  const agents = structuredClone(files.agents);
+  agents.get('operator.md').body = 'Read https://example.com/operator-guide.';
+  assert.equal(validateOpencodeOnly({...files, agents, root: ROOT}).ok, true);
+
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'opencode-specialization-'));
+  try {
+    fs.mkdirSync(path.join(tmp, '.opencode/agents'), {recursive: true});
+    fs.writeFileSync(path.join(tmp, '.opencode/agents/operator.md'), `---
+description: operator
+mode: primary
+permission:
+  edit: allow
+  edit: deny
+---
+body
+`);
+    assert.equal(readOpencodeOnlyFiles({root: tmp}).agents.get('operator.md').frontmatter, null);
+  } finally {
+    fs.rmSync(tmp, {recursive: true, force: true});
   }
 });
 
