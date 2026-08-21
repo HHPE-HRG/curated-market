@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
-import {validateExposureDeclarations, validateHostRealization} from '../lib/registry.mjs';
+import {parseCodexPluginInventory, validateExposureDeclarations, validateHostRealization} from '../lib/registry.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -88,6 +88,19 @@ test('planned absence is unrequired unless exact target is explicitly selected',
   assert.equal(selected.observations[0].evaluations[0].requirement_source, 'explicit-planned');
 });
 
+test('JSON inventory includes only positively installed plugins before evidence truncation', () => {
+  const available = Array.from({length: 600}, (_, index) => ({pluginId: `available-${index}@market`, installed: false}));
+  const raw = JSON.stringify({installed: [{pluginId: 'installed@market', installed: true}], available});
+  assert.ok(raw.length > 16384);
+  assert.deepEqual(parseCodexPluginInventory(raw), ['installed@market']);
+});
+
+test('empty JSON inventory establishes absence while malformed output is indeterminate', () => {
+  assert.deepEqual(parseCodexPluginInventory('{"installed":[],"available":[]}'), []);
+  assert.equal(parseCodexPluginInventory('{not-json'), null);
+  assert.equal(parseCodexPluginInventory('{"installed":"not-an-array"}'), null);
+});
+
 for (const [name, probe, outcome] of [
   ['spawn unavailable', () => ({command: ['codex','plugin','list'], available: false, exit_status: null, stdout: '', stderr: 'ENOENT', usable: false, installed_targets: []}), 'indeterminate'],
   ['nonzero probe', () => ({command: ['codex','plugin','list'], available: true, exit_status: 7, stdout: '', stderr: 'failed', usable: false, installed_targets: []}), 'indeterminate'],
@@ -128,6 +141,21 @@ test('one inventory and target observation preserve multiple capability evaluati
   assert.deepEqual(result.observations[0].evaluations.map(item => item.capability_id), ['pkg/a', 'pkg/b']);
 });
 
+test('shared target observation retains unrequired planned capability policy', () => {
+  const result = validateHostRealization({
+    host: 'codex', context: 'deploy-mixed',
+    exposures: [exposure('pkg/active', 'shared@market'), exposure('pkg/planned', 'shared@market', 'planned')],
+    inventoryProbe: observed('shared@market'),
+  });
+  assert.equal(result.status, 'passed');
+  assert.equal(result.observations.length, 1);
+  assert.deepEqual(result.observations[0].affected_capability_ids, ['pkg/active', 'pkg/planned']);
+  assert.deepEqual(result.observations[0].evaluations, [
+    {capability_id: 'pkg/active', exposure_status: 'active', applicable: true, required: true, requirement_source: 'active', satisfied: true},
+    {capability_id: 'pkg/planned', exposure_status: 'planned', applicable: true, required: false, requirement_source: null, satisfied: null},
+  ]);
+});
+
 test('distinct targets remain distinct observations while sharing one inventory probe', () => {
   let calls = 0;
   const result = validateHostRealization({host: 'codex', context: 'deploy-3', exposures: [exposure('pkg/a', 'one@market'), exposure('pkg/b', 'two@market')], inventoryProbe: () => { calls += 1; return observed('one@market')(); }});
@@ -165,7 +193,7 @@ function cliFixture(t, {inventory = '', exitStatus = 0} = {}) {
 }
 
 test('explicit host command fails required planned target as host realization, not static integrity', t => {
-  const fixture = cliFixture(t, {inventory: 'other@market installed\n'});
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"other@market","installed":true}],"available":[]}'});
   const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-4', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
   assert.equal(result.status, 1);
   const body = JSON.parse(result.stdout);
@@ -176,7 +204,7 @@ test('explicit host command fails required planned target as host realization, n
 });
 
 test('explicit host command rejects missing context before probing', t => {
-  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\n'});
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true}],"available":[]}'});
   const result = fixture.run(['validate-host', '--host', 'codex']);
   assert.equal(result.status, 2);
   assert.match(result.stderr, /--context/);
@@ -184,7 +212,7 @@ test('explicit host command rejects missing context before probing', t => {
 });
 
 test('explicit host command passes installed selected target', t => {
-  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\n'});
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true}],"available":[]}'});
   const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-5', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
   assert.equal(result.status, 0);
   assert.equal(JSON.parse(result.stdout).observations[0].outcome, 'installed');
@@ -200,7 +228,7 @@ test('explicit host command reports unavailable inventory as indeterminate host 
 });
 
 test('explicit host command accepts repeated planned targets and rejects unknown selection', t => {
-  const fixture = cliFixture(t, {inventory: '00-hhpe-registry@hhpe-hrg installed\nsuperpowers@hhpe-hrg installed\n'});
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true},{"pluginId":"superpowers@hhpe-hrg","installed":true}],"available":[]}'});
   const pass = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-7', '--require-planned-target', '00-hhpe-registry@hhpe-hrg', '--require-planned-target', 'superpowers@hhpe-hrg']);
   assert.equal(pass.status, 0);
   assert.equal(JSON.parse(pass.stdout).observations.length, 2);
