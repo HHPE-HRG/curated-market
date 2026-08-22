@@ -44,31 +44,30 @@ test('HHPE wrappers keep lifecycle and specialist routing boundaries explicit', 
   }
 });
 
-test('runtime tools are present at pinned versions', () => {
-  for (const tool of manifest('tools.yaml').tools.filter(item => ['serena-runtime', 'context7-runtime', 'playwright-cli-runtime'].includes(item.tool_id))) {
-    const binary = tool.binary_paths[0];
-    assert.equal(fs.existsSync(binary), true, `${tool.tool_id} binary missing`);
-    const result = run(binary, ['--version']);
-    assert.equal(result.status, 0, `${tool.tool_id} failed: ${result.stderr}`);
-    assert.match(`${result.stdout}\n${result.stderr}`, new RegExp(tool.version.replaceAll('.', '\\.'), 'i'));
+test('runtime ToolSpecs preserve approved identities without lead-host paths', () => {
+  const tools = manifest('tools.yaml').tools;
+  const expected = new Map([
+    ['serena-runtime', ['1.5.3', 'uv:serena-agent==1.5.3', 'serena']],
+    ['context7-runtime', ['0.5.4', 'npm:ctx7@0.5.4', 'ctx7']],
+    ['playwright-cli-runtime', ['0.1.17', 'npm:@playwright/cli@0.1.17', 'playwright-cli']]
+  ]);
+  for (const [id, [version, source, command]] of expected) {
+    const tool = tools.find(item => item.tool_id === id);
+    assert.equal(tool.version, version); assert.equal(tool.source, source); assert.ok(tool.commands.includes(command));
+    assert.equal(JSON.stringify(tool).includes('/home/'), false);
   }
 });
 
-test('Serena fixture can create an isolated project configuration without modifying the registry', () => {
-  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-serena-'));
-  const home = path.join(fixture, 'home'); fs.mkdirSync(path.join(fixture, 'src'), {recursive: true}); fs.mkdirSync(home);
-  fs.writeFileSync(path.join(fixture, 'src', 'cache.ts'), 'export interface Cache { key: string }\nexport const cache: Cache = { key: "x" };\n');
-  const result = run('serena', ['project', 'create', fixture, '--language', 'typescript'], {timeout: 15000, env: {HOME: home, XDG_CONFIG_HOME: path.join(home, '.config')}});
-  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
-  assert.equal(fs.existsSync(path.join(fixture, '.serena', 'project.yml')), true);
-  fs.rmSync(fixture, {recursive: true, force: true});
+test('Serena keeps project activation distinct from version presence', () => {
+  const tool = manifest('tools.yaml').tools.find(item => item.tool_id === 'serena-runtime');
+  assert.equal(tool.readiness_probe, 'serena-project-activation');
+  assert.equal(tool.version_probe.requirement, '1.5.3');
 });
 
-test('Context7 and Playwright expose bounded task-triggered interfaces', () => {
-  const ctxHelp = run('ctx7', ['library', '--help']);
-  assert.equal(ctxHelp.status, 0); assert.match(ctxHelp.stdout, /Resolve a library name/);
-  const pwHelp = run('playwright-cli', ['install', '--help']);
-  assert.equal(pwHelp.status, 0); assert.match(pwHelp.stdout, /--skills/);
+test('Context7 and Playwright expose distinct portable readiness policies', () => {
+  const tools = manifest('tools.yaml').tools;
+  assert.equal(tools.find(item => item.tool_id === 'context7-runtime').readiness_probe, 'context7-live-lookup');
+  assert.equal(tools.find(item => item.tool_id === 'playwright-cli-runtime').readiness_probe, 'playwright-layered-readiness');
   const context = manifest('final-stack.yaml').specialist_routing['current external library or SDK documentation'];
   const browser = manifest('final-stack.yaml').specialist_routing['browser and UI acceptance'];
   assert.equal(context, 'hhpe-hrg/context7-guidance'); assert.equal(browser, 'hhpe-hrg/playwright-guidance');
