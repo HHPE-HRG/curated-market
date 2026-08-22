@@ -23,6 +23,42 @@ Run discovery, then validation, then sync without `--apply`. Resolve every `COLL
 
 Backups belong under `backups/<timestamp>` and must be recorded as `backup_only`. The current additive phase has not modified host config files, so no config backup is required yet.
 
+## Cursor scoped projection (first slice)
+
+Cursor realization uses explicit `--home` and `--project-root` roots. Prefer throwaway directories for dry-run and apply experiments; do not point apply at unmanaged ambient `~/.cursor` unless that is the intentional operator home.
+
+```sh
+# Dry run (no links created)
+hhpe-registry-sync --host cursor --home <dir> --project-root <dir>
+
+# Additive apply into the supplied roots only
+hhpe-registry-sync --apply --host cursor --home <dir> --project-root <dir>
+```
+
+- `user-local` targets resolve under `--home` (for example `<dir>/.cursor/...`).
+- `project` targets resolve under `--project-root` (for example `<dir>/.cursor/...`).
+- Sync is additive and idempotent for registry-owned links. Existing foreign paths remain `COLLISION`; rollback refuses retarget of managed objects.
+- `cloud-project` declarations validate and sync as `SKIP` (`cloud-project-not-implemented`). Cloud apply is not in this slice.
+- MCP is deferred.
+- Legacy skill-pool links are classified (for example `registry-owned projection` vs `unmanaged-foreign`); they are not adopted or rewritten by sync.
+
+## Cursor session routing gate
+
+Plugin routing completion is session-bound. After documenting `## Plugin and capability use`, record completion for the current session only:
+
+```sh
+node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs --context <session>
+```
+
+State files are `~/.cursor/hhpe-hrg-plugin-stack/state/routing-complete.<urlencoded-session>.json`. A legacy global `routing-complete.json` does not authorize gated commands.
+
+Hook policy for this slice:
+
+- `sessionStart` is guidance (`failClosed` false): index generation may fail open.
+- `beforeShellExecution` is must-hold (`failClosed` true): missing session id, missing/stale session state, or unreadable state denies gated shell commands.
+
+Bypass (operator only): `CURSOR_PLUGIN_ROUTING_DISABLE_GATE=1`.
+
 ## Normal session
 
 ```text
