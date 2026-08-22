@@ -8,18 +8,21 @@ const exposures = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/manifests
 const cursor = exposures.filter(e => e.host === 'cursor');
 
 test('Cursor exposures are the fourteen skill-symlink rows', () => {
-  assert.equal(cursor.length, 14);
-  assert.ok(cursor.every(e => e.mode === 'skill-symlink'));
-  assert.ok(cursor.every(e => e.adapter === 'registry/adapters/cursor'));
-  assert.ok(cursor.every(e => e.target.startsWith('~/.cursor/skills/')));
+  const skills = cursor.filter(e => e.mode === 'skill-symlink');
+  assert.equal(skills.length, 14);
+  assert.ok(skills.every(e => e.adapter === 'registry/adapters/cursor'));
+  assert.ok(skills.every(e => e.target.startsWith('~/.cursor/skills/')));
   assert.ok(cursor.every(e => e.scope !== undefined));
   assert.ok(cursor.every(e => e.enforcement !== undefined));
 });
 
-test('plugin-stack is not a registry capability or exposure', () => {
+test('plugin-stack is a registry capability with two scoped bindings', () => {
   const capabilities = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/manifests/capabilities.yaml'), 'utf8')).capabilities;
-  assert.equal(capabilities.some(c => c.capability_id === 'hhpe-hrg/cursor-plugin-routing'), false);
-  assert.equal(cursor.some(e => /hhpe-hrg-plugin-stack/.test(e.target)), false);
+  assert.equal(capabilities.some(c => c.capability_id === 'hhpe-hrg/cursor-plugin-routing'), true);
+  const bindings = cursor.filter(e => e.capability_id === 'hhpe-hrg/cursor-plugin-routing');
+  assert.equal(bindings.length, 2);
+  assert.ok(bindings.some(e => e.mode === 'local-plugin' && e.scope === 'user-local' && e.target === '~/.cursor/plugins/local/hhpe-hrg-plugin-stack'));
+  assert.ok(bindings.some(e => e.mode === 'local-plugin' && e.scope === 'project' && e.target === '.cursor/plugins/local/hhpe-hrg-plugin-stack'));
 });
 
 test('Cursor local-plugin relationship is allowed', () => {

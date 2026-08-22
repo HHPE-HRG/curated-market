@@ -133,6 +133,24 @@
       },
       "modified": false,
       "architectural_owner": "security-specialist-capabilities"
+    },
+    {
+      "package_id": "hhpe-cursor-plugin-routing",
+      "repository": "local:hhpe-hrg",
+      "revision": {
+        "type": "overlay",
+        "value": "1"
+      },
+      "package_root": "cursor-plugin-routing",
+      "integrity": {
+        "policy": "tracked-by-registry-git"
+      },
+      "license": {
+        "spdx": "MIT",
+        "path": "."
+      },
+      "modified": true,
+      "architectural_owner": "hhpe-hrg"
     }
   ]
 }

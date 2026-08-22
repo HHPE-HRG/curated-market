@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {spawnSync} from 'node:child_process';import {compareAdapterProjection} from '../scripts/sync-adapters.mjs';import {validate,sync,ROOT} from '../lib/registry.mjs';import {staticIntegrity} from '../lib/skills-ci.mjs';
 
-test('registry integrity passes',()=>{const r=validate();assert.equal(r.status,'passed');assert.equal(r.counts.packages,7);assert.ok(r.counts.capabilities>=96);});
-test('headless static integrity covers the complete capability catalog',()=>{const r=staticIntegrity();assert.equal(r.status,'PASS');assert.equal(r.counts.capabilities,96);});
+test('registry integrity passes',()=>{const r=validate();assert.equal(r.status,'passed');assert.equal(r.counts.packages,8);assert.ok(r.counts.capabilities>=97);});
+test('headless static integrity covers the complete capability catalog',()=>{const r=staticIntegrity();assert.equal(r.status,'PASS');assert.equal(r.counts.capabilities,97);});
 test('generic repository validation includes opencode_only policy statically',()=>{
   assert.equal(validate().status,'passed');
   assert.equal(staticIntegrity().status,'PASS');

@@ -575,6 +575,28 @@
       "cursor_visible_name": "trailofbits-sarif-parsing"
     },
     {
+      "capability_id": "hhpe-hrg/cursor-plugin-routing",
+      "host": "cursor",
+      "mode": "local-plugin",
+      "adapter": "registry/adapters/cursor",
+      "target": "~/.cursor/plugins/local/hhpe-hrg-plugin-stack",
+      "status": "active",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "hhpe-hrg-plugin-stack"
+    },
+    {
+      "capability_id": "hhpe-hrg/cursor-plugin-routing",
+      "host": "cursor",
+      "mode": "local-plugin",
+      "adapter": "registry/adapters/cursor",
+      "target": ".cursor/plugins/local/hhpe-hrg-plugin-stack",
+      "status": "active",
+      "scope": "project",
+      "enforcement": "guidance",
+      "cursor_visible_name": "hhpe-hrg-plugin-stack"
+    },
+    {
       "capability_id": "hhpe-hrg/serena-guidance",
       "host": "opencode",
       "mode": "skill-symlink",

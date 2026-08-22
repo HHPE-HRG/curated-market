@@ -2479,6 +2479,21 @@
         "decision_record": "docs/decisions/ADR-020-trailofbits-specialist-skills.md",
         "activation": "task-triggered"
       }
+    },
+    {
+      "capability_id": "hhpe-hrg/cursor-plugin-routing",
+      "display_name": "cursor-plugin-routing",
+      "package_id": "hhpe-cursor-plugin-routing",
+      "type": "plugin",
+      "source_path": ".",
+      "self_contained": true,
+      "requires": {
+        "files": [".cursor-plugin/plugin.json", "hooks/hooks.json", "hooks/route-gate.mjs"]
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/superpowers/specs/2026-08-21-cursor-realization-boundary-design.md"
+      }
     }
   ]
 }
