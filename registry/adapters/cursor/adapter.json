@@ -1,1 +1,7 @@
-{"mode":"retain-native-plugin-pending-probe","skill_root":null,"preserve":["settings","rules","mcp","agents","plugins"],"reload":"window-reload"}
+{
+  "mode": "scoped-filesystem-projection",
+  "skill_root": "~/.cursor/skills",
+  "scopes": ["user-local", "project", "cloud-project"],
+  "preserve": ["settings", "rules", "mcp", "agents", "plugins"],
+  "reload": "window-reload"
+}

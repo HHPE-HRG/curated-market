@@ -39,10 +39,13 @@ test('existing reviewed exposure relationships remain statically valid', () => {
     ['antigravity-ide', 'skill-symlink', 'registry/adapters/antigravity-ide', '~/skill'],
     ['codex', 'native-plugin', 'registry/adapters/codex/marketplace', 'plugin@market'],
     ['codex', 'skill-symlink', 'registry/adapters/codex', '~/skill'],
-    ['cursor', 'skill-symlink', 'registry/adapters/cursor', '~/skill'],
+    ['cursor', 'skill-symlink', 'registry/adapters/cursor', '~/.cursor/skills/x'],
     ['hhpe-hrg', 'registry-reference', 'registry/adapters/hhpe-hrg', 'registry:pkg/cap'],
     ['opencode', 'skill-symlink', 'registry/adapters/opencode', '~/skill'],
-  ].map(([host, mode, adapter, target]) => ({...valid, host, mode, adapter, target}));
+  ].map(([host, mode, adapter, target]) => ({
+    ...valid, host, mode, adapter, target,
+    ...(host === 'cursor' ? {scope: 'user-local', enforcement: 'guidance'} : {}),
+  }));
   assert.deepEqual(validateExposureDeclarations(fixtures, capabilityIds), []);
 });
 

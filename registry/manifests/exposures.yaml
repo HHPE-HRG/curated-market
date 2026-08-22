@@ -413,7 +413,10 @@
       "target": "~/.cursor/skills/serena-guidance",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "serena-guidance"
     },
     {
       "capability_id": "hhpe-hrg/context7-guidance",
@@ -422,7 +425,10 @@
       "target": "~/.cursor/skills/context7-guidance",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "context7-guidance"
     },
     {
       "capability_id": "hhpe-hrg/playwright-guidance",
@@ -431,7 +437,10 @@
       "target": "~/.cursor/skills/playwright-guidance",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "playwright-guidance"
     },
     {
       "capability_id": "hhpe-hrg/session-start",
@@ -440,7 +449,10 @@
       "target": "~/.cursor/skills/session-start",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "session-start"
     },
     {
       "capability_id": "trailofbits/dimensional-analysis",
@@ -449,7 +461,10 @@
       "target": "~/.cursor/skills/trailofbits-dimensional-analysis",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-dimensional-analysis"
     },
     {
       "capability_id": "trailofbits/property-based-testing",
@@ -458,7 +473,10 @@
       "target": "~/.cursor/skills/trailofbits-property-based-testing",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-property-based-testing"
     },
     {
       "capability_id": "trailofbits/differential-review",
@@ -467,7 +485,10 @@
       "target": "~/.cursor/skills/trailofbits-differential-review",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-differential-review"
     },
     {
       "capability_id": "trailofbits/supply-chain-risk-auditor",
@@ -476,7 +497,10 @@
       "target": "~/.cursor/skills/trailofbits-supply-chain-risk-auditor",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-supply-chain-risk-auditor"
     },
     {
       "capability_id": "trailofbits/rust-review",
@@ -485,7 +509,10 @@
       "target": "~/.cursor/skills/trailofbits-rust-review",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-rust-review"
     },
     {
       "capability_id": "trailofbits/c-review",
@@ -494,7 +521,10 @@
       "target": "~/.cursor/skills/trailofbits-c-review",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-c-review"
     },
     {
       "capability_id": "trailofbits/sharp-edges",
@@ -503,7 +533,10 @@
       "target": "~/.cursor/skills/trailofbits-sharp-edges",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-sharp-edges"
     },
     {
       "capability_id": "trailofbits/static-analysis/codeql",
@@ -512,7 +545,10 @@
       "target": "~/.cursor/skills/trailofbits-codeql",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-codeql"
     },
     {
       "capability_id": "trailofbits/static-analysis/semgrep",
@@ -521,7 +557,10 @@
       "target": "~/.cursor/skills/trailofbits-semgrep",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-semgrep"
     },
     {
       "capability_id": "trailofbits/static-analysis/sarif-parsing",
@@ -530,7 +569,10 @@
       "target": "~/.cursor/skills/trailofbits-sarif-parsing",
       "adapter": "registry/adapters/cursor",
       "status": "active",
-      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "trailofbits-sarif-parsing"
     },
     {
       "capability_id": "hhpe-hrg/serena-guidance",
