@@ -38,17 +38,27 @@ test('managed projection resolves from canonical overlay', () => {
 test('legacy pool is unused in the fixture home', () => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-sdk-home-'));
   try {
-    sync({host: 'cursor', home});
-    const skills = path.join(home, '.cursor/skills');
-    if (fs.existsSync(skills)) {
-      for (const name of fs.readdirSync(skills)) {
-        const full = path.join(skills, name);
-        if (fs.lstatSync(full).isSymbolicLink()) {
-          assert.equal(fs.realpathSync(full).includes('.hhpe-skill-pool'), false, name);
-        }
-      }
-    }
+    const result = sync({host: 'cursor', home});
+    const target = path.join(home, '.cursor/skills/serena-guidance');
+    const action = result.actions.find(a => a.target === target);
+    assert.equal(action.action, 'LINK');
+    fs.mkdirSync(path.dirname(target), {recursive: true});
+    fs.symlinkSync(action.source, target, 'dir');
+    const resolved = fs.realpathSync(target);
+    assert.equal(resolved.includes('.hhpe-skill-pool'), false);
     assert.equal(fs.existsSync(path.join(home, '.hhpe-skill-pool')), false);
+    assert.deepEqual(observation({
+      requirement: 'legacy_pool_not_used_for_selected_fixture',
+      context: {home, skill: 'serena-guidance', scope: 'user-local'},
+      observation: resolved,
+      satisfied: true,
+    }), {
+      requirement: 'legacy_pool_not_used_for_selected_fixture',
+      context: {home, skill: 'serena-guidance', scope: 'user-local'},
+      observation: resolved,
+      satisfied: true,
+      limitations: [],
+    });
   } finally {
     fs.rmSync(home, {recursive: true, force: true});
   }
