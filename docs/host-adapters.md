@@ -30,11 +30,18 @@ Generation reconciles only the seven owned project skill roots from canonical wr
 
 Provider policy fails closed. OpenAI permits only ChatGPT Plus/Pro OAuth; unavailable OAuth, entitlement, or model access is an explicit contextual failure and never falls back to API-key billing or another provider. Cursor permits only Cursor browser OAuth through the supply-pinned `cursor-opencode-provider@0.6.3`; unavailable authentication, entitlement, discovery, or operation never falls back to an API key, direct Cursor, proxy, alternate package, unpinned source, or disguised OpenAI result.
 
-Deterministic verification does not establish provider authentication, account entitlement, model discovery, text/tool execution, restart behavior, or cache behavior. Those require a separate live-acceptance plan in an authorized environment. No live acceptance has been run or passed by this workflow.
+Deterministic verification does not establish provider authentication, account entitlement, model discovery, text/tool execution, restart behavior, or cache behavior. Those require a separate live-acceptance plan in an authorized environment.
+
+Authorized live acceptance on this specialization line established:
+
+- OpenAI ChatGPT Plus/Pro OAuth and model discovery succeed; durable oauth credentials persist across process restart. Text inference remains blocked by ChatGPT Plus `usage_limit_reached` (primary window at 100%, credits 0), not by missing or invalid OAuth. No API-key fallback was used.
+- Cursor browser OAuth through `cursor-opencode-provider@0.6.3` succeeds with durable oauth credentials, model discovery, text inference, tool execution, and restart persistence. No API-key, direct Cursor, or OpenAI substitution was used.
+
+Full OpenAI text/tool live acceptance remains pending Plus usage reset. Secrets, account identifiers, model catalogs, and local credential paths stay out of Git.
 
 ### Production readiness
 
-Live provider acceptance remains a separate runtime verification in an authorized environment. The five inherited PR #4 ToolSpec/runtime findings are remediated in this branch under existing ToolSpec and ToolRealizationObservation authority:
+Live provider acceptance is runtime evidence, not a Git gate for the deterministic specialization. The five inherited PR #4 ToolSpec/runtime findings are remediated in this branch under existing ToolSpec and ToolRealizationObservation authority:
 
 1. AST Grep structural readiness forwards its fixture through the default child-process runner and observes the declared `sg` alias.
 2. ToolSpec v2 portability validation recursively rejects host-bound or traversal values in nested discovery/probe command fields and rejects forbidden root `generated_at`.
