@@ -215,12 +215,16 @@ test('routing-complete markers integrate with gating state checks', async () => 
   await markRoutingComplete({
     fingerprintPath,
     routingCompleteFlagPath,
+    stateDir: outDir,
+    sessionId: 'test-session',
   });
 
   const ok = await isRoutingComplete({
     routingCompleteFlagPath,
     routingFingerprintPath: path.join(outDir, 'routing-fingerprint.json'),
     currentFingerprintPath: fingerprintPath,
+    stateDir: outDir,
+    sessionId: 'test-session',
   });
 
   assert.equal(ok, true);
