@@ -140,19 +140,26 @@ test('projected skill is discoverable via fixture SKILL.md path', () => {
   }
 });
 
-test('SDK project_rule_loaded is unobserved without SDK credentials', async () => {
+test('SDK project_rule_loaded stays unobserved without a documented rule probe', async () => {
   let sdk = null;
   try { sdk = await import('@cursor/sdk'); } catch { sdk = null; }
   const available = Boolean(sdk) && Boolean(process.env.CURSOR_API_KEY);
+  // Stay unobserved unless a real documented SDK rule-read API is invoked.
+  const documentedRuleProbeRan = false;
   const result = observation({
     requirement: 'project_rule_loaded',
     context: {scope: 'project', runtime: 'cursor-sdk'},
-    observation: available ? 'attempted' : 'unobserved',
+    observation: documentedRuleProbeRan ? 'observed' : 'unobserved',
     satisfied: null,
-    limitations: available ? [] : ['@cursor/sdk or CURSOR_API_KEY unavailable'],
+    limitations: documentedRuleProbeRan
+      ? []
+      : [
+          available
+            ? 'no documented @cursor/sdk rule-read API used'
+            : '@cursor/sdk or CURSOR_API_KEY unavailable',
+        ],
   });
-  if (!available) {
-    assert.equal(result.observation, 'unobserved');
-    assert.equal(result.satisfied, null);
-  }
+  assert.equal(result.observation, 'unobserved');
+  assert.equal(result.satisfied, null);
+  assert.notEqual(result.observation, 'attempted');
 });

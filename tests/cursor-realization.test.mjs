@@ -211,3 +211,22 @@ test('Cursor plugin cache path without binding is native realization', () => {
     inactive,
   }), 'native Cursor realization');
 });
+
+test('sibling path prefixes are not registry-owned or pool-owned', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'trailofbits-c-review',
+    target: '/repo/registry-fork/packages/trailofbits/skills/c-review',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'unmanaged-foreign');
+  assert.equal(classifyCursorSkillLink({
+    name: 'c-review',
+    target: '/home/user/.hhpe-skill-pool-old/c-review',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'unmanaged-foreign');
+});

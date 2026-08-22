@@ -250,7 +250,7 @@ test('plugin-routing package exposes rule/skill and points at derived index path
   assert.equal(manifest.repository, 'https://github.com/HHPE-HRG/curated-market');
   assert.ok(rule.includes('~/.cursor/hhpe-hrg-plugin-stack/derived/plugin-index.md'));
   assert.ok(rule.includes('## Plugin and capability use'));
-  assert.ok(skill.includes('node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs'));
+  assert.ok(skill.includes('node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs --context <session>'));
 });
 
 test('plugin-index candidate ranking prefers the most relevant plugin block', async () => {
