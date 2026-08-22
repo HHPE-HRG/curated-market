@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {ROOT, validateExposureDeclarations} from '../lib/registry.mjs';
+import {classifyCursorSkillLink} from '../lib/cursor-provenance.mjs';
 
 const exposures = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/manifests/exposures.yaml'), 'utf8')).exposures;
 const cursor = exposures.filter(e => e.host === 'cursor');
@@ -147,4 +148,66 @@ test('duplicate Cursor-visible names on one host and scope are rejected', () => 
     {...row, target: '~/.cursor/skills/c-review'},
   ], new Set(['trailofbits/c-review']));
   assert.ok(errors.some(e => e.includes('ambiguous Cursor-visible name')));
+});
+
+const bindings = [
+  {capability_id: 'trailofbits/c-review', cursor_visible_name: 'trailofbits-c-review', scope: 'user-local', target: '~/.cursor/skills/trailofbits-c-review'},
+];
+const registryRoots = ['/repo/registry'];
+const poolRoot = '/home/user/.hhpe-skill-pool';
+const inactive = new Set(['superpowers/brainstorming']);
+
+test('namespaced registry link is registry-owned', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'trailofbits-c-review',
+    target: '/repo/registry/packages/trailofbits/skills/c-review',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'registry-owned projection');
+});
+
+test('un-namespaced pool alias is unmanaged-foreign', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'c-review',
+    target: '/home/user/.hhpe-skill-pool/c-review',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'unmanaged-foreign');
+});
+
+test('inactive Superpowers pool name is retired', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'brainstorming',
+    target: '/home/user/.hhpe-skill-pool/brainstorming',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'explicitly unsupported or retired');
+});
+
+test('unmanaged local directory is unmanaged-foreign', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'execution-discipline',
+    target: '/Users/maxholden/.cursor/skills/execution-discipline',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'unmanaged-foreign');
+});
+
+test('Cursor plugin cache path without binding is native realization', () => {
+  assert.equal(classifyCursorSkillLink({
+    name: 'some-marketplace-skill',
+    target: '/Users/maxholden/.cursor/plugins/cache/marketplace/some-marketplace-skill',
+    bindings,
+    registryRoots,
+    poolRoot,
+    inactive,
+  }), 'native Cursor realization');
 });
