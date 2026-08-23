@@ -83,5 +83,27 @@ M2B consumes this Cursor contract from OpenCode (`CuratedMarketAuthBackend` + re
 | Gate | Result |
 | --- | --- |
 | `npm run test:function` | 24 pass, 0 fail |
-| `npm run validate` | process exit ≠ success semantics; JSON `status=failed`, 548 errors |
+| `npm run validate` | process exit 1; JSON `status=failed`, 548 errors |
 | `npm test` | 47 total, 38 pass, 9 fail (baseline-equivalent) |
+
+## M2A final verification (committed `9192088191bf9fa4546695f684e2f787a08a14e9`)
+
+| Gate | Result |
+| --- | --- |
+| focused Cursor tests | 16/16 PASS |
+| `npm run test:function` | **40/40 PASS** (24 M1 + 16 Cursor) |
+| `npm run validate` | process exit **1**; semantic **FAILED**; **548** errors (baseline-equivalent debt) |
+| `npm test` | 63 total, **54 pass**, **9 fail** — same 9 failures as baseline; **0 new regressions** |
+
+**Do not report validate as PASS from exit code alone.**
+
+## Review
+
+Code review on `f0e2621`: no Critical findings. Important items fixed in `9192088` (refresh protocol → non-retryable UNKNOWN; shared transport code set; empty classify → UNKNOWN documented).
+
+## Status
+
+**M2A CHECKPOINT: PASS**  
+**M2B base:** `90f54438d271017b5ce49588f8523bccdf222d91` (includes verification closeout docs)  
+**Next:** Milestone 2B — OpenCode CuratedMarketAuthBackend (not started).
+
