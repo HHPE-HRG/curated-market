@@ -8,6 +8,7 @@
 | OpenCode M2B base | `726e4a807a5b1fc1a33c039370b1b175486aad65` (**not modified**) |
 | CM branch | `feat/execution-resolver-m2c` |
 | CM worktree | `.worktrees/feat-execution-resolver-m2c` |
+| M2C code checkpoint | `a6731553c3a763211dfb8e565959cf2670d64028` |
 
 ## Behavior projection
 
@@ -35,6 +36,8 @@ observability_context
 runtime?                 # in-memory access_credential seam
 ```
 
+`identity.session_id` / `identity.continuation_id` are **opaque correlation references** supplied by the framework. They do **not** imply that the Execution Resolver or Function Control owns Cursor Run objects, checkpoints, pending tools, streams, or provider continuation internals.
+
 `serializeExecutionContext()` redacts bearer tokens.
 
 ## Dependency direction
@@ -54,7 +57,7 @@ Structural tests enforce no reverse imports.
 - Behavior failure → no context
 - Function failure → no context
 - Composition failure after Function success → `release({ lease_id })`
-- `CONTINUATION_BLOCKED` propagated unchanged
+- `CONTINUATION_BLOCKED` propagated unchanged (affinity/binding decision only)
 
 ## Pin / Function requirement authority
 
@@ -69,17 +72,71 @@ Structural tests enforce no reverse imports.
 - Schema tightened (`additionalProperties: false`; access_credential field allowlist)
 - Strip `refresh_token` / `refreshToken` aliases as well
 
+## Authority audit (canonical for M2D)
+
+| Concern | Owner |
+| --- | --- |
+| Account routing | Function Control |
+| Account binding | Function Control |
+| Authorization lease | Function Control |
+| Credential refresh | Function Control |
+| Provider outcome classification | `registry/providers/*` |
+| Behavior catalog / bundle | Behavior Control |
+| Execution composition | Execution Resolver (read-only join; no durable state) |
+| Continuation affinity / required account binding | Function Control |
+| Actual continuation / Run / checkpoint / stream / pending-tool state | OpenCode + provider/plugin runtime |
+
+### Continuation affinity vs continuation runtime
+
+```
+OpenCode / Cursor runtime
+        │  produces continuation id / Run id / checkpoints
+        ▼
+Function Control binding projection
+        └── continuation X
+            affinity = required
+            account_id = cursor:personal
+```
+
+**Function Control owns** which account a continuation is bound to, binding lifecycle, and `CONTINUATION_BLOCKED` when that required account cannot proceed.
+
+**Function Control does not own** the Cursor Run, conversation checkpoints, pending tool queue, stream handles, or provider continuation objects.
+
+**Execution Resolver owns neither** — it may only forward an opaque `continuation_id` into a Function Control resolve request.
+
+Governing distinction: Function Control owns which account a continuation is bound to; the framework/provider runtime owns the continuation itself.
+
 ## OpenCode
 
 M2B direct `CuratedMarketAuthBackend` → Function Control path **preserved unmodified**. No OpenCode M2C consumer required for acceptance.
 
 ## Deferred to M2D
 
-- Automatic Cursor Run → required continuation binding hookup
-- Four-account concurrent OpenCode campaign
-- Real quota failover campaign
-- Hermes
+M2D implements the missing **runtime hookup**, not Function Control ownership of Runs:
+
+```
+actual Cursor external Run created/resumed
+        ↓
+OpenCode/plugin determines continuation identity
+        ↓
+OpenCode calls Function Control
+        ↓
+required continuation binding established/resolved
+        ↓
+same account used for continuation
+```
+
+If the required account becomes unavailable:
+
+```
+Function Control → CONTINUATION_BLOCKED
+OpenCode decides how to surface/restart the runtime continuation
+```
+
+Function Control does **not** migrate or reconstruct the Cursor Run.
+
+Also deferred: four-account concurrent OpenCode campaign; real quota failover campaign; Hermes.
 
 ## ADR-027
 
-Unchanged — Execution Resolver remains the read-only join described there.
+Architecture unchanged. Binding-affinity section clarified: Function Control binds continuations to accounts; frameworks/providers own continuation runtime state.

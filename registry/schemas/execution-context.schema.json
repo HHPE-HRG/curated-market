@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ExecutionContextProjection",
-  "description": "Bounded read-only composition of Function and Behavior projections. Not a durable authority.",
+  "description": "Bounded read-only composition of Function and Behavior projections. Not a durable authority. identity.continuation_id is an opaque framework reference for correlation/affinity only — not ownership of Run/checkpoint runtime state.",
   "type": "object",
   "required": ["identity", "behavior_projection", "observability_context"],
   "additionalProperties": false,
@@ -14,7 +14,10 @@
         "execution_id": { "type": "string", "minLength": 1 },
         "consumer_id": { "type": "string", "minLength": 1 },
         "session_id": { "type": "string" },
-        "continuation_id": { "type": "string" }
+        "continuation_id": {
+          "type": "string",
+          "description": "Opaque framework continuation identity (e.g. Cursor Run id). Correlation/affinity input only; Function Control and Execution Resolver do not own Run/checkpoint/stream state."
+        }
       }
     },
     "function_projection": {

@@ -47,6 +47,8 @@ Invariants:
 - `required` continuation on exhausted account → `CONTINUATION_BLOCKED`; no silent account swap
 - `preferred` session may be explicitly rebound under policy
 
+Continuation **affinity/binding** (which physical account a continuation must stay on) is Function Control authority. The **actual continuation runtime** — Cursor Run objects, conversation checkpoints, pending tool state, streams, and provider continuation handles — remains owned by the framework + provider/plugin runtime. Function Control receives opaque continuation identity for binding only; it does not store or reconstruct provider Run state.
+
 ## Routing policy (Milestone 1)
 
 Durable unavailable (`QUOTA_EXHAUSTED`, `AUTH_FAILED`) → new unpinned work may failover to secondary account.
@@ -76,7 +78,7 @@ Execution resolver (Milestone 2) is a read-only join; not a third authority.
 
 ## Non-authority
 
-Function Control does not own: inference proxy, skill catalogs, CE lifecycle policy, T3 session control, behavior bundle resolution.
+Function Control does not own: inference proxy, skill catalogs, CE lifecycle policy, T3 session control, behavior bundle resolution, or provider/framework continuation runtime state (Runs, checkpoints, streams, pending tools).
 
 ## Validation
 
