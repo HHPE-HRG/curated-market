@@ -17,6 +17,22 @@
       "priority": 20,
       "status": "active",
       "labels": { "role": "work" }
+    },
+    {
+      "account_id": "cursor:personal",
+      "provider_family": "cursor",
+      "capabilities": ["agent"],
+      "priority": 10,
+      "status": "active",
+      "labels": { "role": "personal" }
+    },
+    {
+      "account_id": "cursor:work",
+      "provider_family": "cursor",
+      "capabilities": ["agent"],
+      "priority": 20,
+      "status": "active",
+      "labels": { "role": "work" }
     }
   ]
 }

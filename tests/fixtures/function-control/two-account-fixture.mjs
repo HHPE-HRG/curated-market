@@ -23,7 +23,18 @@ export function createHermeticFixture(extraEnv = {}) {
   const refreshFn = async (refreshToken) => {
     const count = refreshCalls.get(refreshToken) || 0;
     refreshCalls.set(refreshToken, count + 1);
-    const account = refreshToken.includes('personal') ? 'personal' : 'work';
+    const account = refreshToken.includes('personal')
+      ? 'personal'
+      : refreshToken.includes('work')
+        ? 'work'
+        : 'unknown';
+    if (refreshToken.includes('cursor')) {
+      return {
+        access_token: `access_cursor_${account}_${count + 1}`,
+        refresh_token: refreshToken,
+        expires_in: 3600,
+      };
+    }
     return {
       access_token: `access_${account}_${count + 1}`,
       refresh_token: refreshToken,
@@ -33,17 +44,32 @@ export function createHermeticFixture(extraEnv = {}) {
 
   const fc = createFunctionControl(env, { refreshFn });
 
-  async function seedAccounts() {
+  /**
+   * @param {{ personalExpiresAt?: number, workExpiresAt?: number, seedCursor?: boolean }} [opts]
+   */
+  async function seedAccounts(opts = {}) {
     await fc.registerAccountSecret('openai:personal', {
       refresh_credential: 'rt_personal_mock',
       access_credential: 'access_personal_initial',
-      access_expires_at: Date.now() + 3600_000,
+      access_expires_at: opts.personalExpiresAt ?? Date.now() + 3600_000,
     });
     await fc.registerAccountSecret('openai:work', {
       refresh_credential: 'rt_work_mock',
       access_credential: 'access_work_initial',
-      access_expires_at: Date.now() + 3600_000,
+      access_expires_at: opts.workExpiresAt ?? Date.now() + 3600_000,
     });
+    if (opts.seedCursor !== false) {
+      await fc.registerAccountSecret('cursor:personal', {
+        refresh_credential: 'rt_cursor_personal_mock',
+        access_credential: 'access_cursor_personal_initial',
+        access_expires_at: opts.personalExpiresAt ?? Date.now() + 3600_000,
+      });
+      await fc.registerAccountSecret('cursor:work', {
+        refresh_credential: 'rt_cursor_work_mock',
+        access_credential: 'access_cursor_work_initial',
+        access_expires_at: opts.workExpiresAt ?? Date.now() + 3600_000,
+      });
+    }
   }
 
   function cleanup() {
