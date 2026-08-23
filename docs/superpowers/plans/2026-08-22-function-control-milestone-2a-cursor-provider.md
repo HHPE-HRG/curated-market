@@ -101,9 +101,23 @@ M2B consumes this Cursor contract from OpenCode (`CuratedMarketAuthBackend` + re
 
 Code review on `f0e2621`: no Critical findings. Important items fixed in `9192088` (refresh protocol → non-retryable UNKNOWN; shared transport code set; empty classify → UNKNOWN documented).
 
+## Validate exit-code reconciliation (2026-08-23)
+
+Same machine, `unset HHPE_HRG_HOME`, identical `npm run validate` and `node lib/registry.mjs validate` in isolated worktrees:
+
+| Commit | npm exit | node exit | JSON status | errors |
+| --- | --- | --- | --- | --- |
+| `91ed0e6` (M2A Git base) | **1** | **1** | failed | 548 |
+| `0889b02` (M2A tip) | **1** | **1** | failed | 548 |
+
+Diff `91ed0e6..0889b02` touches **no** `lib/registry.mjs`, validate script, or `package.json` validate entry.
+
+**Conclusion:** Earlier M1 notes of process exit `0` were measurement/environment variance (piped invocations that did not preserve exit status). Authoritative behavior at both M2A base and tip is process exit **1** with semantic **FAILED** / 548 errors. **Not an M2A regression.** `registry.mjs` already sets `process.exitCode=1` when `status==='failed'`.
+
 ## Status
 
 **M2A CHECKPOINT: PASS**  
-**M2B base:** `90f54438d271017b5ce49588f8523bccdf222d91` (includes verification closeout docs)  
+**M2B base:** `0889b021a2fab46638f3b0fbfe492071af6b5eb9` (verified code tip; validate exit reconciled as baseline-equivalent)  
+**Branch tip:** docs-only reconciliation commit on `feat/function-control-m2a-cursor-provider` (no code delta vs `0889b02`).  
 **Next:** Milestone 2B — OpenCode CuratedMarketAuthBackend (not started).
 
