@@ -4,6 +4,24 @@ import { OutcomeClass } from '../outcomes.mjs';
 export const CURSOR_API_HOST = 'api2.cursor.sh';
 export const DEFAULT_CURSOR_REFRESH_URL = `https://${CURSOR_API_HOST}/auth/token`;
 
+/** Shared with classify-response transport mapping (errors.js TRANSIENT_NETWORK_CODES). */
+export const CURSOR_TRANSPORT_CODES = new Set([
+  'ECONNABORTED',
+  'ECONNREFUSED',
+  'ECONNRESET',
+  'EHOSTUNREACH',
+  'ENETDOWN',
+  'ENETRESET',
+  'ENETUNREACH',
+  'ENOTFOUND',
+  'EPIPE',
+  'ERR_HTTP2_GOAWAY_SESSION',
+  'ERR_HTTP2_SESSION_ERROR',
+  'ERR_HTTP2_STREAM_CANCEL',
+  'ERR_HTTP2_STREAM_ERROR',
+  'ETIMEDOUT',
+]);
+
 /**
  * Decode JWT exp to remaining lifetime seconds when the access token is JWT-shaped.
  *
@@ -93,30 +111,13 @@ export function classifyCursorRefreshError(error) {
   if (status && status >= 500) {
     return { class: OutcomeClass.PROVIDER_UNAVAILABLE, retryable: true };
   }
-  if (error.code && isTransportCode(error.code)) {
+  if (error.code && CURSOR_TRANSPORT_CODES.has(error.code)) {
     return {
       class: OutcomeClass.TRANSPORT_FAILURE,
       retryable: true,
       provider_code: error.code,
     };
   }
-  return { class: OutcomeClass.TRANSPORT_FAILURE, retryable: true };
-}
-
-/**
- * @param {string} code
- * @returns {boolean}
- */
-function isTransportCode(code) {
-  return [
-    'ECONNRESET',
-    'ECONNREFUSED',
-    'ECONNABORTED',
-    'ETIMEDOUT',
-    'EPIPE',
-    'ERR_HTTP2_GOAWAY_SESSION',
-    'ERR_HTTP2_SESSION_ERROR',
-    'ERR_HTTP2_STREAM_CANCEL',
-    'ERR_HTTP2_STREAM_ERROR',
-  ].includes(code);
+  // Protocol / missing-token / malformed JSON — not a transport retry signal.
+  return { class: OutcomeClass.UNKNOWN, retryable: false };
 }

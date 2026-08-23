@@ -1,22 +1,6 @@
 import { OutcomeClass } from '../outcomes.mjs';
 import { extractCursorUsageSignals } from './usage-signals.mjs';
-
-const TRANSPORT_CODES = new Set([
-  'ECONNABORTED',
-  'ECONNREFUSED',
-  'ECONNRESET',
-  'EHOSTUNREACH',
-  'ENETDOWN',
-  'ENETRESET',
-  'ENETUNREACH',
-  'ENOTFOUND',
-  'EPIPE',
-  'ERR_HTTP2_GOAWAY_SESSION',
-  'ERR_HTTP2_SESSION_ERROR',
-  'ERR_HTTP2_STREAM_CANCEL',
-  'ERR_HTTP2_STREAM_ERROR',
-  'ETIMEDOUT',
-]);
+import { CURSOR_TRANSPORT_CODES } from './refresh.mjs';
 
 /**
  * @param {number | string | undefined} status
@@ -77,6 +61,10 @@ function sanitizeEvidence(text) {
  * Important: HTTP 429 and gRPC resource_exhausted are transient capacity/rate —
  * NOT durable QUOTA_EXHAUSTED. No Cursor durable quota signal is encoded in M2A.
  *
+ * Empty input (no http/grpc/transport) → UNKNOWN (Cursor-specific: insufficient
+ * evidence). OpenAI maps bare undefined http_status to TRANSPORT_FAILURE; Cursor
+ * requires an explicit transport_code or http_status 0 for that class.
+ *
  * @param {object} input
  * @param {number} [input.http_status]
  * @param {number|string} [input.grpc_status]
@@ -98,13 +86,17 @@ export function classifyCursorResponse(input) {
   const signals = extractCursorUsageSignals({ body, headers, retry_after_ms });
   const evidence = sanitizeEvidence(body);
 
-  if (transport_code && TRANSPORT_CODES.has(transport_code)) {
+  if (transport_code && CURSOR_TRANSPORT_CODES.has(transport_code)) {
     return {
       class: OutcomeClass.TRANSPORT_FAILURE,
       retryable: true,
       provider_code: transport_code,
       evidence,
     };
+  }
+
+  if (http_status === 0) {
+    return { class: OutcomeClass.TRANSPORT_FAILURE, retryable: true, evidence };
   }
 
   if (http_status === 401 || http_status === 403) {
@@ -146,12 +138,6 @@ export function classifyCursorResponse(input) {
         : `grpc_${normalizeGrpcStatus(grpc_status)}`,
       evidence,
     };
-  }
-
-  if (http_status === 0 || (http_status === undefined && grpc_status === undefined && !transport_code)) {
-    if (http_status === 0) {
-      return { class: OutcomeClass.TRANSPORT_FAILURE, retryable: true, evidence };
-    }
   }
 
   if (http_status !== undefined && http_status >= 200 && http_status < 300) {

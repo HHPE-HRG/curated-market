@@ -62,15 +62,27 @@ test('refresh requires rotated refresh token in Cursor response', async () => {
   );
 });
 
-test('refresh auth failure classifies as AUTH_FAILED', async () => {
-  const fetchFn = async () => mockResponse(401, { error: 'invalid' });
-  await assert.rejects(() => refreshCursorAccess('rt_bad', { fetchFn }), (err) => {
+test('refresh protocol failures without HTTP status are UNKNOWN not retryable transport', async () => {
+  const fetchFn = async () => mockResponse(200, { accessToken: 'only-access' });
+  await assert.rejects(() => refreshCursorAccess('rt_x', { fetchFn }), (err) => {
     const classified = classifyCursorRefreshError(err);
-    assert.equal(classified.class, OutcomeClass.AUTH_FAILED);
+    assert.equal(classified.class, OutcomeClass.UNKNOWN);
     assert.equal(classified.retryable, false);
-    assert.ok(!JSON.stringify(classified).includes('rt_bad'));
     return true;
   });
+});
+
+test('empty classify input is UNKNOWN; http_status 0 is TRANSPORT_FAILURE', () => {
+  assert.equal(classifyCursorResponse({}).class, OutcomeClass.UNKNOWN);
+  assert.equal(classifyCursorResponse({ http_status: 0 }).class, OutcomeClass.TRANSPORT_FAILURE);
+});
+
+test('refresh transport errno classifies as TRANSPORT_FAILURE', () => {
+  const err = new Error('reset');
+  err.code = 'ENETUNREACH';
+  const classified = classifyCursorRefreshError(err);
+  assert.equal(classified.class, OutcomeClass.TRANSPORT_FAILURE);
+  assert.equal(classified.retryable, true);
 });
 
 test('HTTP 401 and 403 classify as AUTH_FAILED', () => {
