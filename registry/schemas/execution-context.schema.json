@@ -1,40 +1,81 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ExecutionContextProjection",
-  "description": "Partial Milestone 1 projection shapes. Resolver implementation deferred to Milestone 2.",
+  "description": "Bounded read-only composition of Function and Behavior projections. Not a durable authority.",
   "type": "object",
-  "required": ["execution_id", "consumer_id"],
+  "required": ["identity", "behavior_projection", "observability_context"],
   "additionalProperties": false,
   "properties": {
-    "execution_id": { "type": "string", "minLength": 1 },
-    "consumer_id": { "type": "string", "minLength": 1 },
-    "session_id": { "type": "string" },
-    "trace_id": { "type": "string" },
+    "identity": {
+      "type": "object",
+      "required": ["execution_id", "consumer_id"],
+      "additionalProperties": false,
+      "properties": {
+        "execution_id": { "type": "string", "minLength": 1 },
+        "consumer_id": { "type": "string", "minLength": 1 },
+        "session_id": { "type": "string" },
+        "continuation_id": { "type": "string" }
+      }
+    },
     "function_projection": {
       "type": "object",
+      "description": "Bounded Function Control projection; access_credential is short-lived and must never include refresh material.",
       "additionalProperties": false,
       "properties": {
         "binding": { "type": "object" },
         "authorization_lease": { "type": "object" },
         "access_credential": {
           "type": "object",
-          "description": "Short-lived projection only; never persisted in Git or behavior artifacts."
-        }
+          "additionalProperties": false,
+          "properties": {
+            "credential_id": { "type": "string" },
+            "account_id": { "type": "string" },
+            "kind": { "type": "string" },
+            "token": { "type": "string" },
+            "provider_expires_at": { "type": "string" },
+            "issued_at": { "type": "string" }
+          },
+          "description": "Short-lived projection only; never refresh_* fields. Redact token on serialize."
+        },
+        "route_decision": { "type": "null" }
       }
     },
     "behavior_projection": {
       "type": "object",
-      "description": "Bounded behavior bundle; Milestone 2."
+      "required": ["behavior_bundle_id", "skills", "provenance"],
+      "properties": {
+        "projection_id": { "type": "string" },
+        "profile_id": { "type": "string" },
+        "behavior_bundle_id": { "type": "string" },
+        "skills": { "type": "array" },
+        "plugins": { "type": "array" },
+        "startup_layers": { "type": "array" },
+        "policy_projection": { "type": "object" },
+        "requires_function": { "type": "object" },
+        "provenance": { "type": "object" }
+      }
     },
+    "capability_projection": { "type": "object" },
+    "policy_projection": { "type": "object" },
     "observability_context": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
+        "execution_id": { "type": "string" },
+        "consumer_id": { "type": "string" },
+        "session_id": { "type": "string" },
+        "binding_key": { "type": "string" },
+        "behavior_bundle_id": { "type": "string" },
+        "capability_bundle_id": { "type": "string" },
+        "provider_family": { "type": "string" },
         "account_id": { "type": "string" },
         "authorization_lease_id": { "type": "string" },
-        "binding_key": { "type": "string" },
-        "provider_family": { "type": "string" }
+        "trace_id": { "type": "string" }
       }
+    },
+    "runtime": {
+      "type": "object",
+      "description": "In-memory secret-bearing seam; never log/serialize without redaction."
     }
   }
 }
