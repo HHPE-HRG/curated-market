@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExecutionContextProjection",
+  "description": "Partial Milestone 1 projection shapes. Resolver implementation deferred to Milestone 2.",
+  "type": "object",
+  "required": ["execution_id", "consumer_id"],
+  "additionalProperties": false,
+  "properties": {
+    "execution_id": { "type": "string", "minLength": 1 },
+    "consumer_id": { "type": "string", "minLength": 1 },
+    "session_id": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "function_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "binding": { "type": "object" },
+        "authorization_lease": { "type": "object" },
+        "access_credential": {
+          "type": "object",
+          "description": "Short-lived projection only; never persisted in Git or behavior artifacts."
+        }
+      }
+    },
+    "behavior_projection": {
+      "type": "object",
+      "description": "Bounded behavior bundle; Milestone 2."
+    },
+    "observability_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "account_id": { "type": "string" },
+        "authorization_lease_id": { "type": "string" },
+        "binding_key": { "type": "string" },
+        "provider_family": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FunctionControlAccountMetadata",
+  "type": "object",
+  "required": ["account_id", "provider_family", "capabilities", "priority", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+:[a-z0-9-]+$"
+    },
+    "provider_family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "disabled", "revoked"]
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

@@ -4,3 +4,5 @@ reports/skills-ci/
 node_modules/
 backups/
 .worktrees/
+# Function Control runtime state when HHPE_HRG_HOME points at this checkout (never commit)
+/function-control/
