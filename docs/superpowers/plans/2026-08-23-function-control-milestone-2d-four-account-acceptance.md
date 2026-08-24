@@ -8,8 +8,8 @@
 | OpenCode base | `726e4a807a5b1fc1a33c039370b1b175486aad65` |
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
-| CM M2D commit | `22ddaa8f8d45fd23e5630eb7b15c8b9aedc0e883` (gate split closeout) |
-| OpenCode M2D commit | `6b3ebb07d9f836772a14bd4b86ec2ac62cfe0d00` |
+| CM M2D commit | `d555a2894368d5ab96662ce4857c28758ff7beaa` (Gate A PASS closeout) |
+| OpenCode M2D commit | `dc9c2903bfa1da75a6a0bcbf7066fe5c3c6fdb72` (live Cursor continuation) |
 
 ## Two acceptance gates
 
