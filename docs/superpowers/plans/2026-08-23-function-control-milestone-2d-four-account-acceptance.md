@@ -8,7 +8,7 @@
 | OpenCode base | `726e4a807a5b1fc1a33c039370b1b175486aad65` |
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
-| CM M2D commit | `8ac35a46b5089bb6c9b4cf97837d756f1e719ea3` |
+| CM M2D commit | `403316494675c75d17cc59097431b00cc0fae70d` (closeout); `8ac35a46b5089bb6c9b4cf97837d756f1e719ea3` (implementation) |
 | OpenCode M2D commit | `6b3ebb07d9f836772a14bd4b86ec2ac62cfe0d00` |
 
 ## Important review findings (closed)
@@ -46,6 +46,10 @@
 | M2C ExecutionContext → real OpenCode execution | PASS — `exec_*` + `bb_*` + `openai:personal` |
 
 **External blocker for M2D PASS:** host exposes only **two** physical OAuth identities (one OpenAI, one Cursor). Governing four-account one-server proof requires four distinct work/personal credential sources.
+
+## M2D CHECKPOINT: BLOCKED
+
+Automated review findings are closed and hermetic verification holds baseline accounting. Live campaign demonstrates personal direct resolves, two-way concurrent isolation on one OpenCode process, and M2C ExecutionContext correlation — but **not** the governing four-account one-server acceptance (missing work OAuth sources; Cursor Run continuation and real quota proofs not run).
 
 ## Objective
 
