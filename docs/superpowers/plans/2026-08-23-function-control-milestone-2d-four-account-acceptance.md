@@ -17,7 +17,7 @@ M2D originally conflated **cutover** (replace canonical OpenCode/T3 OAuth with F
 
 | Gate | Intent | Physical OAuth required | Milestone status |
 | --- | --- | --- | --- |
-| **A — Cutover** | One OpenCode server + one Function Control authority serves the **canonical** `auth.json` slots (`openai`, `cursor`) without local refresh writes, credential crossover, or a second FC instance | **2** (one OpenAI, one Cursor) | **PASS WITH CAVEATS** — see [remaining cutover proofs](#remaining-cutover-proofs) |
+| **A — Cutover** | One OpenCode server + one Function Control authority serves the **canonical** `auth.json` slots (`openai`, `cursor`) without local refresh writes, credential crossover, or a second FC instance | **2** (one OpenAI, one Cursor) | **PASS** (L-A7 recommended) |
 | **B — Multi-profile routing** | Ordered failover and four-way concurrent isolation across **distinct** personal/work physical identities per provider family | **4** (separate work OAuth sources) | **DEFERRED** — follow-on feature; hermetic coverage only |
 
 Gate A is the **cutover authorization gate**. Gate B must not block Gate A.
@@ -37,39 +37,39 @@ Manifest stubs `openai:work` / `cursor:work` exist for routing fixtures and Gate
 
 | Checkpoint | Status |
 | --- | --- |
-| **M2D Gate A — Cutover** | **PASS WITH CAVEATS** |
+| **M2D Gate A — Cutover** | **PASS** |
 | **M2D Gate B — Multi-profile (4-account)** | **DEFERRED** |
-| **M2D overall** | **CHECKPOINT: PASS WITH CAVEATS** (Gate A governs cutover; Gate B is stretch) |
+| **M2D overall** | **CHECKPOINT: PASS** (Gate A governing cutover closed; Gate B deferred; L-A7 recommended) |
 
-Gate A caveats: live Cursor Run continuation proofs (L-A4–L-A6) and full `opencode serve` HTTP E2E (L-A7) not yet run. T3 consumer path not demonstrated in this campaign.
+Gate A residual: L-A7 (`opencode serve` HTTP E2E) recommended before production traffic. T3 consumer path not demonstrated in this campaign.
 
 ## Cutover readiness assessment (2026-08-24)
 
-Fresh verification after gate-split closeout commit `22ddaa8`:
+Fresh verification after gate-split closeout; Cursor continuation campaign re-run same day:
 
 | Layer | Result |
 | --- | --- |
 | CM `npm run test:function` | **60/60 PASS** |
 | CM `npm run validate` | exit **1**, semantic **failed**, **548** errors (baseline) |
-| CM `npm test` | **94 pass / 8 fail** (baseline-equivalent; 9 known debt failures ±1 flaky rollback temp path) |
+| CM `npm test` | **94 pass / 8 fail** (baseline-equivalent host debt) |
 | OpenCode auth + M2D suites | **109/109 PASS** |
 | Live L-A1 import (Keychain, canonical auth.json) | **PASS** |
 | Live L-A2 direct resolve (openai + cursor) | **PASS** |
 | Live L-A3 concurrent one-process isolation | **PASS** (openai:personal + cursor:personal; distinct fingerprints) |
-| Live L-A8 restart resolve + auth.json unchanged | **PASS** (requires healthy `openai:personal`; live FC script pollutes quota — do not use as pre-cutover gate runner) |
-| Live L-A4–L-A6 Cursor continuation | **NOT RUN** |
+| Live L-A4 Cursor Run → required FC continuation binding | **PASS** |
+| Live L-A5 same-account resume | **PASS** |
+| Live L-A6 unavailable bound account → `CONTINUATION_BLOCKED` | **PASS** (no spill) |
+| Live L-A8 restart resolve + auth.json unchanged | **PASS** |
 | Live L-A7 `opencode serve` HTTP E2E | **NOT RUN** |
 | Live L-A9 T3 consumer | **NOT RUN** |
 
-**Verdict: NOT READY for full cutover** (`HHPE_AUTH_BACKEND=curated-market` for both OpenAI and Cursor).
+**Verdict: READY for OpenCode cutover** (`HHPE_AUTH_BACKEND=curated-market`) for the canonical two-account Gate A path (OpenAI + Cursor), with residual recommendation to run L-A7 before production traffic.
 
-**Ready now:** OpenAI/Codex cutover path — live resolve, concurrent isolation, Keychain vault, singleton FC, no auth.json write-back.
-
-**Blocks full cutover:** L-A4–L-A6 (Cursor Run → required binding → resume → `CONTINUATION_BLOCKED`). These are Cursor-specific cutover blockers, not Gate B multi-profile.
+Previously Cursor was held only because L-A4–L-A6 had not been executed. They are now executed and **PASS**. The earlier “not run” rationale is obsolete.
 
 **Recommended before production flip:** L-A7 (`opencode serve` concurrent HTTP chat).
 
-**Operational note:** With manifest work stubs present but uncredentialed, marking `openai:personal` exhausted routes unpinned new work to `openai:work` → `CREDENTIAL_NOT_REGISTERED`. Gate B follow-on should either credentialed work slots or exclude uncredentialed stubs from routing pool.
+**Operational note:** With manifest work stubs present but uncredentialed, marking `openai:personal` exhausted routes unpinned new work to `openai:work` → `CREDENTIAL_NOT_REGISTERED`. Gate B follow-on should either credentialed work slots or exclude uncredentialed stubs from routing pool. Live FC failover probe must not leave personal exhausted before cutover.
 
 ## Important review findings (closed)
 
@@ -98,9 +98,9 @@ Fresh verification after gate-split closeout commit `22ddaa8`:
 | Keychain vault + import via existing FC mechanisms | **PASS** |
 | Singleton Function Control (M2B + M2C share runtime) | **PASS** (automated + live warmRuntime) |
 | M2C ExecutionContext on real OpenCode path | **PASS** — correlated `execution_id` + `behavior_bundle_id` |
-| Cursor Run → automatic required continuation binding | **NOT RUN** |
-| Same-account continuation resume | **NOT RUN** |
-| Unavailable bound account → `CONTINUATION_BLOCKED` | **NOT RUN** |
+| Cursor Run → automatic required continuation binding | **PASS** |
+| Same-account continuation resume | **PASS** |
+| Unavailable bound account → `CONTINUATION_BLOCKED` | **PASS** |
 | Full `opencode serve` HTTP chat E2E | **NOT RUN** |
 | T3 consumer curated-market path | **NOT RUN** |
 | Curated-market mode: no `auth.json` refresh write-back | **PASS** (hermetic M2B; live import does not mutate canonical store) |
@@ -120,16 +120,16 @@ Gate B live campaign requires `OPENAI_WORK_AUTH_JSON` / `CURSOR_WORK_AUTH_JSON` 
 
 ## Remaining cutover proofs
 
-These are the **only** live proofs required to close Gate A caveats and authorize production cutover (`HHPE_AUTH_BACKEND=curated-market`):
+Gate A Cursor continuation blockers are closed. Residual items:
 
-| ID | Proof | Owner | Blocks cutover? |
+| ID | Proof | Owner | Status |
 | --- | --- | --- | --- |
-| **A-F1** | Real Cursor Run → `sessionManager.registerSession` → Function Control required continuation binding established | OpenCode + cursor-opencode-provider | **Yes** (Cursor cutover) |
-| **A-F2** | Same Run id / OpenCode session → resume resolves same `cursor:personal` account | OpenCode + FC | **Yes** |
-| **A-F3** | Bound account made unavailable → stream/resolve returns `CONTINUATION_BLOCKED` (no silent secondary) | OpenCode + FC | **Yes** |
-| **A-F4** | One `opencode serve` process: unpinned OpenAI chat + unpinned Cursor agent concurrently, distinct leases/accounts | OpenCode HTTP | **Recommended** |
-| **A-F5** | T3 (or other consumer) resolves through same Function Control vault without duplicate authority | T3 integration | **If T3 in cutover scope** |
-| **A-F6** | Restart persistence: FC vault + bindings survive process restart; canonical `auth.json` still not written | FC + OpenCode | **Recommended** |
+| **A-F1 / L-A4** | Real Cursor Run → `sessionManager.registerSession` → Function Control required continuation binding | OpenCode + cursor-opencode-provider | **PASS** (`m2d-live-cursor-continuation.mjs`) |
+| **A-F2 / L-A5** | Same Run id / OpenCode session → resume resolves same `cursor:personal` | OpenCode + FC | **PASS** |
+| **A-F3 / L-A6** | Bound account unavailable → `CONTINUATION_BLOCKED` (no silent secondary) | OpenCode + FC | **PASS** |
+| **A-F4 / L-A7** | One `opencode serve` process: unpinned OpenAI + Cursor concurrently | OpenCode HTTP | **Recommended** (not a hard Gate A blocker) |
+| **A-F5 / L-A9** | T3 consumer through same Function Control vault | T3 integration | **If T3 in cutover scope** |
+| **A-F6 / L-A8** | Restart persistence; canonical `auth.json` not written | FC + OpenCode | **PASS** |
 
 Not required for Gate A cutover:
 
