@@ -8,8 +8,8 @@
 | OpenCode base | `726e4a807a5b1fc1a33c039370b1b175486aad65` |
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
-| CM M2D commit | `e6de66404539f76123b74f72a0c7b031513ca6dd` (prior); continuation pending new commit |
-| OpenCode M2D commit | `091d5d3d90b0cd8b5062fe752458bb5e8ef40b71` (prior); continuation pending new commit |
+| CM M2D commit | `8ac35a46b5089bb6c9b4cf97837d756f1e719ea3` |
+| OpenCode M2D commit | `6b3ebb07d9f836772a14bd4b86ec2ac62cfe0d00` |
 
 ## Important review findings (closed)
 
