@@ -8,8 +8,44 @@
 | OpenCode base | `726e4a807a5b1fc1a33c039370b1b175486aad65` |
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
-| CM M2D commit | `dd78ad7395167e7cfe5d3cf8ac834861597267c6` |
-| OpenCode M2D commit | `091d5d3d90b0cd8b5062fe752458bb5e8ef40b71` |
+| CM M2D commit | `e6de66404539f76123b74f72a0c7b031513ca6dd` (prior); continuation pending new commit |
+| OpenCode M2D commit | `091d5d3d90b0cd8b5062fe752458bb5e8ef40b71` (prior); continuation pending new commit |
+
+## Important review findings (closed)
+
+| Finding | Resolution |
+| --- | --- |
+| ExecutionContext second FunctionControl | `createCuratedMarketAuthBackendBridge` owns singleton `canonicalCuratedMarketRuntime`; M2C `resolveExecutionContext` reuses it via `ensureCanonicalCuratedMarketRuntime()` |
+| Cursor continuation soft-skip | `installCursorContinuationAffinity()` fails closed with `CURSOR_CONTINUATION_HOOK_UNAVAILABLE`; AuthBackend layer no longer swallows errors; `cursor-opencode-provider@0.6.3` added as dependency |
+| Cursor no-spill error breadth | `classifyCursorResponse` maps JSON/plain `resource_exhausted` bodies to transient `RATE_LIMITED`; M2D no-spill test tightened to explicit wait codes |
+
+## Live environment
+
+| Item | Value |
+| --- | --- |
+| Key provider | macOS Keychain (`hhpe-curated-market-function-control`) — **not** file-degraded, **not** `HHPE_FUNCTION_VAULT_KEY` |
+| Runtime home | `$HOME/.local/share/hhpe-function-runtime` (separate from manifest checkout) |
+| Manifest root | M2D CM worktree via `HHPE_CURATED_MARKET_ROOT` |
+| Import | `importAuthJsonAccount` from `~/.local/share/opencode/auth.json` → personal slots only |
+| Work slots | Require `OPENAI_WORK_AUTH_JSON` / `CURSOR_WORK_AUTH_JSON` — **not present on host** |
+
+## Live matrix (2026-08-24)
+
+| Proof | Result |
+| --- | --- |
+| openai:personal direct | PASS |
+| openai:work direct | BLOCKED — no separate work OAuth source |
+| cursor:personal direct | PASS |
+| cursor:work direct | BLOCKED — no separate work OAuth source |
+| Four concurrent sessions, one OpenCode process | **PARTIAL** — 2/4 (personal only); distinct token fingerprints; work `CREDENTIAL_NOT_REGISTERED` |
+| OpenAI real durable-quota signal observed | NOT OBSERVED |
+| OpenAI new-work secondary failover | BLOCKED — `openai:work` not imported |
+| Cursor real transient/no-spill | NOT OBSERVED (classifier hermetic PASS) |
+| Cursor real continuation same-account resume | NOT RUN — requires live Cursor Run |
+| Cursor unavailable continuation → CONTINUATION_BLOCKED | NOT RUN |
+| M2C ExecutionContext → real OpenCode execution | PASS — `exec_*` + `bb_*` + `openai:personal` |
+
+**External blocker for M2D PASS:** host exposes only **two** physical OAuth identities (one OpenAI, one Cursor). Governing four-account one-server proof requires four distinct work/personal credential sources.
 
 ## Objective
 

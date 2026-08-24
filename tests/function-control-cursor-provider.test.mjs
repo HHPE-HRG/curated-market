@@ -122,6 +122,21 @@ test('gRPC resource_exhausted is transient RATE_LIMITED not QUOTA_EXHAUSTED', ()
   assert.equal(result.retryable, true);
 });
 
+test('JSON body resource_exhausted without grpc/http maps to transient RATE_LIMITED', () => {
+  const result = classifyCursorResponse({
+    body: JSON.stringify({ error: { code: 'resource_exhausted' } }),
+  });
+  assert.equal(result.class, OutcomeClass.RATE_LIMITED);
+  assert.equal(result.provider_code, 'body_resource_exhausted');
+  assert.notEqual(result.class, OutcomeClass.QUOTA_EXHAUSTED);
+});
+
+test('plain-text resource_exhausted body maps to transient RATE_LIMITED', () => {
+  const result = classifyCursorResponse({ body: 'upstream returned resource_exhausted' });
+  assert.equal(result.class, OutcomeClass.RATE_LIMITED);
+  assert.equal(result.provider_code, 'body_resource_exhausted');
+});
+
 test('HTTP 5xx and gRPC unavailable/internal map to PROVIDER_UNAVAILABLE', () => {
   assert.equal(classifyCursorResponse({ http_status: 503 }).class, OutcomeClass.PROVIDER_UNAVAILABLE);
   assert.equal(classifyCursorResponse({ grpc_status: 'unavailable' }).class, OutcomeClass.PROVIDER_UNAVAILABLE);

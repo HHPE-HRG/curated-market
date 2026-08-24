@@ -198,10 +198,9 @@ test('Cursor RATE_LIMITED does not spill to secondary subscription', async () =>
       assert.ok(
         err.code === 'RETRY_AFTER' ||
           err.retry_same_account === true ||
-          err.code === 'NO_ELIGIBLE_ACCOUNT' ||
-          typeof err.code === 'string',
+          err.code === 'NO_ELIGIBLE_ACCOUNT',
+        `expected transient wait, got ${err.code}`,
       );
-      // Never a successful work spill disguised as an error payload.
       assert.notEqual(err.binding?.account_id, 'cursor:work');
       return true;
     },

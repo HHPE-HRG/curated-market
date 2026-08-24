@@ -55,6 +55,29 @@ function sanitizeEvidence(text) {
 }
 
 /**
+ * Detect approved transient capacity signals embedded only in provider body text.
+ *
+ * @param {string} [body]
+ * @returns {boolean}
+ */
+function bodyIndicatesTransientCapacity(body) {
+  if (!body || typeof body !== 'string') {
+    return false;
+  }
+  let code;
+  try {
+    const parsed = JSON.parse(body);
+    code = parsed?.error?.code ?? parsed?.code ?? parsed?.error?.type;
+  } catch {
+    code = null;
+  }
+  if (code && /resource[_-]?exhausted/i.test(String(code))) {
+    return true;
+  }
+  return /resource[_ ]?exhausted/i.test(body);
+}
+
+/**
  * Normalize Cursor HTTP/gRPC/transport failures into Function Control outcomes.
  * Evidence: cursor-opencode-provider@0.6.3 dist/errors.js (cursorHttpError / cursorGrpcError).
  *
@@ -142,6 +165,16 @@ export function classifyCursorResponse(input) {
 
   if (http_status !== undefined && http_status >= 200 && http_status < 300) {
     return { class: OutcomeClass.SUCCESS, retryable: false };
+  }
+
+  if (bodyIndicatesTransientCapacity(body) && !signals.quota_exhausted) {
+    return {
+      class: OutcomeClass.RATE_LIMITED,
+      retryable: true,
+      retry_after_seconds: signals.retry_after_seconds ?? 30,
+      provider_code: 'body_resource_exhausted',
+      evidence,
+    };
   }
 
   return { class: OutcomeClass.UNKNOWN, retryable: false, evidence };
