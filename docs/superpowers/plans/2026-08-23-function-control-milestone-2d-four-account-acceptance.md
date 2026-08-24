@@ -8,7 +8,7 @@
 | OpenCode base | `726e4a807a5b1fc1a33c039370b1b175486aad65` |
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
-| CM M2D commit | `b58d432bab77c074a06676dfdff9c7cee8045e70` (closeout); `8ac35a46b5089bb6c9b4cf97837d756f1e719ea3` (implementation) |
+| CM M2D commit | `22ddaa8f8d45fd23e5630eb7b15c8b9aedc0e883` (gate split closeout) |
 | OpenCode M2D commit | `6b3ebb07d9f836772a14bd4b86ec2ac62cfe0d00` |
 
 ## Two acceptance gates
@@ -41,7 +41,35 @@ Manifest stubs `openai:work` / `cursor:work` exist for routing fixtures and Gate
 | **M2D Gate B — Multi-profile (4-account)** | **DEFERRED** |
 | **M2D overall** | **CHECKPOINT: PASS WITH CAVEATS** (Gate A governs cutover; Gate B is stretch) |
 
-Gate A caveats: live Cursor Run continuation proofs and full `opencode serve` HTTP E2E not yet run. T3 consumer path not demonstrated in this campaign.
+Gate A caveats: live Cursor Run continuation proofs (L-A4–L-A6) and full `opencode serve` HTTP E2E (L-A7) not yet run. T3 consumer path not demonstrated in this campaign.
+
+## Cutover readiness assessment (2026-08-24)
+
+Fresh verification after gate-split closeout commit `22ddaa8`:
+
+| Layer | Result |
+| --- | --- |
+| CM `npm run test:function` | **60/60 PASS** |
+| CM `npm run validate` | exit **1**, semantic **failed**, **548** errors (baseline) |
+| CM `npm test` | **94 pass / 8 fail** (baseline-equivalent; 9 known debt failures ±1 flaky rollback temp path) |
+| OpenCode auth + M2D suites | **109/109 PASS** |
+| Live L-A1 import (Keychain, canonical auth.json) | **PASS** |
+| Live L-A2 direct resolve (openai + cursor) | **PASS** |
+| Live L-A3 concurrent one-process isolation | **PASS** (openai:personal + cursor:personal; distinct fingerprints) |
+| Live L-A8 restart resolve + auth.json unchanged | **PASS** (requires healthy `openai:personal`; live FC script pollutes quota — do not use as pre-cutover gate runner) |
+| Live L-A4–L-A6 Cursor continuation | **NOT RUN** |
+| Live L-A7 `opencode serve` HTTP E2E | **NOT RUN** |
+| Live L-A9 T3 consumer | **NOT RUN** |
+
+**Verdict: NOT READY for full cutover** (`HHPE_AUTH_BACKEND=curated-market` for both OpenAI and Cursor).
+
+**Ready now:** OpenAI/Codex cutover path — live resolve, concurrent isolation, Keychain vault, singleton FC, no auth.json write-back.
+
+**Blocks full cutover:** L-A4–L-A6 (Cursor Run → required binding → resume → `CONTINUATION_BLOCKED`). These are Cursor-specific cutover blockers, not Gate B multi-profile.
+
+**Recommended before production flip:** L-A7 (`opencode serve` concurrent HTTP chat).
+
+**Operational note:** With manifest work stubs present but uncredentialed, marking `openai:personal` exhausted routes unpinned new work to `openai:work` → `CREDENTIAL_NOT_REGISTERED`. Gate B follow-on should either credentialed work slots or exclude uncredentialed stubs from routing pool.
 
 ## Important review findings (closed)
 
