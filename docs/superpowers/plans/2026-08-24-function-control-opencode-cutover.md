@@ -126,7 +126,7 @@ Current Gate A tips (freeze for Task 2 / flip):
 
 | Repo | Branch | Tip |
 | --- | --- | --- |
-| curated-market | `feat/function-control-m2d-acceptance` | record after this docs commit (`git rev-parse HEAD`) |
+| curated-market | `feat/function-control-m2d-acceptance` | `09ccf633f21b5b0b12d6f6457965dc0e749ffa24` (L-A7 GO docs; optional follow-up may only fill this cell) |
 | opencode | `feat/function-control-m2d-acceptance` | `8a207e3e68ed386cfb51419774853a9f9a17ff11` |
 
 Former tips (`db2cc0b` / `dc9c290`) are superseded for freeze.
