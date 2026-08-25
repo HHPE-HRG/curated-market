@@ -8,7 +8,7 @@
 
 **Tech Stack:** OpenCode curated-market AuthBackend, Curated Market Function Control (M1–M2D), macOS Keychain vault provider, `cursor-opencode-provider@0.6.3`, existing import CLI/scripts.
 
-**Origin:** Gate A PASS — `docs/superpowers/plans/2026-08-23-function-control-milestone-2d-four-account-acceptance.md` (CM `db2cc0b`, OpenCode `dc9c290`).
+**Origin:** Gate A PASS — `docs/superpowers/plans/2026-08-23-function-control-milestone-2d-four-account-acceptance.md` (CM plan tip includes this file; OpenCode L-A7 tip `8a207e3`).
 
 ## Global Constraints
 
@@ -35,8 +35,25 @@
 | Same-account resume (L-A5) | PASS |
 | Unavailable → CONTINUATION_BLOCKED (L-A6) | PASS |
 | Restart resolve; auth.json untouched (L-A8) | PASS |
-| `opencode serve` HTTP E2E (L-A7) | NOT RUN — recommended in Task 1 |
+| `opencode serve` HTTP E2E (L-A7) | **PASS** (2026-08-24; harness `m2d-live-serve-smoke.mjs`) |
 | T3 consumer (L-A9) | NOT RUN — optional Task 6 |
+
+---
+
+## Task 1 preflight result (2026-08-24)
+
+| Step | Result |
+| --- | --- |
+| Personal health reset | PASS (`openai:personal` / `cursor:personal` healthy) |
+| L-A1–L-A3 (FC live) | PASS |
+| L-A4–L-A6 (Cursor continuation) | PASS |
+| L-A7 serve HTTP OpenAI + Cursor | **PASS** |
+| auth.json unmutated during L-A7 | PASS |
+| Cutover GO/NO-GO | **GO** — proceed to Task 2 freeze, then import/flip |
+
+**Harness notes:** CLI `opencode serve` on this tip still defects (`InstanceRef` / `Config.getGlobal` with `instance: false`). L-A7 uses `Server.listen` (same HTTP server as serve after opts). Cursor catalog requires `cursor-opencode-provider` plugin; empty host config is insufficient — smoke injects harness-local `OPENCODE_CONFIG`.
+
+**Serve fixes landed with L-A7 harness (OpenCode):** curated-market skips uncredentialed third-party auth loaders; Poe loader guards undefined `getAuth()`; stub provider info when models.dev lacks cursor.
 
 ---
 
@@ -63,9 +80,9 @@
 
 **Files:**
 - Modify: none required (ops)
-- Optional add: `packages/opencode/scripts/m2d-live-serve-smoke.mjs` if HTTP serve proof needs a durable harness
+- Add: `packages/opencode/scripts/m2d-live-serve-smoke.mjs`
 
-- [ ] **Step 1: Reset personal account health**
+- [x] **Step 1: Reset personal account health**
 
 ```bash
 export HHPE_HRG_HOME="$HOME/.local/share/hhpe-function-runtime"
@@ -74,7 +91,7 @@ unset HHPE_FUNCTION_VAULT_KEY
 # Patch openai:personal + cursor:personal → healthy / available (no secrets printed)
 ```
 
-- [ ] **Step 2: Re-run Gate A live smokes**
+- [x] **Step 2: Re-run Gate A live smokes**
 
 ```bash
 export HHPE_AUTH_BACKEND=curated-market
@@ -84,11 +101,11 @@ bun run packages/opencode/scripts/m2d-live-one-server.mjs
 bun run packages/opencode/scripts/m2d-live-cursor-continuation.mjs
 ```
 
-- [ ] **Step 3: Run L-A7 — one `opencode serve`, OpenAI + Cursor chat via HTTP/API**
+- [x] **Step 3: Run L-A7 — one HTTP server, OpenAI + Cursor chat via HTTP/API**
 
-Pass criteria: both providers authenticate via FC; `auth.json` mtime unchanged; distinct leases/accounts; no second FC process.
+Pass criteria: both providers authenticate via FC; `auth.json` mtime unchanged; distinct sessions; no second FC process. **PASS** 2026-08-24.
 
-- [ ] **Step 4: Commit any new serve-smoke harness (if created)** — message: `[Feature] (Add) M2D L-A7 serve smoke for cutover`
+- [x] **Step 4: Commit any new serve-smoke harness (if created)** — message: `[Feature] (Add) M2D L-A7 serve smoke for cutover`
 
 **Test scenarios:**
 1. Personal OpenAI resolve succeeds under Keychain mode
@@ -105,12 +122,14 @@ Pass criteria: both providers authenticate via FC; `auth.json` mtime unchanged; 
 
 - [ ] **Step 1: Record SHAs** in this plan’s provenance table (or cutover runbook appendix)
 
-Current Gate A tips (update if rebased before flip):
+Current Gate A tips (freeze for Task 2 / flip):
 
-| Repo | Branch | Tip (as of Gate A PASS) |
+| Repo | Branch | Tip |
 | --- | --- | --- |
-| curated-market | `feat/function-control-m2d-acceptance` | `db2cc0b` |
-| opencode | `feat/function-control-m2d-acceptance` | `dc9c290` |
+| curated-market | `feat/function-control-m2d-acceptance` | record after this docs commit (`git rev-parse HEAD`) |
+| opencode | `feat/function-control-m2d-acceptance` | `8a207e3e68ed386cfb51419774853a9f9a17ff11` |
+
+Former tips (`db2cc0b` / `dc9c290`) are superseded for freeze.
 
 - [ ] **Step 2: Decide promotion path** — run from worktree tips for this host cutover, or merge to local main **without** remote push if that is the house rule for this machine. Do not treat GitHub Actions as a gate.
 
@@ -297,4 +316,4 @@ Cutover is **complete** when:
 4. `auth.json` is not written by registry-mode refresh
 5. Rollback to local remains one env change + restart
 
-Optional: L-A7 serve smoke recorded PASS; T3 on same vault if in scope.
+Optional: L-A7 serve smoke recorded **PASS** (2026-08-24); T3 on same vault if in scope.

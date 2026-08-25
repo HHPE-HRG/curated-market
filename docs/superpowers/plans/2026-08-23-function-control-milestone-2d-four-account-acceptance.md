@@ -9,7 +9,7 @@
 | CM branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | OpenCode branch / worktree | `feat/function-control-m2d-acceptance` → `.worktrees/feat-function-control-m2d-acceptance` |
 | CM M2D commit | `d555a2894368d5ab96662ce4857c28758ff7beaa` (Gate A PASS closeout) |
-| OpenCode M2D commit | `dc9c2903bfa1da75a6a0bcbf7066fe5c3c6fdb72` (live Cursor continuation) |
+| OpenCode M2D commit | `8a207e3e68ed386cfb51419774853a9f9a17ff11` (L-A7 serve smoke + curated-market auth guards; prior live Cursor `dc9c290`) |
 
 ## Two acceptance gates
 
@@ -17,7 +17,7 @@ M2D originally conflated **cutover** (replace canonical OpenCode/T3 OAuth with F
 
 | Gate | Intent | Physical OAuth required | Milestone status |
 | --- | --- | --- | --- |
-| **A — Cutover** | One OpenCode server + one Function Control authority serves the **canonical** `auth.json` slots (`openai`, `cursor`) without local refresh writes, credential crossover, or a second FC instance | **2** (one OpenAI, one Cursor) | **PASS** (L-A7 recommended) |
+| **A — Cutover** | One OpenCode server + one Function Control authority serves the **canonical** `auth.json` slots (`openai`, `cursor`) without local refresh writes, credential crossover, or a second FC instance | **2** (one OpenAI, one Cursor) | **PASS** (L-A7 PASS) |
 | **B — Multi-profile routing** | Ordered failover and four-way concurrent isolation across **distinct** personal/work physical identities per provider family | **4** (separate work OAuth sources) | **DEFERRED** — follow-on feature; hermetic coverage only |
 
 Gate A is the **cutover authorization gate**. Gate B must not block Gate A.
@@ -39,9 +39,9 @@ Manifest stubs `openai:work` / `cursor:work` exist for routing fixtures and Gate
 | --- | --- |
 | **M2D Gate A — Cutover** | **PASS** |
 | **M2D Gate B — Multi-profile (4-account)** | **DEFERRED** |
-| **M2D overall** | **CHECKPOINT: PASS** (Gate A governing cutover closed; Gate B deferred; L-A7 recommended) |
+| **M2D overall** | **CHECKPOINT: PASS** (Gate A governing cutover closed; Gate B deferred; L-A7 PASS) |
 
-Gate A residual: L-A7 (`opencode serve` HTTP E2E) recommended before production traffic. T3 consumer path not demonstrated in this campaign.
+Gate A residual: T3 consumer path (L-A9) not demonstrated in this campaign. L-A7 serve HTTP E2E is **PASS**.
 
 ## Cutover readiness assessment (2026-08-24)
 
@@ -60,16 +60,18 @@ Fresh verification after gate-split closeout; Cursor continuation campaign re-ru
 | Live L-A5 same-account resume | **PASS** |
 | Live L-A6 unavailable bound account → `CONTINUATION_BLOCKED` | **PASS** (no spill) |
 | Live L-A8 restart resolve + auth.json unchanged | **PASS** |
-| Live L-A7 `opencode serve` HTTP E2E | **NOT RUN** |
+| Live L-A7 `opencode serve` HTTP E2E | **PASS** (`packages/opencode/scripts/m2d-live-serve-smoke.mjs`; OpenAI `gpt-5.6-sol` + Cursor `default`; auth.json mtime unchanged) |
 | Live L-A9 T3 consumer | **NOT RUN** |
 
-**Verdict: READY for OpenCode cutover** (`HHPE_AUTH_BACKEND=curated-market`) for the canonical two-account Gate A path (OpenAI + Cursor), with residual recommendation to run L-A7 before production traffic.
+**Verdict: GO for OpenCode cutover** (`HHPE_AUTH_BACKEND=curated-market`) for the canonical two-account Gate A path (OpenAI + Cursor). Pre-flip Task 1 (health reset + L-A1–L-A7) complete.
 
-Previously Cursor was held only because L-A4–L-A6 had not been executed. They are now executed and **PASS**. The earlier “not run” rationale is obsolete.
+Previously Cursor was held only because L-A4–L-A6 had not been executed. They are now executed and **PASS**. L-A7 serve-path HTTP for both providers is now **PASS**.
 
-**Recommended before production flip:** L-A7 (`opencode serve` concurrent HTTP chat).
+**Cutover freeze tips (Task 2 — record after OpenCode L-A7 commit lands):** see cutover plan provenance; do not flip until those SHAs are frozen and trees are clean.
 
 **Operational note:** With manifest work stubs present but uncredentialed, marking `openai:personal` exhausted routes unpinned new work to `openai:work` → `CREDENTIAL_NOT_REGISTERED`. Gate B follow-on should either credentialed work slots or exclude uncredentialed stubs from routing pool. Live FC failover probe must not leave personal exhausted before cutover.
+
+**Serve-path note:** Host `~/.config/opencode/opencode.jsonc` had no Cursor plugin. L-A7 harness injects harness-local `OPENCODE_CONFIG` loading `cursor-opencode-provider` from the OpenCode package `node_modules`. Production cutover must retain an equivalent Cursor plugin registration (global or project config).
 
 ## Important review findings (closed)
 
