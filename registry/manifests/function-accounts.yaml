@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "_comment": "Logical account slots for routing fixtures only — not live OAuth identities. No secrets, emails, or runtime state in Git.",
+  "accounts": [
+    {
+      "account_id": "openai:personal",
+      "provider_family": "openai",
+      "capabilities": ["codex"],
+      "priority": 10,
+      "status": "active",
+      "labels": { "role": "personal" }
+    },
+    {
+      "account_id": "openai:work",
+      "provider_family": "openai",
+      "capabilities": ["codex"],
+      "priority": 20,
+      "status": "active",
+      "labels": { "role": "work" }
+    },
+    {
+      "account_id": "cursor:personal",
+      "provider_family": "cursor",
+      "capabilities": ["agent"],
+      "priority": 10,
+      "status": "active",
+      "labels": { "role": "personal" }
+    },
+    {
+      "account_id": "cursor:work",
+      "provider_family": "cursor",
+      "capabilities": ["agent"],
+      "priority": 20,
+      "status": "active",
+      "labels": { "role": "work" }
+    }
+  ]
+}

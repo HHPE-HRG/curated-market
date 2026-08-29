@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FunctionControlConsumer",
+  "type": "object",
+  "required": ["consumer_id", "allowed_provider_families"],
+  "additionalProperties": false,
+  "properties": {
+    "consumer_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "allowed_provider_families": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "allowed_account_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+:[a-z0-9-]+$" }
+    },
+    "denied_account_ids": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+:[a-z0-9-]+$" }
+    }
+  }
+}

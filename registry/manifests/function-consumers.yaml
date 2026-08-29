@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "consumers": [
+    {
+      "consumer_id": "test-consumer",
+      "allowed_provider_families": ["openai"],
+      "allowed_account_ids": ["openai:personal", "openai:work"]
+    },
+    {
+      "consumer_id": "opencode",
+      "allowed_provider_families": ["openai", "cursor"]
+    }
+  ]
+}

@@ -7,3 +7,5 @@ The canonical system-wide plane taxonomy and authority boundaries are defined in
 Canonical identity is `<package>/<capability>`. A portable skill exposure points at its complete source directory. Hooks, commands, agents, MCP servers, and plugins remain separately registered package capabilities. Native lifecycle behavior is not approximated by a copied `SKILL.md`.
 
 The HHPE adapter projects canonical IDs and provenance into XLOTYL/Core Dev Services. Runtime binding remains parameterized because current wrapper documents conflict on Workroom versus Stoneforge ownership. OpenHands remains the paddock/control plane in either projection.
+
+Function Control (OAuth accounts, credential vault, routing, leases) is defined in [ADR-027: Function Control Plane](decisions/ADR-027-function-control-plane.md). It is a separate authority from the Behavior catalog (`lib/registry.mjs`, manifests) even though both live in this repository.
