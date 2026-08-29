@@ -26,4 +26,8 @@ Recommended next action:
 
 Inspect the repository root, active worktree and branch, dirty/staged/unstaged/untracked state, applicable `AGENTS.md` and project instructions, the active Compound Engineering artifact and implementation unit, and the authoritative HHPE task state. Check Serena activation and health when installed. Check `ast-grep`, Context7, Playwright when relevant, compilers, and repository tooling. Identify protected paths and concurrent changes. If an optional tool is unavailable, report it as a blocker or limitation rather than installing or modifying state.
 
+When prior chat / “Reply N” / agent-transcript context is needed, do **not** Glob the repo for `agent-transcripts`. Search the absolute path
+`~/.cache/opencode/projects/Users-maxholden-src-curated-market/agent-transcripts`
+(outside the worktree; request `external_directory` if asked). Project-scoped Glob under the repo root correctly returns only repository files.
+
 HHPE owns this capability and its namespace. It does not replace Compound Engineering, Ponytail, Caveman, or the authoritative task graph.
