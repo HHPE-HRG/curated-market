@@ -33,6 +33,7 @@ function isolatedApply({home, projectRoot, extraExposures = []}) {
   fs.writeFileSync(path.join(root, 'cursor-plugin-routing/hooks/route-gate.mjs'), 'export {}\n');
   fs.copyFileSync(new URL('../lib/registry.mjs', import.meta.url), path.join(root, 'lib/registry.mjs'));
   fs.copyFileSync(new URL('../lib/tool-contracts.mjs', import.meta.url), path.join(root, 'lib/tool-contracts.mjs'));
+  fs.copyFileSync(new URL('../lib/opencode-specialization.mjs', import.meta.url), path.join(root, 'lib/opencode-specialization.mjs'));
   const write = (name, value) => fs.writeFileSync(path.join(root, 'registry/manifests', name), JSON.stringify(value));
   write('packages.lock.yaml', {packages: [{package_id: 'hhpe-cursor-plugin-routing', revision: {type: 'overlay', value: '1'}, package_root: 'cursor-plugin-routing', license: {path: '.'}}]});
   write('capabilities.yaml', {capabilities: [{capability_id: 'hhpe-hrg/cursor-plugin-routing', package_id: 'hhpe-cursor-plugin-routing', type: 'plugin', source_path: '.', requires: {files: []}}]});
