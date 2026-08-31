@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 
-import {isRoutingComplete} from '../scripts/plugin-description-index.mjs';
+import {isRoutingComplete, sessionIdFromHookPayload} from '../scripts/plugin-description-index.mjs';
 
 function defaultPaths() {
   const home = os.homedir();
@@ -44,52 +45,52 @@ function shouldGateShellCommand(command) {
   return mutationPatterns.some((re) => re.test(command));
 }
 
-async function main() {
+export async function evaluateRouteGate({command, payload, stateDir, fingerprintPath, disableGate} = {}) {
+  if (disableGate || process.env.CURSOR_PLUGIN_ROUTING_DISABLE_GATE === '1') {
+    return {permission: 'allow', reason: 'operator-bypass'};
+  }
+  if (!shouldGateShellCommand(command)) return {permission: 'allow', reason: 'not-gated'};
+  const sessionId = sessionIdFromHookPayload(payload || {});
+  if (!sessionId) return {permission: 'deny', reason: 'missing-session'};
   try {
-    if (process.env.CURSOR_PLUGIN_ROUTING_DISABLE_GATE === '1') {
-      // eslint-disable-next-line no-console
-      console.log(JSON.stringify({ permission: 'allow' }));
-      return;
-    }
-
-    const input = fs.readFileSync(0, 'utf8').trim();
-    const data = input ? JSON.parse(input) : {};
-    const command = data.command || '';
-
-    if (!shouldGateShellCommand(command)) {
-      // eslint-disable-next-line no-console
-      console.log(JSON.stringify({ permission: 'allow' }));
-      return;
-    }
-
-    const { fingerprintPath, routingCompleteFlagPath } = defaultPaths();
     const ok = await isRoutingComplete({
-      routingCompleteFlagPath,
-      routingFingerprintPath: path.join(path.dirname(routingCompleteFlagPath), 'routing-fingerprint.json'),
+      stateDir,
+      sessionId,
       currentFingerprintPath: fingerprintPath,
     });
-
-    if (ok) {
-      // eslint-disable-next-line no-console
-      console.log(JSON.stringify({ permission: 'allow' }));
-      return;
-    }
-
-    // eslint-disable-next-line no-console
-    console.log(
-      JSON.stringify({
-        permission: 'deny',
-        user_message:
-          'Blocked until plugin routing completes (select installed plugins/skills/MCP before state-changing commands).',
-        agent_message:
-          'Run the `plugin-routing` skill. After documenting `## Plugin and capability use` in the plan, record routing completion via:\n\n`node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs`\n\nThen retry the original command.',
-      })
-    );
+    return ok
+      ? {permission: 'allow', reason: 'complete'}
+      : {permission: 'deny', reason: 'incomplete-or-stale'};
   } catch {
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify({ permission: 'allow' }));
+    return {permission: 'deny', reason: 'unavailable-enforcement-dependency'};
   }
 }
 
-await main();
+async function main() {
+  const input = fs.readFileSync(0, 'utf8').trim();
+  const data = input ? JSON.parse(input) : {};
+  const {fingerprintPath} = defaultPaths();
+  const stateDir = path.dirname(defaultPaths().routingCompleteFlagPath);
+  const result = await evaluateRouteGate({
+    command: data.command || '',
+    payload: data,
+    stateDir,
+    fingerprintPath,
+  });
+  // eslint-disable-next-line no-console
+  console.log(JSON.stringify({
+    permission: result.permission,
+    ...(result.permission === 'deny' ? {
+      user_message:
+        'Blocked until plugin routing completes (select installed plugins/skills/MCP before state-changing commands).',
+      agent_message:
+        'Run the `plugin-routing` skill. After documenting `## Plugin and capability use` in the plan, record routing completion via:\n\n`node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs --context <session>`\n\nThen retry the original command.',
+    } : {}),
+  }));
+}
 
+const invoked = process.argv[1]
+  && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+if (invoked) {
+  await main();
+}

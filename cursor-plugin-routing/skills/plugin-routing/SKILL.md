@@ -50,7 +50,7 @@ If Cursor’s native repository tools and already-available built-in skills full
 Assume execution gating can block state-changing commands until routing completion is recorded.
 After you have selected and documented planning/execution/validation components in the plan, run:
 
-`node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs`
+`node ${CURSOR_PLUGIN_ROOT}/scripts/mark-routing-complete.mjs --context <session>`
 
 ## How to document routing decisions in the plan
 In the plan, record a section exactly structured as:

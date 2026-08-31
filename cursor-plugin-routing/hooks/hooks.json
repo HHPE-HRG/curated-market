@@ -11,7 +11,7 @@
     "beforeShellExecution": [
       {
         "command": "node ./hooks/route-gate.mjs",
-        "failClosed": false
+        "failClosed": true
       }
     ]
   }

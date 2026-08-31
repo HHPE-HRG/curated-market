@@ -455,30 +455,62 @@ export async function generatePluginDescriptionIndex({
   };
 }
 
+export function sessionIdFromHookPayload(data) {
+  if (!data || typeof data !== 'object') return null;
+  const candidates = [
+    data.conversation_id,
+    data.conversationId,
+    data.session_id,
+    data.executionContext,
+  ];
+  for (const value of candidates) {
+    if (typeof value === 'string' && value) return value;
+  }
+  return null;
+}
+
+export function routingCompletePath({stateDir, sessionId, routingCompleteFlagPath} = {}) {
+  if (sessionId) {
+    return path.join(stateDir, 'routing-complete.' + encodeURIComponent(sessionId) + '.json');
+  }
+  return routingCompleteFlagPath;
+}
+
 export async function markRoutingComplete({
   fingerprintPath,
   routingCompleteFlagPath,
+  stateDir,
+  sessionId,
 }) {
   const currentFingerprint = exists(fingerprintPath) ? readText(fingerprintPath).trim() : null;
   if (!currentFingerprint) throw new Error(`Missing fingerprint at ${fingerprintPath}`);
 
-  const payload = { fingerprint: currentFingerprint };
-  writeText(routingCompleteFlagPath, `${JSON.stringify(payload)}\n`);
+  const dest = routingCompletePath({stateDir, sessionId, routingCompleteFlagPath});
+  const payload = sessionId
+    ? {session_id: sessionId, fingerprint: currentFingerprint, recorded_at: new Date().toISOString()}
+    : {fingerprint: currentFingerprint};
+  writeText(dest, `${JSON.stringify(payload)}\n`);
 }
 
 export async function isRoutingComplete({
   routingCompleteFlagPath,
   routingFingerprintPath,
   currentFingerprintPath,
+  stateDir,
+  sessionId,
 }) {
-  if (!exists(routingCompleteFlagPath)) return false;
+  const dest = routingCompletePath({stateDir, sessionId, routingCompleteFlagPath});
+  if (!dest || !exists(dest)) return false;
 
   let routingFlag;
   try {
-    routingFlag = JSON.parse(readText(routingCompleteFlagPath));
+    routingFlag = JSON.parse(readText(dest));
   } catch {
-    routingFlag = { fingerprint: readText(routingCompleteFlagPath).trim() };
+    if (sessionId) throw new Error(`Unreadable routing-complete state at ${dest}`);
+    routingFlag = { fingerprint: readText(dest).trim() };
   }
+
+  if (sessionId && routingFlag?.session_id !== sessionId) return false;
 
   const currentFingerprint = exists(currentFingerprintPath) ? readText(currentFingerprintPath).trim() : null;
   if (!currentFingerprint) return false;
