@@ -2,7 +2,7 @@
 
 Date: 2026-08-31
 
-Status: **Peel executed** (2026-08-31). `main` is agent-agnostic; `feat/opencode_only` owns OpenCode personalization. See PR #9.
+Status: **Historical migration record** (peel executed 2026-08-31, PR #9). Living contracts: [agent-agnostic main](./2026-08-31-agent-agnostic-main-design.md) · [OpenCode-only](./2026-08-20-opencode-only-design.md) · [index](./README.md).
 
 ## Purpose
 
@@ -74,3 +74,10 @@ Peel is ready to execute when:
 - Implementation plan tasks are checkbox-ready for a later session.
 
 Peel is **done**: acceptance suite passes with the flag on peeled `main` and `feat/opencode_only` validates OpenCode specialization via `validate:opencode` (verified 2026-08-31).
+
+## Living specs (post-peel)
+
+| Contract | Spec | Branch |
+| --- | --- | --- |
+| Any agent / any model-provider path through the registry | `2026-08-31-agent-agnostic-main-design.md` | `main` |
+| OpenCode sole project personalization | `2026-08-20-opencode-only-design.md` | `feat/opencode_only` |
