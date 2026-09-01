@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "peel_id": "agent-agnostic-main-opencode-only",
+  "prepared_at": "2026-08-31",
+  "baselines": {
+    "main_tip_at_prep": "origin/main",
+    "opencode_only_tip_at_prep": "origin/feat/opencode_only",
+    "note": "Record exact SHAs in the plan provenance table at peel start."
+  },
+  "move_or_gate_to_opencode_only": [
+    {
+      "path": "registry/manifests/specialization.yaml",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "absent_or_ignored_by_default_validate"
+    },
+    {
+      "path": "AGENTS.md",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "replace_with_agent_neutral_stub_or_omit_opencode_sole_runtime_policy"
+    },
+    {
+      "path": "opencode.json",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "not_required_for_validate"
+    },
+    {
+      "path": ".opencode/",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "not_required_for_validate"
+    },
+    {
+      "path": "lib/opencode-specialization.mjs",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "not_imported_by_default_validate_or_skills_ci"
+    },
+    {
+      "path": "scripts/sync-opencode.mjs",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "script_optional"
+    },
+    {
+      "path": "scripts/ensure-t3-opencode-bindings.mjs",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "absent_or_oo_only"
+    },
+    {
+      "path": "tests/opencode-specialization.test.mjs",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "not_part_of_default_agent_agnostic_gate"
+    },
+    {
+      "path": "lib/function-control/opencode/",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "FC_core_remains_without_opencode_consumer_modules_required"
+    },
+    {
+      "path": "package.json#scripts.validate:opencode",
+      "action": "keep_on_opencode_only",
+      "main_after_peel": "may_remain_as_noop_or_removed_from_main"
+    },
+    {
+      "path": "package.json#scripts.opencode:generate",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "optional"
+    },
+    {
+      "path": "package.json#scripts.opencode:check",
+      "action": "own_on_opencode_only",
+      "main_after_peel": "optional"
+    },
+    {
+      "path": "docs/host-adapters.md#OpenCode-only operation",
+      "action": "rewrite_boundary",
+      "main_after_peel": "point_to_feat/opencode_only_not_mandatory_on_main"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-08-20-opencode-only-design.md",
+      "action": "keep_as_oo_authority",
+      "main_after_peel": "may_remain_in_tree_as_historical_spec"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-08-21-opencode-only-implementation.md",
+      "action": "keep_as_oo_history",
+      "main_after_peel": "historical"
+    }
+  ],
+  "decouple_on_main": [
+    {
+      "path": "lib/registry.mjs",
+      "change": "Remove validateOpencodeOnly from default validate(); do not import opencode-specialization for generic validate"
+    },
+    {
+      "path": "lib/skills-ci.mjs",
+      "change": "Remove validateOpencodeOnly from staticIntegrity default path"
+    },
+    {
+      "path": "tests/registry.test.mjs",
+      "change": "Retire or relocate 'generic repository validation includes opencode_only policy statically' to oo suite"
+    },
+    {
+      "path": "tests/sync.test.mjs",
+      "change": "isolatedApply must not require opencode-specialization.mjs once registry no longer imports it"
+    },
+    {
+      "path": "tests/rollback.test.mjs",
+      "change": "Same fixture copy rule as sync.test.mjs"
+    }
+  ],
+  "keep_on_main_shared": [
+    "lib/function-control/** (except opencode/ consumer adapter)",
+    "registry/providers/**",
+    "registry/manifests/function-accounts.yaml",
+    "registry/manifests/function-consumers.yaml (test-consumer required; opencode consumer id may stay as declared consumer or move with adapter — decide in peel Task 3)",
+    "registry/adapters/codex/**",
+    "registry/adapters/cursor/**",
+    "cursor-plugin-routing/**",
+    "lib/behavior-projection.mjs",
+    "lib/execution-resolve.mjs",
+    "registry/overlays/wrappers/**",
+    "ToolSpec / capability-check remediations",
+    "multi-host exposures.yaml rows for cursor/codex/claude as peer hosts"
+  ],
+  "forbidden_during_peel": [
+    "Reset main to pre-PR#5 history",
+    "Delete Codex or Cursor host adapters because they are 'Cursor'",
+    "Move Function Control vault/core to opencode_only",
+    "Treat cursor-opencode-provider pin as required on agent-agnostic main"
+  ],
+  "verification": {
+    "characterization_suite": "tests/agent-agnostic-main.characterization.test.mjs",
+    "peel_acceptance_suite": "tests/agent-agnostic-main.peel-acceptance.test.mjs",
+    "peel_acceptance_env": "HHPE_PEEL_ACCEPTANCE=1",
+    "default_npm_test": "must not run peel-acceptance assertions unless env set"
+  }
+}
