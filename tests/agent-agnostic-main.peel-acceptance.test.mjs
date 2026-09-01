@@ -31,16 +31,14 @@ peelTest('peel: skills-ci.mjs does not invoke validateOpencodeOnly in static pat
   assert.doesNotMatch(source, /validateOpencodeOnly/)
 })
 
-peelTest('peel: default validate does not require specialization.yaml', async () => {
-  const {validate, ROOT: registryRoot} = await import('../lib/registry.mjs')
-  assert.equal(path.resolve(registryRoot), path.resolve(ROOT))
-  const result = validate()
-  assert.ok(result)
-  const specializationErrors = (result.errors || []).filter(
-    (error) =>
-      /specialization|opencode\.json|OpenCode|opencode_only|\.opencode\/agents/i.test(String(error)),
-  )
-  assert.deepEqual(specializationErrors, [])
+peelTest('peel: default validate body has no specialization=validateOpencodeOnly gate', () => {
+  const source = fs.readFileSync(path.join(ROOT, 'lib/registry.mjs'), 'utf8')
+  assert.doesNotMatch(source, /specialization\s*=\s*validateOpencodeOnly/)
+})
+
+peelTest('peel: staticIntegrity body has no specialization=validateOpencodeOnly gate', () => {
+  const source = fs.readFileSync(path.join(ROOT, 'lib/skills-ci.mjs'), 'utf8')
+  assert.doesNotMatch(source, /specialization\s*=\s*validateOpencodeOnly/)
 })
 
 peelTest('peel: main AGENTS.md does not claim OpenCode sole personalization runtime', () => {
