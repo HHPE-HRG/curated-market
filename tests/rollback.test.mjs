@@ -13,7 +13,6 @@ const makeRoot = () => {
   fs.mkdirSync(path.join(root, 'registry/overlays/demo'), {recursive: true});
   fs.writeFileSync(path.join(root, 'registry/overlays/demo/SKILL.md'), '---\nname: demo\n---\n');
   fs.copyFileSync(new URL('../lib/registry.mjs', import.meta.url), path.join(root, 'lib/registry.mjs'));
-  fs.copyFileSync(new URL('../lib/opencode-specialization.mjs', import.meta.url), path.join(root, 'lib/opencode-specialization.mjs'));
   fs.copyFileSync(new URL('../lib/tool-contracts.mjs', import.meta.url), path.join(root, 'lib/tool-contracts.mjs'));
   return root;
 };
