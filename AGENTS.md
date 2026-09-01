@@ -1,5 +1,8 @@
 # OpenCode Project Policy
 
+Living specialization contract: `docs/superpowers/specs/2026-08-20-opencode-only-design.md` (branch `feat/opencode_only`).
+Agent-agnostic sibling on `main`: `docs/superpowers/specs/2026-08-31-agent-agnostic-main-design.md`. Index: `docs/superpowers/specs/README.md`.
+
 - OpenCode is sole personalization runtime.
 - Use project-local agents and skills.
 - Inherit operator-selected authenticated model.
