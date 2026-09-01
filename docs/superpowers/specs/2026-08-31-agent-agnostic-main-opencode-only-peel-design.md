@@ -2,7 +2,7 @@
 
 Date: 2026-08-31
 
-Status: Hardened product contract for peel preparation. **Does not execute the peel.**
+Status: **Peel executed** (2026-08-31). `main` is agent-agnostic; `feat/opencode_only` owns OpenCode personalization. See PR #9.
 
 ## Purpose
 
@@ -73,4 +73,4 @@ Peel is ready to execute when:
 - Peel-acceptance suite fails with `HHPE_PEEL_ACCEPTANCE=1` on unpeeled main (proves the gate is real).
 - Implementation plan tasks are checkbox-ready for a later session.
 
-Peel is **done** only when acceptance suite passes with the flag on peeled `main` and `feat/opencode_only` still validates OpenCode specialization via `validate:opencode`.
+Peel is **done**: acceptance suite passes with the flag on peeled `main` and `feat/opencode_only` validates OpenCode specialization via `validate:opencode` (verified 2026-08-31).
