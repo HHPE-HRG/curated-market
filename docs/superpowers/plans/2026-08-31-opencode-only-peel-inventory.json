@@ -50,8 +50,9 @@
     },
     {
       "path": "lib/function-control/opencode/",
-      "action": "own_on_opencode_only",
-      "main_after_peel": "FC_core_remains_without_opencode_consumer_modules_required"
+      "action": "keep_on_main_shared_fc_adapter",
+      "main_after_peel": "retained — required by execution-resolve / FC binding keys; not specialization personalization",
+      "note": "Task 2 decision at peel: keep consumer row + adapter on main"
     },
     {
       "path": "package.json#scripts.validate:opencode",

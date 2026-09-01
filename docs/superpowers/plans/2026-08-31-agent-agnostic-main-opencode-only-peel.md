@@ -18,13 +18,14 @@
 - Cursor-as-host ≠ Cursor-as-OpenCode-provider (see design).
 - Local CI only (`npm test`, `npm run test:function`, `npm run validate`); do not treat GitHub Actions as authority.
 - Prep branch may land groundwork only; **peel execution starts at Task 3**.
+- **Task 2 decision:** **Keep** `opencode` consumer row and `lib/function-control/opencode/**` on main. Shared `execution-resolve` + FC fixtures use `consumer_id: opencode` and binding keys without treating personalization as mandatory. Specialization personalization (selector, AGENTS/opencode.json/.opencode, validate:opencode) still peels to `feat/opencode_only`.
 
 ## Provenance (fill at peel start)
 
 | Ref | SHA at peel start |
 | --- | --- |
-| `origin/main` | _TBD_ |
-| `origin/feat/opencode_only` | _TBD_ |
+| `origin/main` | `043a337e0cc37bcf91a77e08ed0e092e06a9af99` |
+| `origin/feat/opencode_only` | `4eb722fc72320e6f510312c558dafd47ac603a7e` |
 | Prep groundwork merge | [PR #8](https://github.com/HHPE-HRG/curated-market/pull/8) (`docs/opencode-only-peel-prep`) |
 
 ## File / surface map
