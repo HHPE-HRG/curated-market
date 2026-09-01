@@ -1,10 +1,14 @@
 # OpenCode-Only Specialization Design
 
-**Status:** Proposed for review
-**Date:** 2026-08-20
-**Base:** `63da34b3f3e20e5b0e7333286c04b881bc39b747`
+**Status:** Living product contract on `feat/opencode_only`  
+**Date:** 2026-08-20 (ownership clarified 2026-08-31 after peel)  
+**Branch:** `feat/opencode_only`  
+**Sibling:** Agent-agnostic main — `docs/superpowers/specs/2026-08-31-agent-agnostic-main-design.md` on `main`  
+**Index:** `docs/superpowers/specs/README.md`
 
 ## Purpose
+
+This is the **OpenCode-only** living spec (not the agent-agnostic `main` contract). On `main`, no personalization runtime is privileged; see the sibling agent-agnostic design.
 
 `opencode_only` is a deliberately separate Curated Market development line in which OpenCode is the only agent-personalization runtime. Curated Market remains authority for capability identity, provenance, selected personalization, and portable tool requirements. OpenCode supplies the native agent, skill, instruction, permission, provider, model, and authentication surfaces used by executing agents.
 
