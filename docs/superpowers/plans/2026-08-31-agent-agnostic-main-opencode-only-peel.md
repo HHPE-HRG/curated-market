@@ -25,7 +25,7 @@
 | --- | --- |
 | `origin/main` | _TBD_ |
 | `origin/feat/opencode_only` | _TBD_ |
-| Prep groundwork merge | _TBD_ |
+| Prep groundwork merge | [PR #8](https://github.com/HHPE-HRG/curated-market/pull/8) (`docs/opencode-only-peel-prep`) |
 
 ## File / surface map
 
