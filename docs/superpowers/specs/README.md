@@ -19,4 +19,5 @@ After the 2026-08-31 peel there are **exactly two** living product contracts for
 ## Historical / supporting designs
 
 - Peel migration: [`2026-08-31-agent-agnostic-main-opencode-only-peel-design.md`](./2026-08-31-agent-agnostic-main-opencode-only-peel-design.md)
+- HHPE OpenCode fork curated default: [`2026-09-06-hhpe-opencode-curated-default-design.md`](./2026-09-06-hhpe-opencode-curated-default-design.md) (fork always curated-market; authority on `feat/opencode_only`)
 - Cursor host realization boundary, ToolSpec, Codex adapter portability, native plugin validation — supporting designs; they do not replace the two living product contracts above.
