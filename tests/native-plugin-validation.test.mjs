@@ -42,6 +42,7 @@ test('existing reviewed exposure relationships remain statically valid', () => {
     ['cursor', 'skill-symlink', 'registry/adapters/cursor', '~/.cursor/skills/x'],
     ['hhpe-hrg', 'registry-reference', 'registry/adapters/hhpe-hrg', 'registry:pkg/cap'],
     ['opencode', 'skill-symlink', 'registry/adapters/opencode', '~/skill'],
+    ['openhands', 'skill-symlink', 'registry/adapters/openhands', '~/.openhands/skills/x'],
   ].map(([host, mode, adapter, target]) => ({
     ...valid, host, mode, adapter, target,
     ...(host === 'cursor' ? {scope: 'user-local', enforcement: 'guidance'} : {}),
@@ -197,7 +198,7 @@ function cliFixture(t, {inventory = '', exitStatus = 0} = {}) {
 
 test('explicit host command fails required planned target as host realization, not static integrity', t => {
   const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"other@market","installed":true}],"available":[]}'});
-  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-4', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-4', '--require-planned-target', 'compound-engineering@hhpe-hrg']);
   assert.equal(result.status, 1);
   const body = JSON.parse(result.stdout);
   assert.equal(body.category, 'host-realization');
@@ -207,7 +208,7 @@ test('explicit host command fails required planned target as host realization, n
 });
 
 test('explicit host command rejects missing context before probing', t => {
-  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true}],"available":[]}'});
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"compound-engineering@hhpe-hrg","installed":true}],"available":[]}'});
   const result = fixture.run(['validate-host', '--host', 'codex']);
   assert.equal(result.status, 2);
   assert.match(result.stderr, /--context/);
@@ -215,15 +216,15 @@ test('explicit host command rejects missing context before probing', t => {
 });
 
 test('explicit host command passes installed selected target', t => {
-  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true}],"available":[]}'});
-  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-5', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"compound-engineering@hhpe-hrg","installed":true}],"available":[]}'});
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-5', '--require-planned-target', 'compound-engineering@hhpe-hrg']);
   assert.equal(result.status, 0);
   assert.equal(JSON.parse(result.stdout).observations[0].outcome, 'installed');
 });
 
 test('explicit host command reports unavailable inventory as indeterminate host failure', t => {
   const fixture = cliFixture(t, {exitStatus: 9});
-  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-6', '--require-planned-target', '00-hhpe-registry@hhpe-hrg']);
+  const result = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-6', '--require-planned-target', 'compound-engineering@hhpe-hrg']);
   assert.equal(result.status, 1);
   const body = JSON.parse(result.stdout);
   assert.equal(body.observations[0].outcome, 'indeterminate');
@@ -231,8 +232,8 @@ test('explicit host command reports unavailable inventory as indeterminate host 
 });
 
 test('explicit host command accepts repeated planned targets and rejects unknown selection', t => {
-  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"00-hhpe-registry@hhpe-hrg","installed":true},{"pluginId":"superpowers@hhpe-hrg","installed":true}],"available":[]}'});
-  const pass = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-7', '--require-planned-target', '00-hhpe-registry@hhpe-hrg', '--require-planned-target', 'superpowers@hhpe-hrg']);
+  const fixture = cliFixture(t, {inventory: '{"installed":[{"pluginId":"compound-engineering@hhpe-hrg","installed":true},{"pluginId":"superpowers@hhpe-hrg","installed":true}],"available":[]}'});
+  const pass = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-7', '--require-planned-target', 'compound-engineering@hhpe-hrg', '--require-planned-target', 'superpowers@hhpe-hrg']);
   assert.equal(pass.status, 0);
   assert.equal(JSON.parse(pass.stdout).observations.length, 2);
   const invalid = fixture.run(['validate-host', '--host', 'codex', '--context', 'activation-8', '--require-planned-target', 'unknown@market']);

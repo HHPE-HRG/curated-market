@@ -83,7 +83,9 @@
     "static analysis": "trailofbits/static-analysis/semgrep",
     "Rust safety, FFI, or concurrency": "trailofbits/rust-review",
     "C or C++ memory and undefined behavior": "trailofbits/c-review",
-    "dangerous API or configuration": "trailofbits/sharp-edges"
+    "dangerous API or configuration": "trailofbits/sharp-edges",
+    "authoring or editing agent skills": "hhpe-hrg/skill-creator-guidance",
+    "package and documentation origin research": "hhpe-hrg/original-source-research"
   },
   "task_language_lifecycle_routing": {
     "investigate": "compound-engineering/research-or-investigate",
