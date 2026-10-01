@@ -61,6 +61,13 @@ while true; do
   sleep "$WAIT_SECONDS"
 done
 
+# Provider status refresh can rewrite grok.json/cursor.json without a skills
+# key. `$` reads that snapshot. Inject Market catalog onto disk before serve.
+typeset INJECT_LIB="${HHPE_T3_CURSOR_SKILLS_LIB:-${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}/lib/t3-cursor-skills.mjs}"
+if [[ -r "$INJECT_LIB" ]]; then
+  env -u NODE_OPTIONS "$NODE_BIN" "$INJECT_LIB" --after-sync || print -u2 -- "t3-server: Market catalog cache inject failed"
+fi
+
 typeset PATCHED_BIN="${HHPE_T3_PATCHED_BIN:-$HOME/.t3/hhpe-cursor-skills/node_modules/t3/dist/bin.mjs}"
 if [[ -r "$PATCHED_BIN" ]]; then
   exec env -u NODE_OPTIONS "$NODE_BIN" "$PATCHED_BIN" serve --host "$tail_ip"

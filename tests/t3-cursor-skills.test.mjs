@@ -78,11 +78,21 @@ test('injectT3CursorSkillCache writes the Market catalog into every provider sna
       skills: [{name: 'skill-creator', path: '/tmp/system/skill-creator/SKILL.md'}],
     }),
   );
+  // Grok/Cursor default snapshots often omit `skills` after status refresh.
+  // `$` still reads those files; inject must write the catalog anyway.
+  fs.writeFileSync(
+    path.join(cacheDir, 'grok-empty.json'),
+    JSON.stringify({
+      displayName: 'Grok',
+      driver: 'grok',
+    }),
+  );
   const result = injectT3CursorSkillCache({home, cacheDir, skills: catalog});
   const snapshot = JSON.parse(fs.readFileSync(path.join(cacheDir, 'cursor.json'), 'utf8'));
   const openCode = JSON.parse(fs.readFileSync(path.join(cacheDir, 'opencode.json'), 'utf8'));
   const grok = JSON.parse(fs.readFileSync(path.join(cacheDir, 'grok.json'), 'utf8'));
-  assert.equal(result.updated, 3);
+  const grokEmpty = JSON.parse(fs.readFileSync(path.join(cacheDir, 'grok-empty.json'), 'utf8'));
+  assert.equal(result.updated, 4);
   assert.equal(snapshot.models[0].slug, 'default');
   assert.ok(snapshot.skills.some((s) => s.name === 'skill-creator-guidance'));
   assert.ok(snapshot.slashCommands.some((c) => c.name === 'skill-creator-guidance'));
@@ -91,6 +101,7 @@ test('injectT3CursorSkillCache writes the Market catalog into every provider sna
   assert.ok(openCode.skills.some((s) => s.name === 'skill-creator-guidance'));
   assert.equal(grok.skills.some((s) => s.name === 'skill-creator'), false);
   assert.ok(grok.skills.some((s) => s.name === 'skill-creator-guidance'));
+  assert.ok(grokEmpty.skills.some((s) => s.name === 'skill-creator-guidance'));
   fs.rmSync(home, {recursive: true, force: true});
 });
 
