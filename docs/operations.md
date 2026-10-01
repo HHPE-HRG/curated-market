@@ -9,7 +9,8 @@ hhpe-registry-status
 hhpe-registry-validate
 hhpe-registry-validate-host --host codex --context <id>
 hhpe-registry-sync                 # dry run
-hhpe-registry-sync --apply         # additive links only
+hhpe-registry-sync --apply         # additive links only; re-scans T3 Cursor $ skills
+hhpe-t3-cursor-skills-inject       # re-scan Cursor skills into T3 $ without a full sync
 hhpe-registry-diff
 hhpe-registry-update --check
 hhpe-registry-rollback             # dry run

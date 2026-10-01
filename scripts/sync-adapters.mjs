@@ -12,6 +12,8 @@ export const CODEX_WRAPPER_PROJECTIONS = Object.freeze([
   'context7-guidance',
   'playwright-guidance',
   'session-start',
+  'original-source-research',
+  'skill-creator-guidance',
 ]);
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

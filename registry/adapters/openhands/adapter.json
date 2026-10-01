@@ -1,0 +1,6 @@
+{
+  "mode": "planned-host-projection",
+  "skill_root": "~/.openhands/skills",
+  "status": "adapter-planned",
+  "note": "Same Market input/output split as Cursor/Codex. Do not implement runtime this increment."
+}

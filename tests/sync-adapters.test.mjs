@@ -19,6 +19,8 @@ const EXPECTED = [
   'context7-guidance',
   'playwright-guidance',
   'session-start',
+  'original-source-research',
+  'skill-creator-guidance',
 ];
 
 function fixture() {

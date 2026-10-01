@@ -1,0 +1,68 @@
+#!/bin/zsh
+# Agent context: User-writable t3-server entry. Intended: Tailscale wait then
+# start t3 with --import so `$` attaches Market catalog. Observed: NODE_OPTIONS
+# wrapping Tailscale node -e blocked startup.
+set -eu
+set -o pipefail
+
+unset NODE_OPTIONS
+
+export HOME=/Users/maxholden
+export PATH=/Users/maxholden/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+typeset -r BIN_ROOT=${T3_HOST_TEST_BIN:-/usr/local/bin}
+typeset -r TAILSCALE_BIN="$BIN_ROOT/tailscale"
+typeset -r NODE_BIN="$BIN_ROOT/node"
+typeset -r T3_ENTRY=${T3_HOST_T3_ENTRY:-/usr/local/libexec/t3-server/node_modules/t3/dist/bin.mjs}
+typeset -ri MAX_WAITS=${T3_HOST_MAX_WAITS:-0}
+typeset -r WAIT_SECONDS=${T3_HOST_WAIT_SECONDS:-5}
+typeset REGISTER="${HHPE_T3_CURSOR_SKILLS_REGISTER:-${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}/lib/t3-cursor-skills-register.mjs}"
+
+die_config() {
+  print -u2 -- "t3-server: $1"
+  exit 64
+}
+
+[[ -x "$TAILSCALE_BIN" ]] || die_config "missing executable: $TAILSCALE_BIN"
+[[ -x "$NODE_BIN" ]] || die_config "missing executable: $NODE_BIN"
+[[ -r "$T3_ENTRY" ]] || die_config "missing pinned T3 entry point: $T3_ENTRY"
+[[ -r "$REGISTER" ]] || die_config "missing Cursor skill loader: $REGISTER"
+
+typeset -i attempt=0
+typeset tail_ip=""
+while true; do
+  attempt+=1
+  status_json=$($TAILSCALE_BIN status --json 2>/dev/null || true)
+  if [[ -n "$status_json" ]] && tail_ip=$(print -r -- "$status_json" | env -u NODE_OPTIONS "$NODE_BIN" -e '
+    const net = require("node:net");
+    let input = "";
+    process.stdin.setEncoding("utf8");
+    process.stdin.on("data", chunk => input += chunk);
+    process.stdin.on("end", () => {
+      try {
+        const status = JSON.parse(input);
+        if (status.BackendState !== "Running" || status.Self?.Online !== true) process.exit(1);
+        const ipv4 = status.TailscaleIPs?.find(address => net.isIPv4(address));
+        if (typeof ipv4 !== "string") process.exit(1);
+        process.stdout.write(ipv4);
+      } catch {
+        process.exit(1);
+      }
+    });
+  ' 2>/dev/null); then
+    break
+  fi
+
+  print -u2 -- "t3-server: waiting for Tailscale to become Running/Online with an IPv4 address (attempt $attempt)"
+  if (( MAX_WAITS > 0 && attempt >= MAX_WAITS )); then
+    print -u2 -- "t3-server: Tailscale did not become ready"
+    exit 75
+  fi
+  sleep "$WAIT_SECONDS"
+done
+
+typeset PATCHED_BIN="${HHPE_T3_PATCHED_BIN:-$HOME/.t3/hhpe-cursor-skills/node_modules/t3/dist/bin.mjs}"
+if [[ -r "$PATCHED_BIN" ]]; then
+  exec env -u NODE_OPTIONS "$NODE_BIN" "$PATCHED_BIN" serve --host "$tail_ip"
+fi
+exec env -u NODE_OPTIONS "$NODE_BIN" --import "file://${REGISTER}" "$T3_ENTRY" serve --host "$tail_ip"

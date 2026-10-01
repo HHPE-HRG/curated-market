@@ -8,9 +8,9 @@ import {classifyCursorSkillLink} from '../lib/cursor-provenance.mjs';
 const exposures = JSON.parse(fs.readFileSync(path.join(ROOT, 'registry/manifests/exposures.yaml'), 'utf8')).exposures;
 const cursor = exposures.filter(e => e.host === 'cursor');
 
-test('Cursor exposures are the fourteen skill-symlink rows', () => {
+test('Cursor exposures are the sixteen skill-symlink rows', () => {
   const skills = cursor.filter(e => e.mode === 'skill-symlink');
-  assert.equal(skills.length, 14);
+  assert.equal(skills.length, 16);
   assert.ok(skills.every(e => e.adapter === 'registry/adapters/cursor'));
   assert.ok(skills.every(e => e.target.startsWith('~/.cursor/skills/')));
   assert.ok(cursor.every(e => e.scope !== undefined));

@@ -1390,6 +1390,36 @@
       }
     },
     {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "original-source-research/source-classes.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      }
+    },
+    {
       "capability_id": "trailofbits/plugin-dimensional-analysis",
       "self_contained": false,
       "requires": {

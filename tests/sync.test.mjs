@@ -182,3 +182,12 @@ test('cloud-project rows never create files', () => withHome(home => withProject
   assert.ok(plan.actions.some(a => a.reason === 'cloud-project-not-implemented' && a.action === 'SKIP'));
   fs.rmSync(first.root, {recursive: true, force: true});
 })));
+
+test('Codex dry-run includes orig overlay -> ~/.codex/skills/original-source-research', () => withHome(home => {
+  const result = sync({host: 'codex', home});
+  const target = path.join(home, '.codex/skills/original-source-research');
+  const action = actionFor(result, target);
+  assert.ok(action, JSON.stringify(result.actions.filter(a => String(a.target).includes('original-source')), null, 2));
+  assert.equal(['LINK', 'SKIP', 'COLLISION'].includes(action.action), true);
+  assert.match(action.source, /original-source-research$/);
+}));

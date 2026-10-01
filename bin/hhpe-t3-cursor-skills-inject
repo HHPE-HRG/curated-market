@@ -1,0 +1,4 @@
+#!/bin/sh
+# Agent context: After lib/registry.mjs sync, refresh T3 caches from Market
+# catalog (lib/market-skill-catalog.mjs), not Cursor/Codex home walks.
+exec node "${HHPE_HRG_HOME:-$HOME/.local/share/hhpe-hrg}/lib/t3-cursor-skills.mjs" --after-sync "$@"

@@ -112,3 +112,24 @@ test('managed external target requires exact ownership record and tool identity'
   assert.ok(validateManagedToolLinks([{...record, tool_id: null}], tools, registryRoot).some(error => error.includes('tool identity')));
   fs.rmSync(root, {recursive: true, force: true});
 });
+
+test('overlay links through a symlinked HHPE home do not need a tool_id', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hhpe-overlay-home-'));
+  const realHome = path.join(root, 'real-home');
+  const alias = path.join(root, 'alias-home');
+  const overlay = path.join(realHome, 'registry/overlays/wrappers/demo');
+  fs.mkdirSync(overlay, {recursive: true});
+  fs.writeFileSync(path.join(overlay, 'SKILL.md'), '---\nname: demo\n---\n');
+  fs.symlinkSync(realHome, alias);
+  const link = path.join(root, 'skills/demo');
+  fs.mkdirSync(path.dirname(link), {recursive: true});
+  fs.symlinkSync(path.join(alias, 'registry/overlays/wrappers/demo'), link);
+  const record = {
+    kind: 'symlink',
+    path: link,
+    source: path.join(alias, 'registry/overlays/wrappers/demo'),
+    classification: 'created_by_hhpe',
+  };
+  assert.deepEqual(validateManagedToolLinks([record], [], alias), []);
+  fs.rmSync(root, {recursive: true, force: true});
+});

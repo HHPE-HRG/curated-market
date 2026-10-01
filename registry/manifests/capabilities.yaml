@@ -1905,7 +1905,8 @@
         "owner": "hhpe-hrg",
         "decision_record": "docs/decisions/ADR-018-serena-semantic-code-intelligence.md",
         "activation": "task-triggered"
-      }
+      },
+      "availability_host": "any"
     },
     {
       "capability_id": "context7/context7-cli",
@@ -1950,7 +1951,8 @@
         "owner": "hhpe-hrg",
         "decision_record": "docs/decisions/ADR-019-context7-documentation-grounding.md",
         "activation": "task-triggered"
-      }
+      },
+      "availability_host": "any"
     },
     {
       "capability_id": "playwright/playwright-cli",
@@ -1995,7 +1997,8 @@
         "owner": "hhpe-hrg",
         "decision_record": "docs/decisions/ADR-021-playwright-ui-acceptance.md",
         "activation": "task-triggered"
-      }
+      },
+      "availability_host": "any"
     },
     {
       "capability_id": "hhpe-hrg/session-start",
@@ -2018,7 +2021,58 @@
         "owner": "hhpe-hrg",
         "decision_record": "docs/decisions/ADR-022-hhpe-session-start.md",
         "activation": "task-triggered"
-      }
+      },
+      "availability_host": "any"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "display_name": "original-source-research",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "original-source-research",
+      "self_contained": false,
+      "requires": {
+        "files": [
+          "original-source-research/source-classes.md"
+        ],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-003-capability-exposure-model.md",
+        "activation": "task-triggered"
+      },
+      "availability_host": "any"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "display_name": "skill-creator-guidance",
+      "package_id": "hhpe-overlays",
+      "type": "skill",
+      "source_path": "skill-creator-guidance",
+      "self_contained": true,
+      "requires": {
+        "files": [],
+        "sibling_skills": [],
+        "scripts": [],
+        "hooks": [],
+        "agents": [],
+        "mcp_servers": [],
+        "executables": [],
+        "environment": []
+      },
+      "architecture": {
+        "owner": "hhpe-hrg",
+        "decision_record": "docs/decisions/ADR-003-capability-exposure-model.md",
+        "activation": "task-triggered"
+      },
+      "availability_host": "any"
     },
     {
       "capability_id": "trailofbits/plugin-dimensional-analysis",
@@ -2488,7 +2542,11 @@
       "source_path": ".",
       "self_contained": true,
       "requires": {
-        "files": [".cursor-plugin/plugin.json", "hooks/hooks.json", "hooks/route-gate.mjs"]
+        "files": [
+          ".cursor-plugin/plugin.json",
+          "hooks/hooks.json",
+          "hooks/route-gate.mjs"
+        ]
       },
       "architecture": {
         "owner": "hhpe-hrg",

@@ -71,26 +71,29 @@
     {
       "capability_id": "hhpe-hrg/ast-grep",
       "host": "codex",
-      "mode": "native-plugin",
-      "target": "00-hhpe-registry@hhpe-hrg",
-      "adapter": "registry/adapters/codex/marketplace",
-      "status": "planned"
+      "mode": "skill-symlink",
+      "target": "~/.codex/skills/ast-grep",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "Market input projection; T3 $ reads catalog not this home"
     },
     {
       "capability_id": "hhpe-hrg/registry-health",
       "host": "codex",
-      "mode": "native-plugin",
-      "target": "00-hhpe-registry@hhpe-hrg",
-      "adapter": "registry/adapters/codex/marketplace",
-      "status": "planned"
+      "mode": "skill-symlink",
+      "target": "~/.codex/skills/registry-health",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "Market input projection; T3 $ reads catalog not this home"
     },
     {
       "capability_id": "hhpe-hrg/stack-router",
       "host": "codex",
-      "mode": "native-plugin",
-      "target": "00-hhpe-registry@hhpe-hrg",
-      "adapter": "registry/adapters/codex/marketplace",
-      "status": "planned"
+      "mode": "skill-symlink",
+      "target": "~/.codex/skills/stack-router",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "Market input projection; T3 $ reads catalog not this home"
     },
     {
       "capability_id": "superpowers/plugin-.codex-plugin",
@@ -847,6 +850,100 @@
       "adapter": "registry/adapters/antigravity-ide",
       "status": "active",
       "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/original-source-research",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/original-source-research",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "original-source-research"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/original-source-research",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/original-source-research",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/original-source-research",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.codex/skills/original-source-research",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "Market input projection; T3 $ reads catalog not this home"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "host": "hhpe-hrg",
+      "mode": "registry-reference",
+      "target": "registry:hhpe-hrg/skill-creator-guidance",
+      "adapter": "registry/adapters/hhpe-hrg",
+      "status": "active"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "host": "cursor",
+      "mode": "skill-symlink",
+      "target": "~/.cursor/skills/skill-creator-guidance",
+      "adapter": "registry/adapters/cursor",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged",
+      "scope": "user-local",
+      "enforcement": "guidance",
+      "cursor_visible_name": "skill-creator-guidance"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "host": "opencode",
+      "mode": "skill-symlink",
+      "target": "~/.config/opencode/skills/skill-creator-guidance",
+      "adapter": "registry/adapters/opencode",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "host": "antigravity-ide",
+      "mode": "skill-symlink",
+      "target": "~/.agents/skills/skill-creator-guidance",
+      "adapter": "registry/adapters/antigravity-ide",
+      "status": "active",
+      "note": "individual package-preserving link; upstream frontmatter identity unchanged"
+    },
+    {
+      "capability_id": "hhpe-hrg/skill-creator-guidance",
+      "host": "codex",
+      "mode": "skill-symlink",
+      "target": "~/.codex/skills/skill-creator-guidance",
+      "adapter": "registry/adapters/codex",
+      "status": "active",
+      "note": "Market input projection; T3 $ reads catalog not this home"
     }
   ]
 }

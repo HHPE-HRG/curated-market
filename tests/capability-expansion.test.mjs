@@ -37,10 +37,11 @@ test('HHPE wrappers keep lifecycle and specialist routing boundaries explicit', 
   assert.equal(stack.no_routine_slash_invocation, true);
   assert.deepEqual(stack.startup_layers, ['caveman', 'hhpe-hrg/session-start']);
   assert.equal(stack.beads.active, false);
-  for (const id of ['hhpe-hrg/serena-guidance', 'hhpe-hrg/context7-guidance', 'hhpe-hrg/playwright-guidance', 'hhpe-hrg/session-start']) {
+  for (const id of ['hhpe-hrg/serena-guidance', 'hhpe-hrg/context7-guidance', 'hhpe-hrg/playwright-guidance', 'hhpe-hrg/session-start', 'hhpe-hrg/original-source-research', 'hhpe-hrg/skill-creator-guidance']) {
     const cap = capabilities().find(item => item.capability_id === id);
     assert.ok(cap);
     assert.match(fs.readFileSync(path.join(sourceFor(cap), 'SKILL.md'), 'utf8'), new RegExp(`name:\\s*${cap.display_name}`));
+    assert.equal(cap.availability_host, 'any');
   }
 });
 
